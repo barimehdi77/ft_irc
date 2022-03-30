@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 16:31:53 by mbari             #+#    #+#             */
-/*   Updated: 2022/03/30 16:36:11 by mbari            ###   ########.fr       */
+/*   Updated: 2022/03/30 16:44:47 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int main( int argc, char *argv[] ) {
 
    listen(sockfd,5);
    clilen = sizeof(cli_addr);
+
+   printf("you can connet to the server using ip address %s and port number %d\n", "localhost", htons(serv_addr.sin_port));
 
    while (1) {
       newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
