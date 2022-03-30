@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 16:31:45 by mbari             #+#    #+#             */
-/*   Updated: 2022/03/30 16:31:46 by mbari            ###   ########.fr       */
+/*   Updated: 2022/03/30 17:47:23 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 
 #include <string.h>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
    int sockfd, portno, n;
    struct sockaddr_in serv_addr;
    struct hostent *server;
