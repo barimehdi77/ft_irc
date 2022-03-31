@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:07:03 by mbari             #+#    #+#             */
-/*   Updated: 2022/03/31 13:30:11 by mbari            ###   ########.fr       */
+/*   Updated: 2022/03/31 13:33:09 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int main(int ac, char **av)
 	struct addrinfo hint;
 	struct addrinfo *server;
 
-	memset(&hint, 8, sizeof(hint));
+	memset(&hint, 0, sizeof(hint));
 	hint.ai_family = AF_INET;
 	hint.ai_socktype = SOCK_STREAM;
 	hint.ai_flags = AI_PASSIVE;
