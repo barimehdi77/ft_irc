@@ -31,12 +31,6 @@ int main(int argc, char const *argv[])
 		std::cerr << "Host does not exist" << std::endl;
 		exit(1);
 	}
-
-	// std::cout << "addr_list:\t" << server->h_addr_list << std::endl;
-	// std::cout << "addrtype:\t" << server->h_addrtype << std::endl;
-	// std::cout << "aliases:\t" << server->h_aliases << std::endl;
-	// std::cout << "length:\t\t" << server->h_length << std::endl;
-	// std::cout << "name:\t\t" << server->h_name << std::endl;
 	
 	bzero((char *)&clientAddress, sizeof(clientAddress));
 	clientAddress.sin_family = AF_INET;
@@ -68,12 +62,7 @@ int main(int argc, char const *argv[])
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);
 	}
-	printf("%s", buffer);
+	std::cout << buffer;
 	close(sockfd);
-	// std::cout << "Family:\t\t" << clientAddress.sin_family << std::endl;
-	// std::cout << "Port:\t\t" << clientAddress.sin_port << std::endl;
-	// std::cout << "Address:\t" << clientAddress.sin_addr.s_addr << std::endl;
-	// std::cout << "Zero:\t\t" << clientAddress.sin_zero << std::endl;
-	// std::cout << "Len:\t\t" << clientAddress.sin_len << std::endl;
 	return 0;
 }
