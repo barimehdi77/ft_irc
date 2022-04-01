@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
 	fgets(buffer, 255, stdin);
 
 	/* Send message to the server */
-	n = write(sockfd, buffer, strlen(buffer));
+	n = send(sockfd, buffer, strlen(buffer), 0);
 	if (n < 0) {
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);
@@ -57,7 +57,7 @@ int main(int argc, char const *argv[])
 
 	/* Read server's response */
 	bzero(buffer, 256);
-	n = read(sockfd, buffer, 255);
+	n = recv(sockfd, buffer, 255, 0);
 	if (n < 0) {
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);

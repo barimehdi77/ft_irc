@@ -10,7 +10,7 @@ void	processRequest(int clientfd) {
 
 	/* Reading client message */
 	bzero(buffer, 256);
-	n = read(clientfd, buffer, 255);
+	n = recv(clientfd, buffer, 255, 0);
 	if (n < 0) {
 		std::cerr << "Error reading message" << std::endl;
 		exit(1);
@@ -18,7 +18,7 @@ void	processRequest(int clientfd) {
 	std::cout << buffer;
 
 	/* Respond to client */
-	n = write(clientfd, "I agree\n", 9);
+	n = send(clientfd, "I agree\n", 9, 0);
 	if (n < 0) {
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);
