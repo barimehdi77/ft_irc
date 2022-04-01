@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:49:01 by mbari             #+#    #+#             */
-/*   Updated: 2022/03/31 15:12:25 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/01 15:10:21 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 int main(int ac, char **av)
 {
-	int status, sd;
+	int status, sockfd, bstatus;
 	struct addrinfo hint, *serverinfo, *tmp, server;
 
 	if (ac != 2)
@@ -53,10 +53,16 @@ int main(int ac, char **av)
 		}
 	}
 
-	sd = socket(serverinfo->ai_family, serverinfo->ai_socktype, serverinfo->ai_protocol);
-	if (sd < 0)
+	sockfd = socket(serverinfo->ai_family, serverinfo->ai_socktype, serverinfo->ai_protocol);
+	if (sockfd < 0)
 	{
-		std::cout << "socket() error: " << strerror(sd) << std::endl;
+		std::cout << "socket() error: " << strerror(sockfd) << std::endl;
+		return (1);
+	}
+
+	if (bstatus = bind(sockfd, serverinfo->ai_addr, serverinfo->ai_addrlen) == -1)
+	{
+		std::cout << "bind() error: " << strerror(bstatus) << std::endl;
 		return (1);
 	}
 }
