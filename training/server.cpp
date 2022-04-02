@@ -1,8 +1,10 @@
 #include <iostream>
 #include <unistd.h>
+#include <strings.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netdb.h>
 
 void	processRequest(int clientfd) {
 	char	buffer[256];
@@ -28,6 +30,7 @@ void	processRequest(int clientfd) {
 int main(int argc, char const *argv[]) {
 	int					sockfd, clientfd, portNum, n, pid;
 	struct sockaddr_in	serverAddress, clientAddress;
+	struct hostent		*host;
 	char				buffer[256];
 
 	portNum = 42069;
@@ -41,7 +44,7 @@ int main(int argc, char const *argv[]) {
 	/* Initialize socket sturct */
 	bzero((char *)&serverAddress, sizeof(serverAddress));
 	serverAddress.sin_family = AF_INET;
-	serverAddress.sin_addr.s_addr = INADDR_ANY;
+	serverAddress.sin_addr.s_addr = inet_addr("127.0.0.2");
 	serverAddress.sin_port = htons(portNum);
 
 	/* Binding to host address */
