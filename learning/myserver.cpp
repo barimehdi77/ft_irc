@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:49:01 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/01 22:17:48 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/03 15:52:20 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int main(int ac, char **av)
 
 	if (ac != 2)
 	{
-		std::cout << "usage error: ./a.out HOSTNAME" << std::endl;
+		std::cout << "usage error: ./server HOSTNAME" << std::endl;
 		return (0);
 	}
 
@@ -84,6 +84,24 @@ int main(int ac, char **av)
 		std::cout << "accept() error: " << strerror(errno) << std::endl;
 		return (1);
 	}
+
+	std::string message;
+
+	recv(acceptfd, &message, 27, 0);
+
+	// std::cout << "message recived from client is : " << message << std::endl;
+
+	// std::string msg = "Wellcome to our IRC server";
+
+	// int sendlen = send(acceptfd, &msg, msg.length(), 0);
+	// if (sendlen == -1)
+	// {
+	// 	std::cout << "send() error: " << strerror(errno) << std::endl;
+	// 	return (1);
+	// }
+	// if (sendlen != msg.length())
+	// 	std::cout << "send() error: an error happend while sending message" << std::endl;
+
 	close(sockfd);
 	close(acceptfd);
 }
