@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 15:27:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/03 17:56:28 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/03 19:44:23 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 
 int main(int ac, char **av)
 {
-	int status, sockfd, cstatus, option;
-	struct sockaddr_storage server_addr;
-	socklen_t addr_size;
-	struct	addrinfo hint, *clientinfo, *tmp;
+	int							status, sockfd, cstatus, option;
+	struct	sockaddr_storage	server_addr;
+	socklen_t					addr_size;
+	struct	addrinfo			hint, *clientinfo, *tmp;
 
 	if (ac != 3)
 	{

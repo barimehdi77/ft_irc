@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:49:01 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/03 17:54:40 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/03 22:33:32 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int main(int ac, char **av)
 		std::cout << "accept() error: " << strerror(errno) << std::endl;
 		return (1);
 	}
-	std::string msg = "Wellcome to our IRC server";
+	std::string msg = "Wellcome to our IRC server\n";
 
 	int sendlen = send(acceptfd, msg.c_str(), msg.length(), 0);
 	if (sendlen == -1)
