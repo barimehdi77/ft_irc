@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 15:27:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/03 17:12:42 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/03 17:56:28 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,40 @@ int main(int ac, char **av)
 		return (1);
 	}
 
-	// char *msg = "Wellcome to our IRC server";
-	char *msg = "Wellcome to our IRC server";
+	char message[1000];
+	bzero(message, 1000);
+	int n = recv(sockfd, &message, 1000, 0);
 
-	int sendlen = send(sockfd, msg, strlen(msg), 0);
-	std::cout << sendlen << std::endl;
-	if (sendlen == -1)
+	std::cout << n << std::endl;
+
+	if (n < 0)
 	{
-		std::cout << "send() error: " << strerror(errno) << std::endl;
+		std::cout << "recv() error: " << strerror(errno) << std::endl;
 		return (1);
 	}
-	if (sendlen != strlen(msg))
-		std::cout << "send() error: an error happend while sending message" << std::endl;
+	std::cout << "message with length " << strlen(message) << " was recived from the server says : " << message << std::endl;
 
-	std::cout << "data with length " << strlen(msg) << " is sent to " << inet_ntoa(((struct sockaddr_in *)tmp->ai_addr)->sin_addr) << std::endl;
+	// char msg[1000];
+	std::string msg;
+	while (1)
+	{
+		std::cout << "enter Your message : ";
+		getline(std::cin, msg);
+		if (msg.length() == 0)
+			break;
+		int sendlen = send(sockfd, msg.c_str(), msg.length(), 0);
+		std::cout << sendlen << std::endl;
+		if (sendlen == -1)
+		{
+			std::cout << "send() error: " << strerror(errno) << std::endl;
+			return (1);
+		}
+		if (sendlen != msg.length())
+			std::cout << "send() error: an error happend while sending message" << std::endl;
+	}
+	// char *msg = "Wellcome to our IRC server";
+
+
+	std::cout << "data with length " << msg.length() << " is sent to " << inet_ntoa(((struct sockaddr_in *)tmp->ai_addr)->sin_addr) << std::endl;
+	close(sockfd);
 }

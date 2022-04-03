@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:49:01 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/03 16:35:44 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/03 17:54:40 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,22 @@ int main(int ac, char **av)
 		std::cout << "accept() error: " << strerror(errno) << std::endl;
 		return (1);
 	}
+	std::string msg = "Wellcome to our IRC server";
+
+	int sendlen = send(acceptfd, msg.c_str(), msg.length(), 0);
+	if (sendlen == -1)
+	{
+		std::cout << "send() error: " << strerror(errno) << std::endl;
+		return (1);
+	}
+	if (sendlen != msg.length())
+		std::cout << "send() error: an error happend while sending message" << std::endl;
 
 	// std::string message;
 
-	char message[30];
-	bzero(message, 30);
-	int n = recv(acceptfd, &message, 30, 0);
+	char message[1000];
+	bzero(message, 1000);
+	int n = recv(acceptfd, &message, 1000, 0);
 
 	std::cout << n << std::endl;
 
@@ -100,17 +110,6 @@ int main(int ac, char **av)
 	}
 
 	std::cout << "message with length " << strlen(message) << " was recived from client is : " << message << std::endl;
-
-	// std::string msg = "Wellcome to our IRC server";
-
-	// int sendlen = send(acceptfd, &msg, msg.length(), 0);
-	// if (sendlen == -1)
-	// {
-	// 	std::cout << "send() error: " << strerror(errno) << std::endl;
-	// 	return (1);
-	// }
-	// if (sendlen != msg.length())
-	// 	std::cout << "send() error: an error happend while sending message" << std::endl;
 
 	close(sockfd);
 	close(acceptfd);
