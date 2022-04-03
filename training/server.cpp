@@ -33,7 +33,11 @@ int main(int argc, char const *argv[]) {
 	struct hostent		*host;
 	char				buffer[256];
 
-	portNum = 42069;
+	if (argc != 3) {
+		std::cerr << "Specify host address and port number" << std::endl;
+		exit(1);
+	}
+	portNum = atoi(argv[2]);
 	/* Getting socket fd */
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0) {
@@ -41,10 +45,11 @@ int main(int argc, char const *argv[]) {
 		exit(1);
 	}
 
+	host = gethostbyname(argv[1]);
 	/* Initialize socket sturct */
 	bzero((char *)&serverAddress, sizeof(serverAddress));
 	serverAddress.sin_family = AF_INET;
-	serverAddress.sin_addr.s_addr = inet_addr("127.0.0.2");
+	bcopy((char *)host->h_addr_list[0], (char *)&serverAddress.sin_addr.s_addr, host->h_length);
 	serverAddress.sin_port = htons(portNum);
 
 	/* Binding to host address */
