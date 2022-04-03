@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:49:01 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/03 15:52:20 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/03 16:35:44 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,21 @@ int main(int ac, char **av)
 		return (1);
 	}
 
-	std::string message;
+	// std::string message;
 
-	recv(acceptfd, &message, 27, 0);
+	char message[30];
+	bzero(message, 30);
+	int n = recv(acceptfd, &message, 30, 0);
 
-	// std::cout << "message recived from client is : " << message << std::endl;
+	std::cout << n << std::endl;
+
+	if (n < 0)
+	{
+		std::cout << "recv() error: " << strerror(errno) << std::endl;
+		return (1);
+	}
+
+	std::cout << "message with length " << strlen(message) << " was recived from client is : " << message << std::endl;
 
 	// std::string msg = "Wellcome to our IRC server";
 

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 15:27:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/03 15:46:31 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/03 17:12:42 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,24 @@ int main(int ac, char **av)
 	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
 
 
-	connect(sockfd, clientinfo->ai_addr, clientinfo->ai_addrlen);
+	if (connect(sockfd, clientinfo->ai_addr, clientinfo->ai_addrlen) < 0)
+	{
+		std::cout << "connect() error: " << strerror(errno) << std::endl;
+		return (1);
+	}
 
-	std::string msg = "Wellcome to our IRC server";
+	// char *msg = "Wellcome to our IRC server";
+	char *msg = "Wellcome to our IRC server";
 
-	int sendlen = send(sockfd, &msg, msg.length(), 0);
+	int sendlen = send(sockfd, msg, strlen(msg), 0);
+	std::cout << sendlen << std::endl;
 	if (sendlen == -1)
 	{
 		std::cout << "send() error: " << strerror(errno) << std::endl;
 		return (1);
 	}
-	if (sendlen != msg.length())
+	if (sendlen != strlen(msg))
 		std::cout << "send() error: an error happend while sending message" << std::endl;
+
+	std::cout << "data with length " << strlen(msg) << " is sent to " << inet_ntoa(((struct sockaddr_in *)tmp->ai_addr)->sin_addr) << std::endl;
 }
