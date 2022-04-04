@@ -11,20 +11,28 @@ void	processRequest(int clientfd) {
 	char	buffer[256];
 	int		n;
 
-	/* Reading client message */
-	bzero(buffer, 256);
-	n = recv(clientfd, buffer, 255, 0);
-	if (n < 0) {
-		std::cerr << "Error reading message" << std::endl;
-		exit(1);
-	}
-	std::cout << buffer;
-
-	/* Respond to client */
-	n = send(clientfd, "I agree\n", 9, 0);
+	n = send(clientfd, "Welcome to thisfdsfewfewfdsfewffdsfdsfewfwfewfdsfewfewfewfdsfewfewfewfewfdsfgfdgdsfdsfdsfdsfsafsdfsdfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsdsfsfdsfewfdfdsfewfewfdsfdfewfewfdsfdsfefewfdsfewfewfsdfewfwffewfewfdsfewfewfewfdsfewfefdsfewfewfewfdfwfdsfewfeffw7 servert\n", 258, 0);
 	if (n < 0) {
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);
+	}
+
+	/* Reading client message */
+	while (1) {
+		bzero(buffer, 256);
+		n = recv(clientfd, buffer, 255, 0);
+		if (n < 0) {
+			std::cerr << "Error reading message" << std::endl;
+			exit(1);
+		}
+		std::cout << buffer;
+
+		/* Respond to client */
+		n = send(clientfd, "I agree\n", 9, 0);
+		if (n < 0) {
+			std::cerr << "Error sending message" << std::endl;
+			exit(1);
+		}
 	}
 }
 
@@ -43,7 +51,7 @@ int main(int argc, char const *argv[]) {
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
-	
+
 	if (getaddrinfo(argv[1], argv[2], &hints, &servInfo)) {
 		std::cerr << "Invalid address" << std::endl;
 		exit(1);
@@ -56,20 +64,20 @@ int main(int argc, char const *argv[]) {
 		exit(1);
 	}
 
-	// /* Initialize socket sturct */
-
 	/* Reuse port  */
 	int	yes = 1;
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1) {
 		std::cerr << "setsockopt" << std::endl;
 		exit(1);
 	}
-	
+
 	/* Binding to host address */
 	if (bind(sockfd, servInfo->ai_addr, servInfo->ai_addrlen) < 0) {
 		std::cerr << "Error in binding" << std::endl;
 		exit(1);
 	}
+
+	freeaddrinfo(servInfo);
 
 	/* Listening on host address */
 	if (listen(sockfd, 5) == -1) {

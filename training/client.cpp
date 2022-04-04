@@ -11,26 +11,36 @@ void	sendRequest(int sockfd) {
 	char	buffer[256];
 	int		n;
 
-	/* Ask for a message from the user */
-	std::cout << "Enter a message" << std::endl;
-	bzero(buffer, 256);
-	fgets(buffer, 255, stdin);
-
-	/* Send message to the server */
-	n = send(sockfd, buffer, strlen(buffer), 0);
-	if (n < 0) {
-		std::cerr << "Error sending message" << std::endl;
-		exit(1);
-	}
-
-	/* Read server's response */
 	bzero(buffer, 256);
 	n = recv(sockfd, buffer, 255, 0);
 	if (n < 0) {
-		std::cerr << "Error sending message" << std::endl;
+		std::cerr << "Error receiving message" << std::endl;
 		exit(1);
 	}
 	std::cout << buffer;
+
+	std::cout << "Enter a message" << std::endl;
+	while (1) {
+	/* Ask for a message from the user */
+		bzero(buffer, 256);
+		fgets(buffer, 255, stdin);
+
+		/* Send message to the server */
+		n = send(sockfd, buffer, strlen(buffer), 0);
+		if (n < 0) {
+			std::cerr << "Error sending message" << std::endl;
+			exit(1);
+		}
+
+		/* Read server's response */
+		bzero(buffer, 256);
+		n = recv(sockfd, buffer, 255, 0);
+		if (n < 0) {
+			std::cerr << "Error receiving message" << std::endl;
+			exit(1);
+		}
+		std::cout << buffer;
+	}
 }
 
 int main(int argc, char const *argv[])
@@ -40,7 +50,7 @@ int main(int argc, char const *argv[])
 	int					sockfd, n;
 	char				buffer[256];
 
-	
+
 	if (argc != 3) {
 		std::cerr << "Specify host address and port number" << std::endl;
 		exit(1);
