@@ -43,18 +43,9 @@ void	sendRequest(int sockfd) {
 	}
 }
 
-int main(int argc, char const *argv[])
-{
-	struct addrinfo		hints;
+struct addrinfo*	initAddrInfo(const char **argv) {
 	struct addrinfo		*clientInfo;
-	int					sockfd, n;
-	char				buffer[256];
-
-
-	if (argc != 3) {
-		std::cerr << "Specify host address and port number" << std::endl;
-		exit(1);
-	}
+	struct addrinfo		hints;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
@@ -64,6 +55,11 @@ int main(int argc, char const *argv[])
 		std::cerr << "Invalid address" << std::endl;
 		exit(1);
 	}
+	return clientInfo;
+}
+
+int		getSockAndConnect(struct addrinfo* clientInfo) {
+	int	sockfd;
 
 	/* Getting socket fd */
 	sockfd = socket(clientInfo->ai_family, clientInfo->ai_socktype, clientInfo->ai_protocol);
@@ -77,7 +73,23 @@ int main(int argc, char const *argv[])
 		std::cerr << "Error connecting" << std::endl;
 		exit(1);
 	}
+	return sockfd;
+}
 
+int		main(int argc, char const *argv[])
+{
+	struct addrinfo		hints;
+	struct addrinfo		*clientInfo;
+	int					sockfd, n;
+	char				buffer[256];
+
+	if (argc != 3) {
+		std::cerr << "Specify host address and port number" << std::endl;
+		exit(1);
+	}
+
+	clientInfo = initAddrInfo(argv);
+	sockfd = getSockAndConnect(clientInfo);
 	sendRequest(sockfd);
 	close(sockfd);
 	return 0;

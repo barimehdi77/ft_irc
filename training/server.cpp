@@ -11,7 +11,7 @@ void	processRequest(int clientfd) {
 	char	buffer[256];
 	int		n;
 
-	n = send(clientfd, "Welcome to thisfdsfewfewfdsfewffdsfdsfewfwfewfdsfewfewfewfdsfewfewfewfewfdsfgfdgdsfdsfdsfdsfsafsdfsdfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsdsfsfdsfewfdfdsfewfewfdsfdfewfewfdsfdsfefewfdsfewfewfsdfewfwffewfewfdsfewfewfewfdsfewfefdsfewfewfewfdfwfdsfewfeffw7 servert\n", 258, 0);
+	n = send(clientfd, "Welcome to this server\n", 24, 0);
 	if (n < 0) {
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);
@@ -36,17 +36,9 @@ void	processRequest(int clientfd) {
 	}
 }
 
-int main(int argc, char const *argv[]) {
-	struct addrinfo		hints;
+struct addrinfo*	initAddrInfo(const char **argv) {
 	struct addrinfo		*servInfo;
-	int					sockfd, clientfd, n, pid;
-	struct sockaddr_in	clientAddress;
-	char				buffer[256];
-
-	if (argc != 3) {
-		std::cerr << "Specify host address and port number" << std::endl;
-		exit(1);
-	}
+	struct addrinfo		hints;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
@@ -56,6 +48,11 @@ int main(int argc, char const *argv[]) {
 		std::cerr << "Invalid address" << std::endl;
 		exit(1);
 	}
+	return servInfo;
+}
+
+int		getSockAndBind(struct addrinfo* servInfo) {
+	int	sockfd;
 
 	/* Getting socket fd */
 	sockfd = socket(servInfo->ai_family, servInfo->ai_socktype, servInfo->ai_protocol);
@@ -76,7 +73,23 @@ int main(int argc, char const *argv[]) {
 		std::cerr << "Error in binding" << std::endl;
 		exit(1);
 	}
+	return sockfd;
+}
 
+int		main(int argc, char const *argv[]) {
+	struct addrinfo		hints;
+	struct addrinfo		*servInfo;
+	int					sockfd, clientfd, n, pid;
+	struct sockaddr_in	clientAddress;
+	char				buffer[256];
+
+	if (argc != 3) {
+		std::cerr << "Specify host address and port number" << std::endl;
+		exit(1);
+	}
+
+	servInfo = initAddrInfo(argv);
+	sockfd = getSockAndBind(servInfo);
 	freeaddrinfo(servInfo);
 
 	/* Listening on host address */
