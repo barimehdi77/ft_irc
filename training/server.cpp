@@ -7,8 +7,17 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+#define MAXLINE 4096
+
+void	checkError(int ret, std::string msg) {
+	if (ret < 0) {
+		std::cout << msg << std::endl;
+		exit(1);
+	}
+}
+
 void	processRequest(int clientfd) {
-	char	buffer[256];
+	char	buffer[MAXLINE];
 	int		n;
 
 	n = send(clientfd, "Welcome to this server\n", 24, 0);
@@ -19,8 +28,8 @@ void	processRequest(int clientfd) {
 
 	/* Reading client message */
 	while (1) {
-		bzero(buffer, 256);
-		n = recv(clientfd, buffer, 255, 0);
+		bzero(buffer, MAXLINE);
+		n = recv(clientfd, buffer, MAXLINE - 1, 0);
 		if (n < 0) {
 			std::cerr << "Error reading message" << std::endl;
 			exit(1);
@@ -55,24 +64,15 @@ int		getSockAndBind(struct addrinfo* servInfo) {
 	int	sockfd;
 
 	/* Getting socket fd */
-	sockfd = socket(servInfo->ai_family, servInfo->ai_socktype, servInfo->ai_protocol);
-	if (sockfd < 0) {
-		std::cerr << "Error opening socket" << std::endl;
-		exit(1);
-	}
+	checkError(sockfd = socket(servInfo->ai_family, servInfo->ai_socktype, servInfo->ai_protocol), "Error opening socket");
 
 	/* Reuse port  */
 	int	yes = 1;
-	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1) {
-		std::cerr << "setsockopt" << std::endl;
-		exit(1);
-	}
+	checkError(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)), "setsockopt");
 
 	/* Binding to host address */
-	if (bind(sockfd, servInfo->ai_addr, servInfo->ai_addrlen) < 0) {
-		std::cerr << "Error in binding" << std::endl;
-		exit(1);
-	}
+	checkError(bind(sockfd, servInfo->ai_addr, servInfo->ai_addrlen), "Error in binding");
+
 	return sockfd;
 }
 
@@ -81,7 +81,7 @@ int		main(int argc, char const *argv[]) {
 	struct addrinfo		*servInfo;
 	int					sockfd, clientfd, n, pid;
 	struct sockaddr_in	clientAddress;
-	char				buffer[256];
+	char				buffer[MAXLINE];
 
 	if (argc != 3) {
 		std::cerr << "Specify host address and port number" << std::endl;
@@ -93,18 +93,12 @@ int		main(int argc, char const *argv[]) {
 	freeaddrinfo(servInfo);
 
 	/* Listening on host address */
-	if (listen(sockfd, 5) == -1) {
-		std::cerr << "Error in listening" << std::endl;
-		exit(1);
-	}
+	checkError(listen(sockfd, 5), "Error in listening");
 	unsigned int clientLen = sizeof(clientAddress);
 
 	while (1) {
 		/* Accepting connections */
-		if ((clientfd = accept(sockfd, (struct sockaddr *)&clientAddress, &clientLen)) < 0) {
-			std::cerr << "Error accepting request" << std::endl;
-			exit(1);
-		}
+		checkError(clientfd = accept(sockfd, (struct sockaddr *)&clientAddress, &clientLen), "Error accepting request");
 
 		/* Create child process */
 		pid = fork();

@@ -7,12 +7,21 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+#define MAXLINE 4096
+
+void	checkError(int ret, std::string msg) {
+	if (ret < 0) {
+		std::cout << msg << std::endl;
+		exit(1);
+	}
+}
+
 void	sendRequest(int sockfd) {
-	char	buffer[256];
+	char	buffer[MAXLINE];
 	int		n;
 
-	bzero(buffer, 256);
-	n = recv(sockfd, buffer, 255, 0);
+	bzero(buffer, MAXLINE);
+	n = recv(sockfd, buffer, MAXLINE - 1, 0);
 	if (n < 0) {
 		std::cerr << "Error receiving message" << std::endl;
 		exit(1);
@@ -22,8 +31,8 @@ void	sendRequest(int sockfd) {
 	std::cout << "Enter a message" << std::endl;
 	while (1) {
 	/* Ask for a message from the user */
-		bzero(buffer, 256);
-		fgets(buffer, 255, stdin);
+		bzero(buffer, MAXLINE);
+		fgets(buffer, MAXLINE - 1, stdin);
 
 		/* Send message to the server */
 		n = send(sockfd, buffer, strlen(buffer), 0);
@@ -33,8 +42,8 @@ void	sendRequest(int sockfd) {
 		}
 
 		/* Read server's response */
-		bzero(buffer, 256);
-		n = recv(sockfd, buffer, 255, 0);
+		bzero(buffer, MAXLINE);
+		n = recv(sockfd, buffer, MAXLINE - 1, 0);
 		if (n < 0) {
 			std::cerr << "Error receiving message" << std::endl;
 			exit(1);
@@ -62,17 +71,10 @@ int		getSockAndConnect(struct addrinfo* clientInfo) {
 	int	sockfd;
 
 	/* Getting socket fd */
-	sockfd = socket(clientInfo->ai_family, clientInfo->ai_socktype, clientInfo->ai_protocol);
-	if (sockfd < 0) {
-		std::cerr << "Error opening socket" << std::endl;
-		exit(1);
-	}
+	checkError(sockfd = socket(clientInfo->ai_family, clientInfo->ai_socktype, clientInfo->ai_protocol), "Error opening socket");
 
 	/* Connecting to server */
-	if (connect(sockfd, clientInfo->ai_addr, clientInfo->ai_addrlen) < 0) {
-		std::cerr << "Error connecting" << std::endl;
-		exit(1);
-	}
+	checkError(connect(sockfd, clientInfo->ai_addr, clientInfo->ai_addrlen), "Error connecting");
 	return sockfd;
 }
 
@@ -81,7 +83,7 @@ int		main(int argc, char const *argv[])
 	struct addrinfo		hints;
 	struct addrinfo		*clientInfo;
 	int					sockfd, n;
-	char				buffer[256];
+	char				buffer[MAXLINE];
 
 	if (argc != 3) {
 		std::cerr << "Specify host address and port number" << std::endl;
