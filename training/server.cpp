@@ -29,12 +29,11 @@ void	processRequest(int clientfd) {
 }
 
 int main(int argc, char const *argv[]) {
-	int					sockfd, clientfd, portNum, n, pid;
-	struct sockaddr_in	serverAddress, clientAddress;
-	struct hostent		*host;
-	char				buffer[256];
 	struct addrinfo		hints;
 	struct addrinfo		*servInfo;
+	int					sockfd, clientfd, n, pid;
+	struct sockaddr_in	clientAddress;
+	char				buffer[256];
 
 	if (argc != 3) {
 		std::cerr << "Specify host address and port number" << std::endl;
@@ -50,7 +49,6 @@ int main(int argc, char const *argv[]) {
 		exit(1);
 	}
 
-	// portNum = atoi(argv[2]);
 	/* Getting socket fd */
 	sockfd = socket(servInfo->ai_family, servInfo->ai_socktype, servInfo->ai_protocol);
 	if (sockfd < 0) {
@@ -58,12 +56,7 @@ int main(int argc, char const *argv[]) {
 		exit(1);
 	}
 
-	host = gethostbyname(argv[1]);
-	/* Initialize socket sturct */
-	bzero((char *)&serverAddress, sizeof(serverAddress));
-	serverAddress.sin_family = AF_INET;
-	bcopy((char *)host->h_addr_list[0], (char *)&serverAddress.sin_addr.s_addr, host->h_length);
-	serverAddress.sin_port = htons(portNum);
+	// /* Initialize socket sturct */
 
 	/* Reuse port  */
 	int	yes = 1;

@@ -7,43 +7,9 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
-int main(int argc, char const *argv[])
-{
-	int					sockfd, portNum, n;
-	struct sockaddr_in	clientAddress;
-	struct hostent		*server;
-	char				buffer[256];
-
-	
-	if (argc != 3) {
-		std::cerr << "Specify host address and port number" << std::endl;
-		exit(1);
-	}
-	portNum = atoi(argv[2]);
-
-	/* Getting socket fd */
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0) {
-		std::cerr << "Error opening socket" << std::endl;
-		exit(1);
-	}
-
-	server = gethostbyname(argv[1]);
-	if (server == NULL) {
-		std::cerr << "Host does not exist" << std::endl;
-		exit(1);
-	}
-	
-	bzero((char *)&clientAddress, sizeof(clientAddress));
-	clientAddress.sin_family = AF_INET;
-	bcopy((char *)server->h_addr_list[0], (char *)&clientAddress.sin_addr.s_addr, server->h_length);
-	clientAddress.sin_port = htons(portNum);
-
-	/* Connecting to server */
-	if (connect(sockfd, (struct sockaddr *)&clientAddress, sizeof(clientAddress)) < 0) {
-		std::cerr << "Error connecting" << std::endl;
-		exit(1);
-	}
+void	sendRequest(int sockfd) {
+	char	buffer[256];
+	int		n;
 
 	/* Ask for a message from the user */
 	std::cout << "Enter a message" << std::endl;
@@ -65,6 +31,44 @@ int main(int argc, char const *argv[])
 		exit(1);
 	}
 	std::cout << buffer;
+}
+
+int main(int argc, char const *argv[])
+{
+	struct addrinfo		hints;
+	struct addrinfo		*clientInfo;
+	int					sockfd, n;
+	char				buffer[256];
+
+	
+	if (argc != 3) {
+		std::cerr << "Specify host address and port number" << std::endl;
+		exit(1);
+	}
+
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+
+	if (getaddrinfo(argv[1], argv[2], &hints, &clientInfo)) {
+		std::cerr << "Invalid address" << std::endl;
+		exit(1);
+	}
+
+	/* Getting socket fd */
+	sockfd = socket(clientInfo->ai_family, clientInfo->ai_socktype, clientInfo->ai_protocol);
+	if (sockfd < 0) {
+		std::cerr << "Error opening socket" << std::endl;
+		exit(1);
+	}
+
+	/* Connecting to server */
+	if (connect(sockfd, clientInfo->ai_addr, clientInfo->ai_addrlen) < 0) {
+		std::cerr << "Error connecting" << std::endl;
+		exit(1);
+	}
+
+	sendRequest(sockfd);
 	close(sockfd);
 	return 0;
 }
