@@ -16,11 +16,29 @@ void	checkError(int ret, std::string msg) {
 	}
 }
 
+int		sendAll(int clientfd, char *buffer, int *len) {
+	int	total = 0;
+	int bytesleft = *len;
+	int n;
+
+	while (total < *len) {
+		n = send(clientfd, buffer + total, bytesleft, 0);
+		if (n == -1)
+			break;
+		total += n;
+		bytesleft -= n;
+	}
+
+	*len = total;
+
+	return n == -1 ? -1: 0;
+}
+
 void	processRequest(int clientfd) {
 	char	buffer[MAXLINE];
 	int		n;
 
-	n = send(clientfd, "Welcome to this server\n", 24, 0);
+	n = send(clientfd, "Welcome to ft_irc server\n", 26, 0);
 	if (n < 0) {
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);
