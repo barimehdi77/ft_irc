@@ -7,7 +7,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
-#define MAXLINE 4096
+#define MAXLINE 512
 
 void	checkError(int ret, std::string msg) {
 	if (ret < 0) {

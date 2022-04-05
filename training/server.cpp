@@ -7,7 +7,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
-#define MAXLINE 4096
+#define MAXLINE 512
 
 void	checkError(int ret, std::string msg) {
 	if (ret < 0) {
@@ -36,7 +36,7 @@ void	processRequest(int clientfd) {
 	char	buffer[MAXLINE];
 	int		n;
 
-	n = send(clientfd, "Welcome to ft_irc server\n", 26, 0);
+	n = send(clientfd, "/****************************************/\n/*\t\t\t\t\t*/\n/*\tWelcome to the FT_IRC server\t*/\n/*\t\t\t\t\t*/\n/****************************************/\n\n", 143, 0);
 	if (n < 0) {
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);
