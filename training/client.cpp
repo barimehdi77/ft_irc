@@ -79,10 +79,8 @@ int		getSockAndConnect(struct addrinfo* clientInfo) {
 
 int		main(int argc, char const *argv[])
 {
-	struct addrinfo		hints;
 	struct addrinfo		*clientInfo;
-	int					sockfd, n;
-	char				buffer[MAXLINE];
+	int					sockfd;
 
 	if (argc != 3) {
 		std::cerr << "Specify host address and port number" << std::endl;

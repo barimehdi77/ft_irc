@@ -93,11 +93,9 @@ int		getSockAndBind(struct addrinfo* servInfo) {
 }
 
 int		main(int argc, char const *argv[]) {
-	struct addrinfo		hints;
 	struct addrinfo		*servInfo;
-	int					sockfd, clientfd, n, pid;
+	int					sockfd, clientfd, pid;
 	struct sockaddr_in	clientAddress;
-	char				buffer[MAXLINE];
 
 	if (argc != 3) {
 		std::cerr << "Specify host address and port number" << std::endl;
