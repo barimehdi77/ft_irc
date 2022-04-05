@@ -28,9 +28,7 @@ int		sendAll(int clientfd, char *buffer, int *len) {
 		total += n;
 		bytesleft -= n;
 	}
-
 	*len = total;
-
 	return n == -1 ? -1: 0;
 }
 

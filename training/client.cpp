@@ -28,7 +28,6 @@ void	sendRequest(int sockfd) {
 	}
 	std::cout << buffer;
 
-	std::cout << "Enter a message" << std::endl;
 	while (1) {
 	/* Ask for a message from the user */
 		bzero(buffer, MAXLINE);
