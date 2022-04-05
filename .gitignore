@@ -1,5 +1,7 @@
 .vscode
 
+a.out.dSYM
+
 # Prerequisites
 *.d
 
