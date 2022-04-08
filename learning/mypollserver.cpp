@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 22:28:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/07 23:35:04 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/08 00:33:26 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,16 @@ void removeFromPoll(struct pollfd pfds[], int i, int *fd_count)
 
 int main( int ac, char **av )
 {
-	int socketfd;
-	int newfd;
-	struct sockaddr_storage	remotaddr;
+	int socketfd;							// Listening socket descriptor
+	int newfd;								// Newly accept()ed socket descriptor
+	struct sockaddr_storage	remotaddr;		// Client address
 	socklen_t				addrlen;
 
-	char buf[6000];
+	char buf[6000];							// Buffer for client data
 	char remoteIP[INET_ADDRSTRLEN];
 
+	// Start off with room for 5 connections
+	// (We'll realloc as necessary)
 	if (ac != 3)
 	{
 		std::cout << "Usage error: ./server PASSWORD PORT" << std::endl;
@@ -121,16 +123,17 @@ int main( int ac, char **av )
 	int fd_size = 10;
 	struct pollfd *pfds = new struct pollfd[fd_size];
 
+	// Set up and get a listening socket
 	socketfd = get_socket(av[2]);
 
 	if (socketfd == -1)
 		exit (1);
-
+	// Add the listener to set
 	pfds[0].fd = socketfd;
-	pfds->events = POLLIN;
+	pfds->events = POLLIN;				// Report ready to read on incoming connection
 
-	++fd_count;
-
+	++fd_count;							// For the listener
+	// Main loop
 	while (77)
 	{
 		int poll_count = poll(pfds, fd_count, -1);
@@ -139,11 +142,13 @@ int main( int ac, char **av )
 			std::cout << "Usage error: ./server PASSWORD PORT" << std::endl;
 			exit(2);
 		}
-
+		 // Run through the existing connections looking for data to read
 		for (int i = 0; i < fd_count; i++)
 		{
+			// Check if someone's ready to read
 			if (pfds[i].revents & POLLIN)
 			{
+				// If listener is ready to read, handle new connection
 				if (pfds[i].fd == socketfd)
 				{
 					addrlen = sizeof remotaddr;
@@ -160,25 +165,30 @@ int main( int ac, char **av )
 				}
 				else
 				{
+					// If not the listener, we're just a regular client
 					int nbytes = recv(pfds[i].fd, buf, sizeof(buf), 0);
 
 					int sender_fd = pfds[i].fd;
 					if (nbytes <= 0)
 					{
+						// Got error or connection closed by client
 						if (nbytes == 0)
 							std::cout << "server: socket " << sender_fd << " hung up" << std::endl;
+							// Connection closed
 						else
 							std::cout << "recv() error: " << strerror(errno) << std::endl;
 
-						close(pfds[i].fd);
+						close(pfds[i].fd);							// Bye!
 						removeFromPoll(pfds, i, &fd_count);
 					}
 					else
 					{
+						// We got some good data from a client
 						for(int j = 0; j < fd_count; j++)
 						{
+							// Send to everyone!
 							int dest_fd = pfds[j].fd;
-
+							// Except the listener and ourselves
 							if (dest_fd != socketfd && dest_fd != sender_fd)
 							{
 								if (send(dest_fd, buf, nbytes, 0) == -1)
@@ -186,10 +196,10 @@ int main( int ac, char **av )
 							}
 						}
 					}
-				}
-			}
-		}
-	}
+				}// END handle data from client
+			}// END got ready-to-read from poll()
+		}// END looping through file descriptors
+	}// END while(77)--and you thought it would never end!
 
 
 }
