@@ -6,7 +6,7 @@
 #    By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/05 14:21:20 by asfaihi          ###   ########.fr        #
+#    Updated: 2022/04/08 13:52:46 by asfaihi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,16 +20,23 @@ FLAGS = -Wall -Wextra -Werror
 
 CPP_STANDARD = -std=c++98
 
+SER_OBJECT = $(SER_SRC:%.cpp=%.o)
+CLI_OBJECT = $(CLI_SRC:%.cpp=%.o)
+
 all: $(SER_NAME) $(CLI_NAME)
 
-$(SER_NAME):
-	c++ $(CPP_STANDARD) $(FLAGS) $(SER_SRC) -o $(SER_NAME)
+$(SER_NAME): $(SER_OBJECT)
+	c++ $(SER_OBJECT) -o $(SER_NAME)
 
-$(CLI_NAME):
-	c++ $(CPP_STANDARD) $(FLAGS) $(CLI_SRC) -o $(CLI_NAME)
+$(CLI_NAME): $(CLI_OBJECT)
+	c++ $(CLI_OBJECT) -o $(CLI_NAME)
+
+%.o:%.cpp
+	c++ $(FLAGS) $(CPP_STANDARD) -c $<
 
 clean:
-
+	/bin/rm -f $(SER_OBJECT)
+	/bin/rm -f $(CLI_OBJECT)
 fclean:
 	/bin/rm -f $(SER_NAME)
 	/bin/rm -f $(CLI_NAME)
