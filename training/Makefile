@@ -6,7 +6,7 @@
 #    By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/08 13:52:46 by asfaihi          ###   ########.fr        #
+#    Updated: 2022/04/08 13:54:14 by asfaihi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ $(CLI_NAME): $(CLI_OBJECT)
 clean:
 	/bin/rm -f $(SER_OBJECT)
 	/bin/rm -f $(CLI_OBJECT)
-fclean:
+fclean: clean
 	/bin/rm -f $(SER_NAME)
 	/bin/rm -f $(CLI_NAME)
 
