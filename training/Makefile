@@ -6,7 +6,7 @@
 #    By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/08 13:54:14 by asfaihi          ###   ########.fr        #
+#    Updated: 2022/04/09 17:26:32 by asfaihi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,13 +32,16 @@ $(CLI_NAME): $(CLI_OBJECT)
 	c++ $(CLI_OBJECT) -o $(CLI_NAME)
 
 %.o:%.cpp
-	c++ $(FLAGS) $(CPP_STANDARD) -c $<
+	c++ $(CPP_STANDARD) -c $<
 
 clean:
 	/bin/rm -f $(SER_OBJECT)
 	/bin/rm -f $(CLI_OBJECT)
+
 fclean: clean
 	/bin/rm -f $(SER_NAME)
 	/bin/rm -f $(CLI_NAME)
+	/bin/rm -rf a.out
+	/bin/rm -rf *.dSYM
 
 re: fclean all

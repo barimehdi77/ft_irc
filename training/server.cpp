@@ -50,7 +50,7 @@ void	processRequest(int clientfd) {
 			std::cerr << "Error reading message" << std::endl;
 			exit(1);
 		}
-		std::cout << buffer;
+		parseRequest(buffer);
 
 		/* Respond to client */
 		n = send(clientfd, "I agree\n", 9, 0);
