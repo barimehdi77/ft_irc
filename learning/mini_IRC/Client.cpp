@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/09 01:22:38 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/09 01:44:33 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 
 Client::Client(): _username(NULL), _clientfd(0), _isLoggedIn(0) {};
+
+
+Client & Client::operator=( const Client& rhs)
+{
+	std::cout << "zb";
+	return (*this);
+}
 
 Client::~Client() {};
 

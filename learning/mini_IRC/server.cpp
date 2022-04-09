@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/09 01:15:26 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/09 01:37:42 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ Server::Server( std::string Name, int max_online, std::string Port )
 	this->_max_online_c = max_online + 1;
 	this->_online_c = 0;
 	this->_pfds = new struct pollfd[max_online];
+	this->_clients = new Client[max_online];
 	_getSocket(Port);
 	this->_pfds[0].fd = this->_socketfd;
 	this->_pfds[0].events = POLLIN;
@@ -36,9 +37,11 @@ void	Server::_addToPoll( int newfd )
 	{
 		this->_max_online_c *= 2;
 		this->_pfds = (struct pollfd *) realloc(this->_pfds, this->_max_online_c);
+		this->_clients = (Client *) realloc(this->_clients, this->_max_online_c);
 	}
 	this->_pfds[this->_online_c].fd = newfd;
 	this->_pfds[this->_online_c].events = POLLIN;
+	this->_clients[this->_online_c].setClientfd(newfd);
 
 	this->_online_c++;
 }
