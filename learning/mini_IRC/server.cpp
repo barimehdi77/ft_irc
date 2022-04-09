@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/09 01:49:28 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/09 22:27:53 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,82 @@ void	Server::_removeFromPoll( int i )
 	this->_pfds[i] = this->_pfds[this->_online_c - 1];
 
 	this->_online_c--;
+};
+
+std::string	Server::_welcomemsg( void )
+{
+	std::string welcome  = RED;
+	// welcome.append(this->_name);
+	welcome.append("	 __       __          __\n");
+	welcome.append("|  \\  _  |  \\        |  \\\n");
+	welcome.append("| ▓▓ / \\ | ▓▓ ______ | ▓▓ _______ ______ ____   ______\n");
+	welcome.append("| ▓▓/  ▓\\| ▓▓/      \\| ▓▓/       \\      \\    \\ /      \\\n");
+	welcome.append("| ▓▓  ▓▓▓\\ ▓▓  ▓▓▓▓▓▓\\ ▓▓  ▓▓▓▓▓▓▓ ▓▓▓▓▓▓\\▓▓▓▓\\  ▓▓▓▓▓▓\\\n");
+	welcome.append("| ▓▓ ▓▓\\▓▓\\▓▓ ▓▓    ▓▓ ▓▓ ▓▓     | ▓▓ | ▓▓ | ▓▓ ▓▓    ▓▓\n");
+	welcome.append("| ▓▓▓▓  \\▓▓▓▓ ▓▓▓▓▓▓▓▓ ▓▓ ▓▓_____| ▓▓ | ▓▓ | ▓▓ ▓▓▓▓▓▓▓▓\n");
+	welcome.append("| ▓▓▓    \\▓▓▓\\▓▓     \\ ▓▓\\▓▓     \\ ▓▓ | ▓▓ | ▓▓\\▓▓     \\\n");
+	welcome.append(" \\▓▓      \\▓▓ \\▓▓▓▓▓▓▓\\▓▓ \\▓▓▓▓▓▓▓\\▓▓  \\▓▓  \\▓▓ \\▓▓▓▓▓▓▓\n");
+	welcome.append(RESET);
+	return (welcome);
+}
+
+void	Server::_newClient( void )
+{
+	/* all those varibles will be deleted when adding client class */
+	struct sockaddr_storage	remotaddr;
+	socklen_t				addrlen;
+	int newfd;
+	/* *********************************************************** */
+
+	addrlen = sizeof remotaddr;
+	newfd = accept(this->_socketfd, (struct sockaddr*)&remotaddr, &addrlen);
+	if (newfd == -1)
+		std::cout << "accept() error: " << strerror(errno) << std::endl;
+	else
+	{
+		_addToPoll( newfd );
+		std::string welcome = _welcomemsg();
+		if (send(newfd, welcome.c_str(), welcome.length(), 0) == -1)
+			std::cout << "send() error: " << strerror(errno) << std::endl;
+		std::cout << "server: new connection from "
+				<< inet_ntoa(((struct sockaddr_in*)&remotaddr)->sin_addr)
+				<< " on socket " << newfd << std::endl;
+	}
+};
+
+void	Server::_broadcastmsg( int sender_fd, char *buf, int nbytes )
+{
+	for(int j = 0; j < this->_online_c; j++)
+	{
+		int dest_fd = this->_pfds[j].fd;
+		// Except the listener and ourselves
+		if (dest_fd != this->_socketfd && dest_fd != sender_fd)
+			if (send(dest_fd, buf, nbytes, 0) == -1)
+				std::cout << "send() error: " << strerror(errno) << std::endl;
+	}
+}
+
+void	Server::_ClientRequest( int i )
+{
+	/* all those varibles will be deleted when adding client class */
+	char buf[6000];
+	/* *********************************************************** */
+
+	int sender_fd = this->_pfds[i].fd;
+	int nbytes = recv(sender_fd, buf, sizeof(buf), 0);
+
+	if (nbytes <= 0)
+	{
+		if (nbytes == 0)
+			std::cout << "server: socket " << sender_fd << " hung up" << std::endl;
+		else
+			std::cout << "recv() error: " << strerror(errno) << std::endl;
+
+		close(sender_fd);
+		_removeFromPoll(i);
+	}
+	else
+		_broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
 }
 
 void Server::startServer( void )
@@ -74,53 +150,9 @@ void Server::startServer( void )
 			if (this->_pfds[i].revents & POLLIN)
 			{
 				if (this->_pfds[i].fd == this->_socketfd)
-				{
-					addrlen = sizeof remotaddr;
-					newfd = accept(this->_socketfd, (struct sockaddr*)&remotaddr, &addrlen);
-					if (newfd == -1)
-						std::cout << "accept() error: " << strerror(errno) << std::endl;
-					else
-					{
-						_addToPoll( newfd );
-						std::string welcome = "welcome in ";
-						welcome.append(this->_name);
-						welcome.append("\n");
-						if (send(newfd, welcome.c_str(), welcome.length(), 0) == -1)
-							std::cout << "send() error: " << strerror(errno) << std::endl;
-						std::cout << "server: new connection from "
-								<< inet_ntoa(((struct sockaddr_in*)&remotaddr)->sin_addr)
-								<< " on socket " << newfd << std::endl;
-					}
-				}
+					_newClient();			// If listener is ready to read, handle new connection
 				else
-				{
-					int sender_fd = this->_pfds[i].fd;
-					int nbytes = recv(sender_fd, buf, sizeof(buf), 0);
-
-					if (nbytes <= 0)
-					{
-						if (nbytes == 0)
-							std::cout << "server: socket " << sender_fd << " hung up" << std::endl;
-						else
-							std::cout << "recv() error: " << strerror(errno) << std::endl;
-
-						close(sender_fd);
-						_removeFromPoll(i);
-					}
-					else
-					{
-						for(int j = 0; j < this->_online_c; j++)
-						{
-							int dest_fd = this->_pfds[j].fd;
-
-							if (dest_fd != this->_socketfd && dest_fd != sender_fd)
-							{
-								if (send(dest_fd, buf, nbytes, 0) == -1)
-									std::cout << "send() error: " << strerror(errno) << std::endl;
-							}
-						}
-					}
-				}
+					_ClientRequest(i);		// If not the listener, we're just a regular client
 			}
 		}
 	}
