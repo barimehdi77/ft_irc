@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/08 23:58:00 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/09 00:33:17 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ class server
 
 
 	private:
-		void getSocket( std::string Port );
+		void	_getSocket( std::string Port );
+		void	_addToPoll( int newfd );
+		void	_removeFromPoll( int i );
 
 	// private:
 	// 	class ArgsError: public std::exception
@@ -49,6 +51,9 @@ class server
 		server( const server & x );
 		~server();
 		server & operator=( const server & rhs );
+
+	public:
+		void	startServer( void );
 };
 
 

@@ -6,15 +6,12 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 22:28:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/08 23:19:43 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/09 00:27:53 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <string>
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -130,7 +127,7 @@ int main( int ac, char **av )
 		exit (1);
 	// Add the listener to set
 	pfds[0].fd = socketfd;
-	pfds->events = POLLIN;				// Report ready to read on incoming connection
+	pfds[0].events = POLLIN;				// Report ready to read on incoming connection
 
 	++fd_count;							// For the listener
 	// Main loop
@@ -160,7 +157,7 @@ int main( int ac, char **av )
 						addToPoll(&pfds, newfd, &fd_count, &fd_size);
 						std::cout << "server: new connection from "
 								<< inet_ntoa(((struct sockaddr_in *)&remotaddr)->sin_addr)
-								<< "on socket " << newfd << std::endl;
+								<< " on socket " << newfd << std::endl;
 					}
 				}
 				else
