@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/09 00:33:17 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/09 01:04:18 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 #include <poll.h>
 
 
-class server
+class Server
 {
 	private:
 		std::string		_name;
@@ -33,10 +33,10 @@ class server
 		struct pollfd	*_pfds;
 		int				_online_c;
 		int				_max_online_c;
-		server();
 
 
 	private:
+		Server();
 		void	_getSocket( std::string Port );
 		void	_addToPoll( int newfd );
 		void	_removeFromPoll( int i );
@@ -47,10 +47,10 @@ class server
 	// 		virtual const char* what() const throw();
 	// 	};
 	public:
-		server( std::string Name, int max_online, std::string Port );
-		server( const server & x );
-		~server();
-		server & operator=( const server & rhs );
+		Server( std::string Name, int max_online, std::string Port );
+		Server( const Server & x );
+		~Server();
+		Server & operator=( const Server & rhs );
 
 	public:
 		void	startServer( void );

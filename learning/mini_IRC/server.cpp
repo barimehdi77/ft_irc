@@ -6,15 +6,15 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/09 00:52:37 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/09 01:15:26 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
 
-server::server(): _name(nullptr), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0) {};
-server::server( std::string Name, int max_online, std::string Port )
+Server::Server(): _name(NULL), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0) {};
+Server::Server( std::string Name, int max_online, std::string Port )
 {
 	this->_name = Name;
 	this->_max_online_c = max_online + 1;
@@ -26,11 +26,11 @@ server::server( std::string Name, int max_online, std::string Port )
 	this->_online_c++;
 };
 
-server::~server()
+Server::~Server()
 {
 }
 
-void	server::_addToPoll( int newfd )
+void	Server::_addToPoll( int newfd )
 {
 	if (this->_online_c == this->_max_online_c)
 	{
@@ -43,14 +43,14 @@ void	server::_addToPoll( int newfd )
 	this->_online_c++;
 }
 
-void	server::_removeFromPoll( int i )
+void	Server::_removeFromPoll( int i )
 {
 	this->_pfds[i] = this->_pfds[this->_online_c - 1];
 
 	this->_online_c--;
 }
 
-void server::startServer( void )
+void Server::startServer( void )
 {
 	struct sockaddr_storage	remotaddr;
 	socklen_t				addrlen;
@@ -123,11 +123,7 @@ void server::startServer( void )
 	}
 }
 
-
-
-
-
-void		server::_getSocket( std::string Port)
+void		Server::_getSocket( std::string Port)
 {
 	// int socketfd;
 	int yes=1;
