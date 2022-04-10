@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/09 22:27:53 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/10 03:02:15 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	Server::_addToPoll( int newfd )
 void	Server::_removeFromPoll( int i )
 {
 	this->_pfds[i] = this->_pfds[this->_online_c - 1];
+	// this->_clients[i] = NULL;
 
 	this->_online_c--;
 };
@@ -65,7 +66,9 @@ std::string	Server::_welcomemsg( void )
 	welcome.append("| ▓▓ ▓▓\\▓▓\\▓▓ ▓▓    ▓▓ ▓▓ ▓▓     | ▓▓ | ▓▓ | ▓▓ ▓▓    ▓▓\n");
 	welcome.append("| ▓▓▓▓  \\▓▓▓▓ ▓▓▓▓▓▓▓▓ ▓▓ ▓▓_____| ▓▓ | ▓▓ | ▓▓ ▓▓▓▓▓▓▓▓\n");
 	welcome.append("| ▓▓▓    \\▓▓▓\\▓▓     \\ ▓▓\\▓▓     \\ ▓▓ | ▓▓ | ▓▓\\▓▓     \\\n");
-	welcome.append(" \\▓▓      \\▓▓ \\▓▓▓▓▓▓▓\\▓▓ \\▓▓▓▓▓▓▓\\▓▓  \\▓▓  \\▓▓ \\▓▓▓▓▓▓▓\n");
+	welcome.append(" \\▓▓      \\▓▓ \\▓▓▓▓▓▓▓\\▓▓ \\▓▓▓▓▓▓▓\\▓▓  \\▓▓  \\▓▓ \\▓▓▓▓▓▓▓\n\n\n\n");
+	welcome.append(BLUE);
+	welcome.append("You need to login so you can start chatting OR you can send HELP to see how :) \n");
 	welcome.append(RESET);
 	return (welcome);
 }
@@ -94,16 +97,59 @@ void	Server::_newClient( void )
 	}
 };
 
-void	Server::_broadcastmsg( int sender_fd, char *buf, int nbytes )
+void	Server::_broadcastmsg( int sender_fd, std::string buf, int nbytes )
 {
 	for(int j = 0; j < this->_online_c; j++)
 	{
 		int dest_fd = this->_pfds[j].fd;
 		// Except the listener and ourselves
 		if (dest_fd != this->_socketfd && dest_fd != sender_fd)
-			if (send(dest_fd, buf, nbytes, 0) == -1)
+			if (send(dest_fd, buf.c_str(), nbytes, 0) == -1)
 				std::cout << "send() error: " << strerror(errno) << std::endl;
 	}
+}
+
+std::vector<std::string>	Server::_split( std::string message )
+{
+	std::vector<std::string>	split;
+	int space = message.find(" ");
+
+	split.push_back(message.substr(0, space));
+	std::cout << "cmd = " << split[0] << "|"<< std::endl;
+	if (space != std::string::npos)
+		split.push_back(message.substr(space + 1, message.length() - 1));
+	std::cout << "args = " << split[1] << std::endl;
+
+
+	return (split);
+}
+
+std::string	Server::_setUsername( std::string username, int i )
+{
+	if (username.empty())
+		return("Username error: USERNAME (your_username)\n");
+	else if (isdigit(username[0]))
+		return ("Uesrname can't start with number\n");
+	else
+	{
+		this->_clients[i].setUsername(username);
+		this->_clients[i].setClientfd(this->_pfds[i].fd);
+		this->_clients[i].setClientfd(1);
+		return ("Username set\n");
+	};
+};
+
+
+std::string	Server::_parsing( std::string message, int i )
+{
+	std::vector<std::string>	split(_split(message));
+
+	if (split[0] == "HELP")
+		return ("To login you need to request 'USERNAME (your_username)'\n");
+	else if (split[0] == "USERNAME")
+		return (_setUsername(split[1], i));
+	else
+		return ("Command not found\nUsage: USERNAME (your_username)\n");
 }
 
 void	Server::_ClientRequest( int i )
@@ -115,6 +161,9 @@ void	Server::_ClientRequest( int i )
 	int sender_fd = this->_pfds[i].fd;
 	int nbytes = recv(sender_fd, buf, sizeof(buf), 0);
 
+	std::cout << "message length: " << strlen(buf)  << std::endl << "message: " << buf << std::endl;
+	std::string message(buf, strlen(buf) - 1);
+	std::cout << "message length: " << message.length()  << std::endl << "message: " << message << std::endl;
 	if (nbytes <= 0)
 	{
 		if (nbytes == 0)
@@ -126,37 +175,14 @@ void	Server::_ClientRequest( int i )
 		_removeFromPoll(i);
 	}
 	else
-		_broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
-}
-
-void Server::startServer( void )
-{
-	struct sockaddr_storage	remotaddr;
-	socklen_t				addrlen;
-	int newfd;
-	char buf[7777];
-
-	while (77)
 	{
-		int poll_count = poll(this->_pfds, this->_online_c, -1);
-		if (poll_count == -1)
-		{
-			std::cout << "poll() error: " << strerror(errno) << std::endl;
-			exit(-1);
-		}
-
-		for(int i = 0; i < this->_online_c; i++)
-		{
-			if (this->_pfds[i].revents & POLLIN)
-			{
-				if (this->_pfds[i].fd == this->_socketfd)
-					_newClient();			// If listener is ready to read, handle new connection
-				else
-					_ClientRequest(i);		// If not the listener, we're just a regular client
-			}
-		}
+		std::string ret = _parsing(message, i);
+		if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
+			std::cout << "send() error: " << strerror(errno) << std::endl;
+		// _broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
 	}
 }
+
 
 void		Server::_getSocket( std::string Port)
 {
@@ -206,4 +232,33 @@ void		Server::_getSocket( std::string Port)
 		std::cout << "listen() error: " << strerror(errno) << std::endl;
 		exit(-1);
 	}
-}
+};
+
+void Server::startServer( void )
+{
+	struct sockaddr_storage	remotaddr;
+	socklen_t				addrlen;
+	int newfd;
+	char buf[7777];
+
+	while (77)
+	{
+		int poll_count = poll(this->_pfds, this->_online_c, -1);
+		if (poll_count == -1)
+		{
+			std::cout << "poll() error: " << strerror(errno) << std::endl;
+			exit(-1);
+		}
+
+		for(int i = 0; i < this->_online_c; i++)
+		{
+			if (this->_pfds[i].revents & POLLIN)
+			{
+				if (this->_pfds[i].fd == this->_socketfd)
+					_newClient();			// If listener is ready to read, handle new connection
+				else
+					_ClientRequest(i);		// If not the listener, we're just a regular client
+			}
+		}
+	}
+};

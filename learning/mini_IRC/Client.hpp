@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/09 22:27:23 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/10 03:02:02 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -49,7 +50,7 @@ class Client
 		Client();
 		Client( const Client & x );
 		~Client();
-		Client & operator= ( const Client & rhs );
+		// Client & operator= ( const Client & rhs );
 
 	public:
 		std::string	getUsername()	const;
