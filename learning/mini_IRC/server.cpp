@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/10 03:38:09 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/10 21:09:22 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,11 @@ void	Server::_broadcastmsg( int sender_fd, std::string buf, int nbytes )
 {
 	for(int j = 0; j < this->_online_c; j++)
 	{
-		int dest_fd = this->_pfds[j].fd;
+		int dest_fd = this->_clients[j].getClientfd();
 		// Except the listener and ourselves
 		if (dest_fd != this->_socketfd && dest_fd != sender_fd && this->_clients[j].getIsLoggedIn())
-			if (send(dest_fd, buf.c_str(), nbytes, 0) == -1)
-				std::cout << "send() error: " << strerror(errno) << std::endl;
+			if (_sendall(dest_fd, buf) == -1)
+				std::cout << "_sendall() error: " << strerror(errno) << std::endl;
 	}
 }
 
@@ -144,6 +144,7 @@ std::string	Server::_sendMessage( std::string message, int i )
 	if (this->_clients[i].getIsLoggedIn())
 	{
 		std::string	send = this->_clients[i].getUsername() + ": " + message + "\n";
+		std::cout << send << std::endl;
 		_broadcastmsg(this->_clients[i].getClientfd(), send, send.length());
 		return (std::string());
 	}
@@ -151,6 +152,22 @@ std::string	Server::_sendMessage( std::string message, int i )
 		return("To send messages you Need to Loggin\n");
 }
 
+int			Server::_sendall( int destfd, std::string message )
+{
+	int total = 0;
+	int bytesleft = message.length();
+	int b;
+
+	while (total < message.length())
+	{
+		b = send(destfd, message.c_str() + total, bytesleft, 0);
+		if (b == -1) break;
+		total += b;
+		bytesleft -= b;
+	}
+
+	return (b == -1 ? -1 : 0);
+}
 
 std::string	Server::_parsing( std::string message, int i )
 {
@@ -159,9 +176,15 @@ std::string	Server::_parsing( std::string message, int i )
 	if (split[0] == "HELP")
 		return ("To login you need to request 'USERNAME (your_username)'\n");
 	else if (split[0] == "USERNAME")
+	{
+		split.clear();
 		return (_setUsername(split[1], i));
+	}
 	else if (split[0] == "MESSAGE")
+	{
+		split.clear();
 		return (_sendMessage(split[1], i));
+	}
 	else
 		return ("Command not found\nUsage: USERNAME (your_username)\n");
 }
@@ -194,7 +217,7 @@ void	Server::_ClientRequest( int i )
 			std::cout << "send() error: " << strerror(errno) << std::endl;
 		// _broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
 	}
-	message.clear();
+	memset(&buf, 0, 6000);
 }
 
 

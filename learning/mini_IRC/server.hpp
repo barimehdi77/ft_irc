@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/10 03:08:50 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/10 21:05:32 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ class Server
 		void							_removeFromPoll( int i );
 		void							_newClient( void );
 		void							_ClientRequest( int i );
+		int								_sendall( int destfd, std::string message );
 		void							_broadcastmsg( int sender_fd, std::string buf, int nbytes );
 		std::string						_sendMessage( std::string message, int i );
 		std::string						_setUsername( std::string username, int i );
