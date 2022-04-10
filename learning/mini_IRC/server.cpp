@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/10 03:02:15 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/10 03:38:09 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	Server::_broadcastmsg( int sender_fd, std::string buf, int nbytes )
 	{
 		int dest_fd = this->_pfds[j].fd;
 		// Except the listener and ourselves
-		if (dest_fd != this->_socketfd && dest_fd != sender_fd)
+		if (dest_fd != this->_socketfd && dest_fd != sender_fd && this->_clients[j].getIsLoggedIn())
 			if (send(dest_fd, buf.c_str(), nbytes, 0) == -1)
 				std::cout << "send() error: " << strerror(errno) << std::endl;
 	}
@@ -134,10 +134,22 @@ std::string	Server::_setUsername( std::string username, int i )
 	{
 		this->_clients[i].setUsername(username);
 		this->_clients[i].setClientfd(this->_pfds[i].fd);
-		this->_clients[i].setClientfd(1);
+		this->_clients[i].setIsLoggedIn(1);
 		return ("Username set\n");
 	};
 };
+
+std::string	Server::_sendMessage( std::string message, int i )
+{
+	if (this->_clients[i].getIsLoggedIn())
+	{
+		std::string	send = this->_clients[i].getUsername() + ": " + message + "\n";
+		_broadcastmsg(this->_clients[i].getClientfd(), send, send.length());
+		return (std::string());
+	}
+	else
+		return("To send messages you Need to Loggin\n");
+}
 
 
 std::string	Server::_parsing( std::string message, int i )
@@ -148,6 +160,8 @@ std::string	Server::_parsing( std::string message, int i )
 		return ("To login you need to request 'USERNAME (your_username)'\n");
 	else if (split[0] == "USERNAME")
 		return (_setUsername(split[1], i));
+	else if (split[0] == "MESSAGE")
+		return (_sendMessage(split[1], i));
 	else
 		return ("Command not found\nUsage: USERNAME (your_username)\n");
 }
@@ -161,7 +175,6 @@ void	Server::_ClientRequest( int i )
 	int sender_fd = this->_pfds[i].fd;
 	int nbytes = recv(sender_fd, buf, sizeof(buf), 0);
 
-	std::cout << "message length: " << strlen(buf)  << std::endl << "message: " << buf << std::endl;
 	std::string message(buf, strlen(buf) - 1);
 	std::cout << "message length: " << message.length()  << std::endl << "message: " << message << std::endl;
 	if (nbytes <= 0)
@@ -181,6 +194,7 @@ void	Server::_ClientRequest( int i )
 			std::cout << "send() error: " << strerror(errno) << std::endl;
 		// _broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
 	}
+	message.clear();
 }
 
 
