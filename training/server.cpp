@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:41 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/11 14:08:37 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/11 15:50:27 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		sendAll(int clientfd, char *buffer, int *len) {
 
 void	processRequest(int clientfd) {
 	Request	request;
+	Client	client;
 	char	buffer[MAXLINE];
 	int		n;
 
@@ -57,8 +58,12 @@ void	processRequest(int clientfd) {
 			exit(1);
 		}
 		request = parseRequest(buffer);
-		performRequest(request);
-		
+		client = performRequest(client, request);
+
+		std::cout << "Nick: " << client._Nick << std::endl;
+		std::cout << "UserName: " << client._UserName << std::endl;
+		std::cout << "ID: " << client._ID << std::endl;
+
 		/* Respond to client */
 		n = send(clientfd, "I agree\n", 9, 0);
 		if (n < 0) {

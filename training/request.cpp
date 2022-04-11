@@ -6,15 +6,22 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/11 14:15:34 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/11 15:51:19 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_irc.hpp"
 
-void	performRequest(Request request) {
+Client	setNick(Client client, Request request) {
+	if (request.args.size() < 1)
+		std::cout << 431 << " ERR_NONICKNAMEGIVEN\n:No nickname given" << std::endl;
+	client._Nick = request.args[0];
+	return client;
+}
+
+Client	performRequest(Client client, Request request) {
 	if (request.command == "NICK")
-		std::cout << "NICK command" << std::endl;
+		client = setNick(client, request);
 	else if (request.command == "USER")
 		std::cout << "USER command" << std::endl;
 	else if (request.command == "PRIVMSG")
@@ -29,6 +36,7 @@ void	performRequest(Request request) {
 		std::cout << "QUIT command" << std::endl;
 	else
 		std::cout << "Invalid command" << std::endl;
+	return client;
 }
 
 Request	parseRequest(std::string str) {
