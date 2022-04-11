@@ -1,11 +1,16 @@
-#include <iostream>
-#include <unistd.h>
-#include <string.h>
-#include <strings.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/11 13:40:38 by asfaihi           #+#    #+#             */
+/*   Updated: 2022/04/11 13:40:40 by asfaihi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_irc.hpp"
 
 #define MAXLINE 512
 

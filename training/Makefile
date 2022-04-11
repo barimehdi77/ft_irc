@@ -6,14 +6,14 @@
 #    By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/09 17:26:32 by asfaihi          ###   ########.fr        #
+#    Updated: 2022/04/11 13:43:48 by asfaihi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SER_NAME = server
 CLI_NAME = client
 
-SER_SRC = server.cpp
+SER_SRC = server.cpp parsing.cpp
 CLI_SRC = client.cpp
 
 FLAGS = -Wall -Wextra -Werror

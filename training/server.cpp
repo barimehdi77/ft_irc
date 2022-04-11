@@ -1,11 +1,16 @@
-#include <iostream>
-#include <unistd.h>
-#include <strings.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/11 13:40:41 by asfaihi           #+#    #+#             */
+/*   Updated: 2022/04/11 13:43:10 by asfaihi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_irc.hpp"
 
 #define MAXLINE 512
 
@@ -33,6 +38,7 @@ int		sendAll(int clientfd, char *buffer, int *len) {
 }
 
 void	processRequest(int clientfd) {
+	Request	request;
 	char	buffer[MAXLINE];
 	int		n;
 
@@ -50,8 +56,13 @@ void	processRequest(int clientfd) {
 			std::cerr << "Error reading message" << std::endl;
 			exit(1);
 		}
-		parseRequest(buffer);
+		request = parseRequest(buffer);
 
+		std::cout << "COMMAND: " << request.command << std::endl;
+		std::cout << "ARGS:\n";
+		for (size_t i = 0; i < request.args.size(); i++)
+			std::cout << i + 1 << ") " << request.args[i] << std::endl;
+		
 		/* Respond to client */
 		n = send(clientfd, "I agree\n", 9, 0);
 		if (n < 0) {

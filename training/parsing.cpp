@@ -1,16 +1,16 @@
-#include <iostream>
-#include <string>
-#include <vector>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.cpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
+/*   Updated: 2022/04/11 13:41:44 by asfaihi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-class Request
-{
-private:
-
-public:
-	std::vector<std::string>	args;
-	std::string					command;
-	Request() {}
-};
+#include "ft_irc.hpp"
 
 Request	parseRequest(std::string str) {
 	Request	request;
@@ -39,14 +39,4 @@ Request	parseRequest(std::string str) {
 	request.command = request.args[0];
 	request.args.erase(request.args.begin());
 	return request;
-}
-
-int		main() {
-	Request	request;
-	request = parseRequest("      NICK amy      fhdsjkfew hjkds fewjkfw");
-	std::cout << "COMMAND: " << request.command << std::endl;
-	std::cout << "ARGS:\n";
-		for (size_t i = 0; i < request.args.size(); i++)
-		std::cout << i + 1 <<") " << request.args[i] << std::endl;
-	return 0;
 }
