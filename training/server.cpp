@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:41 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/11 13:43:10 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/11 14:08:37 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,7 @@ void	processRequest(int clientfd) {
 			exit(1);
 		}
 		request = parseRequest(buffer);
-
-		std::cout << "COMMAND: " << request.command << std::endl;
-		std::cout << "ARGS:\n";
-		for (size_t i = 0; i < request.args.size(); i++)
-			std::cout << i + 1 << ") " << request.args[i] << std::endl;
+		performRequest(request);
 		
 		/* Respond to client */
 		n = send(clientfd, "I agree\n", 9, 0);
