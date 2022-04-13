@@ -6,15 +6,17 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/11 15:51:19 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/13 13:38:33 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_irc.hpp"
 
 Client	setNick(Client client, Request request) {
-	if (request.args.size() < 1)
-		std::cout << 431 << " ERR_NONICKNAMEGIVEN\n:No nickname given" << std::endl;
+	if (request.args.size() < 1) {
+		std::cout << 431 << " ERR_NONICKNAMEGIVEN\n\t:No nickname given" << std::endl;
+		return client;
+	}
 	client._Nick = request.args[0];
 	return client;
 }
@@ -44,6 +46,7 @@ Request	parseRequest(std::string str) {
 	size_t	i = 0;
 	size_t	j = 0;
 
+	str.erase(str.end() - 1);
 	while (str[i] && str[i] == ' ')
 		i++;
 	j = i;
@@ -62,8 +65,27 @@ Request	parseRequest(std::string str) {
 		}
 		i++;
 	}
-	request.args.push_back(str.substr(j, i - j));
+	if (i && str[j]) {
+		request.args.push_back(str.substr(j, i - j));
+	}
 	request.command = request.args[0];
 	request.args.erase(request.args.begin());
 	return request;
+}
+
+int main(int argc, char const *argv[])
+{
+	Request	request;
+	Client	client;
+	char	str[512];
+
+	while (69) {
+		fgets(str, 511, stdin);
+		request = parseRequest(str);
+		client = performRequest(client, request);
+		std::cout << "Nick: " << client._Nick << std::endl;
+		std::cout << "UserName: " << client._UserName << std::endl;
+		std::cout << "ID: " << client._ID << std::endl;
+	}
+	return 0;
 }
