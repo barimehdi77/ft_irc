@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:38:03 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/11 15:50:55 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/13 14:39:38 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ private:
 public:
 	std::vector<std::string>	args;
 	std::string					command;
-	Request() {}
+	Request() : args(), command() {}
 };
 
 class Client
@@ -40,9 +40,11 @@ private:
 public:
 	std::string	_Nick;
 	std::string	_UserName;
+	std::string	_FullName;
+	std::string	_Host;
 	std::string	_ID;
-	Client() : _Nick(), _UserName(), _ID() {}
 
+	Client() : _Nick(), _UserName(), _FullName(), _Host(), _ID() {}
 };
 
 Request	parseRequest(std::string str);

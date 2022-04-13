@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:41 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/11 15:50:27 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/13 14:40:38 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	processRequest(int clientfd) {
 
 		std::cout << "Nick: " << client._Nick << std::endl;
 		std::cout << "UserName: " << client._UserName << std::endl;
+		std::cout << "FullName: " << client._FullName << std::endl;
+		std::cout << "Host: " << client._Host << std::endl;
 		std::cout << "ID: " << client._ID << std::endl;
 
 		/* Respond to client */

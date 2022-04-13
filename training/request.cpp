@@ -6,11 +6,22 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/13 13:41:16 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/13 14:45:20 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_irc.hpp"
+
+Client	setUser(Client client, Request request) {
+	if (request.args.size() != 4) {
+		std::cout << "Wrong number of arguments." << std::endl;
+		return client;
+	}
+	client._UserName = request.args[0];
+	client._FullName = request.args[3];
+	client._ID = client._Nick + "!" + client._UserName + "@" + client._Host;
+	return client;
+}
 
 Client	setNick(Client client, Request request) {
 	if (request.args.size() < 1) {
@@ -25,7 +36,7 @@ Client	performRequest(Client client, Request request) {
 	if (request.command == "NICK")
 		client = setNick(client, request);
 	else if (request.command == "USER")
-		std::cout << "USER command" << std::endl;
+		client = setUser(client, request);
 	else if (request.command == "PRIVMSG")
 		std::cout << "PRIVMSG command" << std::endl;
 	else if (request.command == "HELP")
@@ -86,6 +97,8 @@ int main(int argc, char const *argv[])
 		client = performRequest(client, request);
 		std::cout << "Nick: " << client._Nick << std::endl;
 		std::cout << "UserName: " << client._UserName << std::endl;
+		std::cout << "FullName: " << client._FullName << std::endl;
+		std::cout << "Host: " << client._Host << std::endl;
 		std::cout << "ID: " << client._ID << std::endl;
 	}
 	return 0;
