@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/13 13:38:33 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/13 13:41:16 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ Request	parseRequest(std::string str) {
 		}
 		i++;
 	}
+	
 	if (i && str[j]) {
 		request.args.push_back(str.substr(j, i - j));
 	}
