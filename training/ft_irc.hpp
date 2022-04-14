@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:38:03 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/13 14:39:38 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/14 13:56:08 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ public:
 	std::string	_FullName;
 	std::string	_Host;
 	std::string	_ID;
+	std::string	_PassWord;
+	bool		_Registered;
 
-	Client() : _Nick(), _UserName(), _FullName(), _Host(), _ID() {}
+	Client() : _Nick(), _UserName(), _FullName(), _Host(), _ID(), _Registered(false) {}
 };
 
 Request	parseRequest(std::string str);

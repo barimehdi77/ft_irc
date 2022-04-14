@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:41 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/14 12:59:26 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/14 16:00:01 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,15 @@ void	processRequest(int clientfd, struct sockaddr_in clientAddress) {
 		std::cout << "UserName: " << client._UserName << std::endl;
 		std::cout << "FullName: " << client._FullName << std::endl;
 		std::cout << "Host: " << client._Host << std::endl;
+		std::cout << "PassWord: " << client._PassWord << std::endl;
 		std::cout << "ID: " << client._ID << std::endl;
 
 		/* Respond to client */
-		n = send(clientfd, "I agree\n", 9, 0);
-		if (n < 0) {
-			std::cerr << "Error sending message" << std::endl;
-			exit(1);
-		}
+		// n = send(clientfd, "I agree\n", 9, 0);
+		// if (n < 0) {
+		// 	std::cerr << "Error sending message" << std::endl;
+		// 	exit(1);
+		// }
 	}
 }
 

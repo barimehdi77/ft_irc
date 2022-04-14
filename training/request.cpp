@@ -6,20 +6,22 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/14 12:29:20 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/14 15:57:02 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_irc.hpp"
 
-Client	setUser(Client client, Request request) {
-	if (request.args.size() != 4) {
-		std::cout << "Wrong number of arguments." << std::endl;
+Client	setPass(Client client, Request request) {
+	if (request.args.size() < 1) {
+		std::cout << 461 << " ERR_NEEDMOREPARAMS\n\tPASS :Not enough parameters" << std::endl;
 		return client;
 	}
-	client._UserName = request.args[0];
-	client._FullName = request.args[3];
-	client._ID = client._Nick + "!" + client._UserName + "@" + client._Host;
+	if (client._Registered) {
+		std::cout << 462 << " ERR_ALREADYREGISTRED\n\t :Unauthorized command (already registered)" << std::endl;
+		return client;
+	}
+	client._PassWord = request.args[0];
 	return client;
 }
 
@@ -32,8 +34,22 @@ Client	setNick(Client client, Request request) {
 	return client;
 }
 
+Client	setUser(Client client, Request request) {
+	if (request.args.size() != 4) {
+		std::cout << "Wrong number of arguments." << std::endl;
+		return client;
+	}
+	client._UserName = request.args[0];
+	client._FullName = request.args[3];
+	client._ID = client._Nick + "!" + client._UserName + "@" + client._Host;
+	client._Registered = true;
+	return client;
+}
+
 Client	performRequest(Client client, Request request) {
-	if (request.command == "NICK")
+	if (request.command == "PASS")
+		client = setPass(client, request);
+	else if (request.command == "NICK")
 		client = setNick(client, request);
 	else if (request.command == "USER")
 		client = setUser(client, request);

@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:38 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/14 12:56:11 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/14 16:00:15 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	sendRequest(int sockfd) {
 		}
 
 		/* Read server's response */
-		bzero(buffer, MAXLINE);
-		n = recv(sockfd, buffer, MAXLINE - 1, 0);
-		if (n < 0) {
-			std::cerr << "Error receiving message" << std::endl;
-			exit(1);
-		}
-		std::cout << buffer;
+		// bzero(buffer, MAXLINE);
+		// n = recv(sockfd, buffer, MAXLINE - 1, 0);
+		// if (n < 0) {
+		// 	std::cerr << "Error receiving message" << std::endl;
+		// 	exit(1);
+		// }
+		// std::cout << buffer;
 	}
 }
 
