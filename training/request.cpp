@@ -6,19 +6,23 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/14 16:32:03 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/14 16:52:16 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_irc.hpp"
 
+void	printError(int num, std::string reply, std::string message) {
+	std::cout << num << " " << reply << "\n\t" << message << std::endl;
+}
+
 Client	setPass(Client client, Request request) {
 	if (request.args.size() < 1) {
-		std::cout << 461 << " ERR_NEEDMOREPARAMS\n\tPASS :Not enough parameters" << std::endl;
+		printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters");
 		return client;
 	}
 	if (client._Registered) {
-		std::cout << 462 << " ERR_ALREADYREGISTRED\n\t:Unauthorized command (already registered)" << std::endl;
+		printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)");
 		return client;
 	}
 	client._PassWord = request.args[0];
@@ -27,14 +31,14 @@ Client	setPass(Client client, Request request) {
 
 Client	setNick(Client client, Request request) {
 	if (request.args.size() < 1) {
-		std::cout << 431 << " ERR_NONICKNAMEGIVEN\n\t:No nickname given" << std::endl;
+		printError(431, "ERR_NONICKNAMEGIVEN", ":No nickname given");
 		return client;
 	}
 	int	i = 0;
 	while (request.args[0][i])
 	{
 		if (!isalnum(request.args[0][i]) && request.args[0][i] != '-') {
-			std::cout << 431 << " ERR_ERRONEUSNICKNAME\n\t" << request.args[0] << " :Erroneous nickname" << std::endl;
+			printError(432, "ERR_ERRONEUSNICKNAME", request.args[0] + " :Erroneous nickname");
 			return client;
 		}
 		i++;
@@ -44,8 +48,12 @@ Client	setNick(Client client, Request request) {
 }
 
 Client	setUser(Client client, Request request) {
-	if (request.args.size() != 4) {
-		std::cout << "Wrong number of arguments." << std::endl;
+	if (client._Registered) {
+		printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)");
+		return client;
+	}
+	if (request.args.size() < 4) {
+		printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters");
 		return client;
 	}
 	client._UserName = request.args[0];
