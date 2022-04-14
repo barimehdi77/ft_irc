@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:41 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/13 14:40:38 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/14 12:59:26 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		sendAll(int clientfd, char *buffer, int *len) {
 	return n == -1 ? -1: 0;
 }
 
-void	processRequest(int clientfd) {
+void	processRequest(int clientfd, struct sockaddr_in clientAddress) {
 	Request	request;
 	Client	client;
 	char	buffer[MAXLINE];
@@ -48,6 +48,8 @@ void	processRequest(int clientfd) {
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);
 	}
+
+	client._Host = inet_ntoa((struct in_addr)clientAddress.sin_addr);
 
 	/* Reading client message */
 	while (1) {
@@ -138,7 +140,7 @@ int		main(int argc, char const *argv[]) {
 		if (pid == 0) {
 			/* Client process */
 			close(sockfd);
-			processRequest(clientfd);
+			processRequest(clientfd, clientAddress);
 			exit(0);
 		}
 		else {

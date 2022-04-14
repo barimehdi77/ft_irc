@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/13 14:45:20 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/14 12:29:20 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,21 @@ Request	parseRequest(std::string str) {
 	return request;
 }
 
-int main(int argc, char const *argv[])
-{
-	Request	request;
-	Client	client;
-	char	str[512];
+// int main(int argc, char const *argv[])
+// {
+// 	Request	request;
+// 	Client	client;
+// 	char	str[512];
 
-	while (69) {
-		fgets(str, 511, stdin);
-		request = parseRequest(str);
-		client = performRequest(client, request);
-		std::cout << "Nick: " << client._Nick << std::endl;
-		std::cout << "UserName: " << client._UserName << std::endl;
-		std::cout << "FullName: " << client._FullName << std::endl;
-		std::cout << "Host: " << client._Host << std::endl;
-		std::cout << "ID: " << client._ID << std::endl;
-	}
-	return 0;
-}
+// 	while (69) {
+// 		fgets(str, 511, stdin);
+// 		request = parseRequest(str);
+// 		client = performRequest(client, request);
+// 		std::cout << "Nick: " << client._Nick << std::endl;
+// 		std::cout << "UserName: " << client._UserName << std::endl;
+// 		std::cout << "FullName: " << client._FullName << std::endl;
+// 		std::cout << "Host: " << client._Host << std::endl;
+// 		std::cout << "ID: " << client._ID << std::endl;
+// 	}
+// 	return 0;
+// }

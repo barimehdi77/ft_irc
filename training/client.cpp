@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:38 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/13 13:21:14 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/14 12:56:11 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		getSockAndConnect(struct addrinfo* clientInfo) {
 	checkError(sockfd = socket(clientInfo->ai_family, clientInfo->ai_socktype, clientInfo->ai_protocol), "Error opening socket");
 
 	/* Connecting to server */
-	checkError(connect(sockfd, clientInfo->ai_addr, clientInfo->ai_addrlen), "Error connecting");
+	checkError(connect(sockfd, clientInfo->ai_addr, clientInfo->ai_addrlen), "Error connecting");	
 	return sockfd;
 }
 
