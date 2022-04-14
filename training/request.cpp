@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/14 15:57:02 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/14 16:32:03 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Client	setPass(Client client, Request request) {
 		return client;
 	}
 	if (client._Registered) {
-		std::cout << 462 << " ERR_ALREADYREGISTRED\n\t :Unauthorized command (already registered)" << std::endl;
+		std::cout << 462 << " ERR_ALREADYREGISTRED\n\t:Unauthorized command (already registered)" << std::endl;
 		return client;
 	}
 	client._PassWord = request.args[0];
@@ -29,6 +29,15 @@ Client	setNick(Client client, Request request) {
 	if (request.args.size() < 1) {
 		std::cout << 431 << " ERR_NONICKNAMEGIVEN\n\t:No nickname given" << std::endl;
 		return client;
+	}
+	int	i = 0;
+	while (request.args[0][i])
+	{
+		if (!isalnum(request.args[0][i]) && request.args[0][i] != '-') {
+			std::cout << 431 << " ERR_ERRONEUSNICKNAME\n\t" << request.args[0] << " :Erroneous nickname" << std::endl;
+			return client;
+		}
+		i++;
 	}
 	client._Nick = request.args[0];
 	return client;
