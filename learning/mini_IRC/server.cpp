@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/11 23:33:55 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/15 17:44:39 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,15 +176,9 @@ std::string	Server::_parsing( std::string message, int i )
 	if (split[0] == "HELP")
 		return ("To login you need to request 'USERNAME (your_username)'\n");
 	else if (split[0] == "USERNAME")
-	{
-		split.clear();
 		return (_setUsername(split[1], i));
-	}
 	else if (split[0] == "MESSAGE")
-	{
-		split.clear();
 		return (_sendMessage(split[1], i));
-	}
 	else
 		return ("Command not found\nUsage: USERNAME (your_username)\n");
 }
@@ -234,7 +228,7 @@ void		Server::_getSocket( std::string Port)
 	hint.ai_socktype = SOCK_STREAM;
 	hint.ai_protocol = getprotobyname("TCP")->p_proto;
 
-	status = getaddrinfo("10.11.9.8", Port.c_str(), &hint, &serverinfo);
+	status = getaddrinfo(NULL, Port.c_str(), &hint, &serverinfo);
 
 	if (status != 0)
 	{
