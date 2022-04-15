@@ -1,6 +1,7 @@
 .vscode
 
 a.out.dSYM
+.DS_Store
 
 # Prerequisites
 *.d

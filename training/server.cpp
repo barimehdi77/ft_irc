@@ -1,13 +1,18 @@
-#include <iostream>
-#include <unistd.h>
-#include <strings.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/11 13:40:41 by asfaihi           #+#    #+#             */
+/*   Updated: 2022/04/15 13:28:58 by asfaihi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define MAXLINE 4096
+#include "ft_irc.hpp"
+
+#define MAXLINE 512
 
 void	checkError(int ret, std::string msg) {
 	if (ret < 0) {
@@ -28,21 +33,23 @@ int		sendAll(int clientfd, char *buffer, int *len) {
 		total += n;
 		bytesleft -= n;
 	}
-
 	*len = total;
-
 	return n == -1 ? -1: 0;
 }
 
-void	processRequest(int clientfd) {
+void	processRequest(int clientfd, struct sockaddr_in clientAddress) {
+	Request	request;
+	Client	client;
 	char	buffer[MAXLINE];
 	int		n;
 
-	n = send(clientfd, "Welcome to ft_irc server\n", 26, 0);
+	n = send(clientfd, "/****************************************/\n/*\t\t\t\t\t*/\n/*\tWelcome to the FT_IRC server\t*/\n/*\t\t\t\t\t*/\n/****************************************/\n\n", 143, 0);
 	if (n < 0) {
 		std::cerr << "Error sending message" << std::endl;
 		exit(1);
 	}
+
+	client._Host = inet_ntoa((struct in_addr)clientAddress.sin_addr);
 
 	/* Reading client message */
 	while (1) {
@@ -52,14 +59,15 @@ void	processRequest(int clientfd) {
 			std::cerr << "Error reading message" << std::endl;
 			exit(1);
 		}
-		std::cout << buffer;
+		request = parseRequest(buffer);
+		client = performRequest(client, request, clientfd);
 
 		/* Respond to client */
-		n = send(clientfd, "I agree\n", 9, 0);
-		if (n < 0) {
-			std::cerr << "Error sending message" << std::endl;
-			exit(1);
-		}
+		// n = send(clientfd, "I agree\n", 9, 0);
+		// if (n < 0) {
+		// 	std::cerr << "Error sending message" << std::endl;
+		// 	exit(1);
+		// }
 	}
 }
 
@@ -95,11 +103,9 @@ int		getSockAndBind(struct addrinfo* servInfo) {
 }
 
 int		main(int argc, char const *argv[]) {
-	struct addrinfo		hints;
 	struct addrinfo		*servInfo;
-	int					sockfd, clientfd, n, pid;
+	int					sockfd, clientfd, pid;
 	struct sockaddr_in	clientAddress;
-	char				buffer[MAXLINE];
 
 	if (argc != 3) {
 		std::cerr << "Specify host address and port number" << std::endl;
@@ -128,7 +134,7 @@ int		main(int argc, char const *argv[]) {
 		if (pid == 0) {
 			/* Client process */
 			close(sockfd);
-			processRequest(clientfd);
+			processRequest(clientfd, clientAddress);
 			exit(0);
 		}
 		else {

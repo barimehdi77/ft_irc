@@ -1,13 +1,18 @@
-#include <iostream>
-#include <unistd.h>
-#include <string.h>
-#include <strings.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/11 13:40:38 by asfaihi           #+#    #+#             */
+/*   Updated: 2022/04/15 13:19:10 by asfaihi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define MAXLINE 4096
+#include "ft_irc.hpp"
+
+#define MAXLINE 512
 
 void	checkError(int ret, std::string msg) {
 	if (ret < 0) {
@@ -28,7 +33,6 @@ void	sendRequest(int sockfd) {
 	}
 	std::cout << buffer;
 
-	std::cout << "Enter a message" << std::endl;
 	while (1) {
 	/* Ask for a message from the user */
 		bzero(buffer, MAXLINE);
@@ -42,13 +46,13 @@ void	sendRequest(int sockfd) {
 		}
 
 		/* Read server's response */
-		bzero(buffer, MAXLINE);
-		n = recv(sockfd, buffer, MAXLINE - 1, 0);
-		if (n < 0) {
-			std::cerr << "Error receiving message" << std::endl;
-			exit(1);
-		}
-		std::cout << buffer;
+		// bzero(buffer, MAXLINE);
+		// n = recv(sockfd, buffer, MAXLINE - 1, 0);
+		// if (n < 0) {
+		// 	std::cerr << "Error receiving message" << std::endl;
+		// 	exit(1);
+		// }
+		// std::cout << buffer;
 	}
 }
 
@@ -74,16 +78,14 @@ int		getSockAndConnect(struct addrinfo* clientInfo) {
 	checkError(sockfd = socket(clientInfo->ai_family, clientInfo->ai_socktype, clientInfo->ai_protocol), "Error opening socket");
 
 	/* Connecting to server */
-	checkError(connect(sockfd, clientInfo->ai_addr, clientInfo->ai_addrlen), "Error connecting");
+	checkError(connect(sockfd, clientInfo->ai_addr, clientInfo->ai_addrlen), "Error connecting");	
 	return sockfd;
 }
 
 int		main(int argc, char const *argv[])
 {
-	struct addrinfo		hints;
 	struct addrinfo		*clientInfo;
-	int					sockfd, n;
-	char				buffer[MAXLINE];
+	int					sockfd;
 
 	if (argc != 3) {
 		std::cerr << "Specify host address and port number" << std::endl;
