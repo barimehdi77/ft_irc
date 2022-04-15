@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/15 13:10:24 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/15 13:34:50 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 void	printError(int num, std::string reply, std::string message) {
 	std::cout << num << " " << reply << "\n\t" << message << std::endl;
+}
+
+void	printUserInfo(Client client) {
+	std::cout << "Nick: " << client._Nick << std::endl;
+	std::cout << "UserName: " << client._UserName << std::endl;
+	std::cout << "FullName: " << client._FullName << std::endl;
+	std::cout << "Host: " << client._Host << std::endl;
+	std::cout << "PassWord: " << client._PassWord << std::endl;
+	std::cout << "ID: " << client._ID << std::endl;
 }
 
 Client	setPass(Client client, Request request) {
@@ -26,6 +35,7 @@ Client	setPass(Client client, Request request) {
 		return client;
 	}
 	client._PassWord = request.args[0];
+	printUserInfo(client);
 	return client;
 }
 
@@ -44,6 +54,7 @@ Client	setNick(Client client, Request request) {
 		i++;
 	}
 	client._Nick = request.args[0];
+	printUserInfo(client);
 	return client;
 }
 
@@ -60,7 +71,15 @@ Client	setUser(Client client, Request request) {
 	client._FullName = request.args[3];
 	client._ID = client._Nick + "!" + client._UserName + "@" + client._Host;
 	client._Registered = true;
+	printUserInfo(client);
 	return client;
+}
+
+void	quit(Client client, Request request) {
+	if (request.args.size())
+		std::cout << ":" << client._ID << " QUIT :" << request.args[0] << std::endl;
+	else
+		std::cout << ":" << client._ID << " QUIT" << std::endl;
 }
 
 Client	performRequest(Client client, Request request, int clientfd) {
@@ -79,7 +98,7 @@ Client	performRequest(Client client, Request request, int clientfd) {
 	else if (request.command == "KICK")
 		std::cout << "KICK command" << std::endl;
 	else if (request.command == "QUIT")
-		close(clientfd);
+		quit(client, request);
 	else
 		std::cout << "Invalid command" << std::endl;
 	return client;
