@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:36 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/14 16:52:16 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/15 13:10:24 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ Client	setUser(Client client, Request request) {
 	return client;
 }
 
-Client	performRequest(Client client, Request request) {
+Client	performRequest(Client client, Request request, int clientfd) {
 	if (request.command == "PASS")
 		client = setPass(client, request);
 	else if (request.command == "NICK")
@@ -79,7 +79,7 @@ Client	performRequest(Client client, Request request) {
 	else if (request.command == "KICK")
 		std::cout << "KICK command" << std::endl;
 	else if (request.command == "QUIT")
-		std::cout << "QUIT command" << std::endl;
+		close(clientfd);
 	else
 		std::cout << "Invalid command" << std::endl;
 	return client;

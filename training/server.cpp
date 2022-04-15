@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:40:41 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/14 16:00:01 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/15 13:06:34 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	processRequest(int clientfd, struct sockaddr_in clientAddress) {
 			exit(1);
 		}
 		request = parseRequest(buffer);
-		client = performRequest(client, request);
+		client = performRequest(client, request, clientfd);
 
 		std::cout << "Nick: " << client._Nick << std::endl;
 		std::cout << "UserName: " << client._UserName << std::endl;

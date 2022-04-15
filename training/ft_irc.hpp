@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 13:38:03 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/04/14 13:56:08 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/15 13:06:54 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ private:
 public:
 	std::vector<std::string>	args;
 	std::string					command;
+
 	Request() : args(), command() {}
 };
 
@@ -50,6 +51,6 @@ public:
 };
 
 Request	parseRequest(std::string str);
-Client	performRequest(Client client, Request request);
+Client	performRequest(Client client, Request request, int clientfd);
 Client	setNick(Client client, Request request);
 #endif
