@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/16 04:21:07 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/16 15:37:00 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ class Server
 		// std::string						_setUsername( std::string username, int i );
 		std::string						_parsing( std::string message, int i );
 		Request							_splitRequest( std::string req );
+		std::string						_printUserInfo( int i );
 
 	// private:
 	// 	class ArgsError: public std::exception

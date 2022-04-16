@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/16 04:25:47 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/16 15:51:16 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,39 +209,41 @@ int			Server::_sendall( int destfd, std::string message )
 std::string	Server::_setPassWord( Request request, int i)
 {
 	if (request.args.size() < 1)
-		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters\n"));
 	if (this->_clients[i].getRegistered())
-		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
+		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)\n"));
 	this->_clients[i].setPassWord(request.args[0]);
-	return ("PassWord is set");
+	return ("PassWord is set\n");
 };
 
 std::string	Server::_setNickName( Request request, int i)
 {
+	std::cout << "args: " << request.args[0] << std::endl;
 	if (request.args.size() < 1)
-		return (_printError(431, "ERR_NONICKNAMEGIVEN", ":No nickname given"));
+		return (_printError(431, "ERR_NONICKNAMEGIVEN", ":No nickname given\n"));
 	int	j = 0;
 	while (request.args[0][j])
 	{
 		if (!isalnum(request.args[0][j]) && request.args[0][j] != '-')
-			return (_printError(432, "ERR_ERRONEUSNICKNAME", request.args[0] + " :Erroneous nickname"));
-		i++;
+			return (_printError(432, "ERR_ERRONEUSNICKNAME", request.args[0] + " :Erroneous nickname\n"));
+		j++;
 	}
-	this->_clients[j].setNickName(request.args[0]);
-	return ("NickName is set");
+	// std::cout << RED << "while is done " << RESET << std::endl;
+	this->_clients[i].setNickName(request.args[0]);
+	return ("NickName is set\n");
 };
 
 std::string	Server::_setUserName( Request request, int i)
 {
 	if (this->_clients[i].getRegistered())
-		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
+		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)\n"));
 	if (request.args.size() < 4)
-		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters\n"));
 	this->_clients[i].setUserName(request.args[0]);
 	this->_clients[i].setFullName(request.args[3]);
 	this->_clients[i].setID(this->_clients[i].getNickName() + "!" + this->_clients[i].getUserName() + "@" + this->_clients[i].getHost());
 	this->_clients[i].setRegistered(true);
-	return ("UserName is set");
+	return ("UserName is set\n");
 };
 
 std::string	Server::_quit( Request request, int i)
@@ -253,6 +255,24 @@ std::string	Server::_quit( Request request, int i)
 	else
 		return (ret.append("\n"));
 };
+
+std::string	Server::_printUserInfo( int i )
+{
+	std::string info;
+	info.append("NickName: " + this->_clients[i].getNickName() + "\n");
+	info.append("UserName: " + this->_clients[i].getUserName() + "\n");
+	info.append("FullName: " + this->_clients[i].getFullName() + "\n");
+	info.append("Host: " + this->_clients[i].getHost() + "\n");
+	info.append("ID: " + this->_clients[i].getID() + "\n");
+	info.append("PassWord: " + this->_clients[i].getPassWord() + "\n");
+	// info << "Nick: " << client._Nick << std::endl;
+	// info << "UserName: " << client._UserName << std::endl;
+	// info << "FullName: " << client._FullName << std::endl;
+	// info << "Host: " << client._Host << std::endl;
+	// info << "PassWord: " << client._PassWord << std::endl;
+	// info << "ID: " << client._ID << std::endl;
+	return (info);
+}
 
 std::string	Server::_parsing( std::string message, int i )
 {
@@ -266,6 +286,7 @@ std::string	Server::_parsing( std::string message, int i )
 	// 	return (_sendMessage(request.args, i));
 	// else
 	// 	return ("Command not found\nUsage: USERNAME (your_username)\n");
+	// std::cout << "command: " << request.command << std::endl;
 	if (request.command == "PASS")
 		return (_setPassWord(request, i));
 	else if (request.command == "NICK")
@@ -282,8 +303,10 @@ std::string	Server::_parsing( std::string message, int i )
 		return ("KICK command");
 	else if (request.command == "QUIT")
 		return (_quit(request, i));
+	else if (request.command == "INFO")
+		return (_printUserInfo(i));
 	else
-		return ("Invalid command");
+		return ("Invalid command\n");
 }
 
 void	Server::_ClientRequest( int i )
