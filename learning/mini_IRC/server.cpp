@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/15 17:44:39 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/16 02:38:19 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	Server::_broadcastmsg( int sender_fd, std::string buf, int nbytes )
 	{
 		int dest_fd = this->_clients[j].getClientfd();
 		// Except the listener and ourselves
-		if (dest_fd != this->_socketfd && dest_fd != sender_fd && this->_clients[j].getIsLoggedIn())
+		if (dest_fd != this->_socketfd && dest_fd != sender_fd && this->_clients[j].getRegistered())
 			if (_sendall(dest_fd, buf) == -1)
 				std::cout << "_sendall() error: " << strerror(errno) << std::endl;
 	}
@@ -132,18 +132,18 @@ std::string	Server::_setUsername( std::string username, int i )
 		return ("Uesrname can't start with number\n");
 	else
 	{
-		this->_clients[i].setUsername(username);
+		this->_clients[i].setUserName(username);
 		this->_clients[i].setClientfd(this->_pfds[i].fd);
-		this->_clients[i].setIsLoggedIn(1);
+		this->_clients[i].setRegistered(1);
 		return ("Username set\n");
 	};
 };
 
 std::string	Server::_sendMessage( std::string message, int i )
 {
-	if (this->_clients[i].getIsLoggedIn())
+	if (this->_clients[i].getRegistered())
 	{
-		std::string	send = this->_clients[i].getUsername() + ": " + message + "\n";
+		std::string	send = this->_clients[i].getUserName() + ": " + message + "\n";
 		std::cout << send << std::endl;
 		_broadcastmsg(this->_clients[i].getClientfd(), send, send.length());
 		return (std::string());

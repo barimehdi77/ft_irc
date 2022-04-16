@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/15 17:45:17 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/16 02:15:42 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,14 @@
 class Client
 {
 	private:
-		std::string				_username;
 		int						_clientfd;
-		int						_isLoggedIn;
+		bool					_Registered;
+		std::string				_NickName;
+		std::string				_UserName;
+		std::string				_FullName;
+		std::string				_Host;
+		std::string				_ID;
+		std::string				_PassWord;
 		struct sockaddr_storage	_remotaddr;
 		socklen_t				_addrlen;
 
@@ -52,14 +57,24 @@ class Client
 		// Client & operator= ( const Client & rhs );
 
 	public:
-		std::string	getUsername()	const;
+		std::string	getUserName()	const;
+		std::string	getNickName()	const;
+		std::string	getFullName()	const;
+		std::string	getID()			const;
+		std::string	getHost()		const;
+		std::string	getPassWord()	const;
 		int			getClientfd()	const;
-		int			getIsLoggedIn()	const;
+		int			getRegistered()	const;
 
 	public:
-		void		setUsername( std::string username );
+		void		setUserName( std::string UserName );
+		void		setNickName( std::string NickName );
+		void		setFullName( std::string FullName );
+		void		setPassWord( std::string PassWord );
+		void		setHost( std::string Host );
+		void		setID( std::string ID);
 		void		setClientfd( int clientfd );
-		void		setIsLoggedIn( int isLoggedIn );
+		void		setRegistered( int Registered );
 
 };
 
