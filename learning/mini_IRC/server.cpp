@@ -6,14 +6,14 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/16 02:38:19 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/16 04:25:47 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
 
-Server::Server(): _name(NULL), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0) {};
+Server::Server(): _name(), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0) {};
 Server::Server( std::string Name, int max_online, std::string Port )
 {
 	this->_name = Name;
@@ -27,9 +27,7 @@ Server::Server( std::string Name, int max_online, std::string Port )
 	this->_online_c++;
 };
 
-Server::~Server()
-{
-}
+Server::~Server() {}
 
 void	Server::_addToPoll( int newfd )
 {
@@ -71,6 +69,13 @@ std::string	Server::_welcomemsg( void )
 	welcome.append("You need to login so you can start chatting OR you can send HELP to see how :) \n");
 	welcome.append(RESET);
 	return (welcome);
+};
+
+std::string	Server::_printError(int num, std::string reply, std::string message)
+{
+	// std::string ret = num + " " + reply + "\n\t" + message + "\n";
+	return (std::to_string(num) + " " + reply + "\n\t" + message + "\n");
+	// std::cout << num << " " << reply << "\n\t" << message << std::endl;
 }
 
 void	Server::_newClient( void )
@@ -109,35 +114,67 @@ void	Server::_broadcastmsg( int sender_fd, std::string buf, int nbytes )
 	}
 }
 
-std::vector<std::string>	Server::_split( std::string message )
+Request	Server::_splitRequest( std::string req )
 {
-	std::vector<std::string>	split;
-	int space = message.find(" ");
+	// std::vector<std::string>	split;
+	// int space = message.find(" ");
 
-	split.push_back(message.substr(0, space));
-	std::cout << "cmd = " << split[0] << "|"<< std::endl;
-	if (space != std::string::npos)
-		split.push_back(message.substr(space + 1, message.length() - 1));
-	std::cout << "args = " << split[1] << std::endl;
+	// split.push_back(message.substr(0, space));
+	// std::cout << "cmd = " << split[0] << "|"<< std::endl;
+	// if (space != std::string::npos)
+	// 	split.push_back(message.substr(space + 1, message.length() - 1));
+	// std::cout << "args = " << split[1] << std::endl;
 
 
-	return (split);
+	// return (split);
+	Request	request;
+	size_t	i = 0;
+	size_t	j = 0;
+
+	req.erase(req.end() - 1);
+	while (req[i] && req[i] == ' ')
+		i++;
+	j = i;
+	while (req[i])
+	{
+		if (req[i] == ' ')
+		{
+			request.args.push_back(req.substr(j, i - j));
+			while (req[i] == ' ')
+				i++;
+			j = i;
+		}
+		if (req[i] == ':')
+		{
+			request.args.push_back(req.substr(i + 1, req.length() - i));
+			request.command = request.args[0];
+			request.args.erase(request.args.begin());
+			return (request);
+		}
+		i++;
+	}
+
+	if (i && req[j])
+		request.args.push_back(req.substr(j, i - j));
+	request.command = request.args[0];
+	request.args.erase(request.args.begin());
+	return (request);
 }
 
-std::string	Server::_setUsername( std::string username, int i )
-{
-	if (username.empty())
-		return("Username error: USERNAME (your_username)\n");
-	else if (isdigit(username[0]))
-		return ("Uesrname can't start with number\n");
-	else
-	{
-		this->_clients[i].setUserName(username);
-		this->_clients[i].setClientfd(this->_pfds[i].fd);
-		this->_clients[i].setRegistered(1);
-		return ("Username set\n");
-	};
-};
+// std::string	Server::_setUsername( std::string username, int i )
+// {
+// 	if (username.empty())
+// 		return("Username error: USERNAME (your_username)\n");
+// 	else if (isdigit(username[0]))
+// 		return ("Uesrname can't start with number\n");
+// 	else
+// 	{
+// 		this->_clients[i].setUserName(username);
+// 		this->_clients[i].setClientfd(this->_pfds[i].fd);
+// 		this->_clients[i].setRegistered(1);
+// 		return ("Username set\n");
+// 	};
+// };
 
 std::string	Server::_sendMessage( std::string message, int i )
 {
@@ -167,20 +204,86 @@ int			Server::_sendall( int destfd, std::string message )
 	}
 
 	return (b == -1 ? -1 : 0);
-}
+};
+
+std::string	Server::_setPassWord( Request request, int i)
+{
+	if (request.args.size() < 1)
+		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+	if (this->_clients[i].getRegistered())
+		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
+	this->_clients[i].setPassWord(request.args[0]);
+	return ("PassWord is set");
+};
+
+std::string	Server::_setNickName( Request request, int i)
+{
+	if (request.args.size() < 1)
+		return (_printError(431, "ERR_NONICKNAMEGIVEN", ":No nickname given"));
+	int	j = 0;
+	while (request.args[0][j])
+	{
+		if (!isalnum(request.args[0][j]) && request.args[0][j] != '-')
+			return (_printError(432, "ERR_ERRONEUSNICKNAME", request.args[0] + " :Erroneous nickname"));
+		i++;
+	}
+	this->_clients[j].setNickName(request.args[0]);
+	return ("NickName is set");
+};
+
+std::string	Server::_setUserName( Request request, int i)
+{
+	if (this->_clients[i].getRegistered())
+		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
+	if (request.args.size() < 4)
+		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+	this->_clients[i].setUserName(request.args[0]);
+	this->_clients[i].setFullName(request.args[3]);
+	this->_clients[i].setID(this->_clients[i].getNickName() + "!" + this->_clients[i].getUserName() + "@" + this->_clients[i].getHost());
+	this->_clients[i].setRegistered(true);
+	return ("UserName is set");
+};
+
+std::string	Server::_quit( Request request, int i)
+{
+	std::string ret = ";" + this->_clients[i].getID() + " QUIT ";
+	if (request.args.size())
+		return (ret.append(request.args[0] + "\n"));
+		// std::cout << ":" << this->_clients[i].getID() << " QUIT :" << request.args[0] << std::endl;
+	else
+		return (ret.append("\n"));
+};
 
 std::string	Server::_parsing( std::string message, int i )
 {
-	std::vector<std::string>	split(_split(message));
+	Request	request(_splitRequest(message));
 
-	if (split[0] == "HELP")
-		return ("To login you need to request 'USERNAME (your_username)'\n");
-	else if (split[0] == "USERNAME")
-		return (_setUsername(split[1], i));
-	else if (split[0] == "MESSAGE")
-		return (_sendMessage(split[1], i));
+	// if (request.command == "HELP")
+	// 	return ("To login you need to request 'USERNAME (your_username)'\n");
+	// else if (request.command == "USERNAME")
+	// 	return (_setUsername(request.args, i));
+	// else if (request.command == "MESSAGE")
+	// 	return (_sendMessage(request.args, i));
+	// else
+	// 	return ("Command not found\nUsage: USERNAME (your_username)\n");
+	if (request.command == "PASS")
+		return (_setPassWord(request, i));
+	else if (request.command == "NICK")
+		return (_setNickName(request, i));
+	else if (request.command == "USER")
+		return (_setUserName(request, i));
+	else if (request.command == "PRIVMSG")
+		return ("PRIVMSG command");
+	else if (request.command == "HELP")
+		return ("HELP command");
+	else if (request.command == "JOIN")
+		return ("JOIN command");
+	else if (request.command == "KICK")
+		return ("KICK command");
+	else if (request.command == "QUIT")
+		return (_quit(request, i));
 	else
-		return ("Command not found\nUsage: USERNAME (your_username)\n");
+		return ("Invalid command");
 }
 
 void	Server::_ClientRequest( int i )

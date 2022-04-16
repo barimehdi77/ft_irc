@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/15 17:37:34 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/16 04:21:07 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 
 
 #include "Client.hpp"
+/*  This class is temporarily		*/
+
+class Request
+{
+	public:
+		std::vector<std::string>	args;
+		std::string					command;
+
+		Request() : args(), command() {}
+};
+
 
 class Server
 {
@@ -36,10 +47,16 @@ class Server
 		void							_ClientRequest( int i );
 		int								_sendall( int destfd, std::string message );
 		void							_broadcastmsg( int sender_fd, std::string buf, int nbytes );
+		std::string						_setUserName( Request request, int i );
+		std::string						_setNickName( Request request, int i );
+		std::string						_setFullName( Request request, int i );
+		std::string						_setPassWord( Request request, int i );
+		std::string						_quit( Request request, int i );
 		std::string						_sendMessage( std::string message, int i );
-		std::string						_setUsername( std::string username, int i );
+		std::string						_printError(int num, std::string reply, std::string message);
+		// std::string						_setUsername( std::string username, int i );
 		std::string						_parsing( std::string message, int i );
-		std::vector<std::string>		_split( std::string message );
+		Request							_splitRequest( std::string req );
 
 	// private:
 	// 	class ArgsError: public std::exception
@@ -55,6 +72,7 @@ class Server
 	public:
 		void	startServer( void );
 };
+
 
 
 #endif
