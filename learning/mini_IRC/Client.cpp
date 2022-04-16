@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/16 02:38:25 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/16 02:43:01 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,10 @@ int			Client::getClientfd()	const { return (this->_clientfd); };
 int			Client::getRegistered()	const { return (this->_Registered); };
 
 void		Client::setUserName( std::string UserName )	{ this->_UserName = UserName; };
+void		Client::setNickName( std::string NickName )	{ this->_NickName = NickName; };
+void		Client::setFullName( std::string FullName )	{ this->_FullName = FullName; };
+void		Client::setPassWord( std::string PassWord )	{ this->_PassWord = PassWord; };
+void		Client::setHost( std::string Host )			{ this->_Host = Host; };
+void		Client::setID( std::string ID )				{ this->_ID = ID; };
 void		Client::setClientfd( int Clientfd )			{ this->_clientfd = Clientfd; };
 void		Client::setRegistered( int Registered )		{ this->_Registered = Registered; };
