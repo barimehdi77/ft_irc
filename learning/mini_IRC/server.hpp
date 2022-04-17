@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/17 14:05:11 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/17 16:30:34 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ private:
 	Request							_splitRequest(std::string req);
 	std::string						_printUserInfo(int i);
 	std::string						_printHelpInfo(int i);
+	std::string						_printReply(int num, std::string reply, std::string message);
 
 // private:
 // 	class ArgsError: public std::exception

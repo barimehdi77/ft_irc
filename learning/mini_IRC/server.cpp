@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/17 14:17:11 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/17 16:42:27 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ std::string	Server::_welcomemsg(void)
 {
 	std::string welcome = RED;
 	// welcome.append(this->_name);
-	welcome.append("	 __       __          __\n");
+	welcome.append("__       __          __\n");
 	welcome.append("|  \\  _  |  \\        |  \\\n");
 	welcome.append("| ▓▓ / \\ | ▓▓ ______ | ▓▓ _______ ______ ____   ______\n");
 	welcome.append("| ▓▓/  ▓\\| ▓▓/      \\| ▓▓/       \\      \\    \\ /      \\\n");
@@ -76,6 +76,11 @@ std::string	Server::_printError(int num, std::string reply, std::string message)
 	// std::string ret = num + " " + reply + "\n\t" + message + "\n";
 	return (std::to_string(num) + " " + reply + "\n\t" + message + "\n");
 	// std::cout << num << " " << reply << "\n\t" << message << std::endl;
+}
+
+std::string	Server::_printReply(int num, std::string reply, std::string message)
+{
+	return (std::to_string(num) + " " + reply + "\n\t" + message + "\n");	
 }
 
 void	Server::_newClient(void)
@@ -208,9 +213,9 @@ int			Server::_sendall(int destfd, std::string message)
 std::string	Server::_setPassWord(Request request, int i)
 {
 	if (request.args.size() < 1)
-		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters\n"));
+		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
 	if (this->_clients[i].getRegistered())
-		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)\n"));
+		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
 	this->_clients[i].setPassWord(request.args[0]);
 	return ("PassWord is set\n");
 };
@@ -219,12 +224,12 @@ std::string	Server::_setNickName(Request request, int i)
 {
 	std::cout << "args: " << request.args[0] << std::endl;
 	if (request.args.size() < 1)
-		return (_printError(431, "ERR_NONICKNAMEGIVEN", ":No nickname given\n"));
+		return (_printError(431, "ERR_NONICKNAMEGIVEN", ":No nickname given"));
 	int	j = 0;
 	while (request.args[0][j])
 	{
 		if (!isalnum(request.args[0][j]) && request.args[0][j] != '-')
-			return (_printError(432, "ERR_ERRONEUSNICKNAME", request.args[0] + " :Erroneous nickname\n"));
+			return (_printError(432, "ERR_ERRONEUSNICKNAME", request.args[0] + " :Erroneous nickname"));
 		j++;
 	}
 	// std::cout << RED << "while is done " << RESET << std::endl;
@@ -235,19 +240,19 @@ std::string	Server::_setNickName(Request request, int i)
 std::string	Server::_setUserName(Request request, int i)
 {
 	if (this->_clients[i].getRegistered())
-		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)\n"));
+		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
 	if (request.args.size() < 4)
-		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters\n"));
+		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
 	this->_clients[i].setUserName(request.args[0]);
 	this->_clients[i].setFullName(request.args[3]);
 	this->_clients[i].setID(this->_clients[i].getNickName() + "!" + this->_clients[i].getUserName() + "@" + this->_clients[i].getHost());
 	this->_clients[i].setRegistered(true);
-	return ("UserName is set\n");
+	return (_printReply(1, "RPL_WELCOME", "Welcome to the Internet Relay Network " + this->_clients[i].getID()));
 };
 
 std::string	Server::_quit(Request request, int i)
 {
-	std::string ret = ";" + this->_clients[i].getID() + " QUIT ";
+	std::string ret = ":" + this->_clients[i].getID() + " QUIT ";
 	if (request.args.size())
 		return (ret.append(request.args[0] + "\n"));
 		// std::cout << ":" << this->_clients[i].getID() << " QUIT :" << request.args[0] << std::endl;
