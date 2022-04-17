@@ -6,15 +6,15 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/17 13:33:41 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/17 14:17:11 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
 
-Server::Server(): _name(), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0) {};
-Server::Server( std::string Name, int max_online, std::string Port )
+Server::Server() : _name(), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0) {};
+Server::Server(std::string Name, int max_online, std::string Port)
 {
 	this->_name = Name;
 	this->_max_online_c = max_online + 1;
@@ -29,13 +29,13 @@ Server::Server( std::string Name, int max_online, std::string Port )
 
 Server::~Server() {}
 
-void	Server::_addToPoll( int newfd )
+void	Server::_addToPoll(int newfd)
 {
 	if (this->_online_c == this->_max_online_c)
 	{
 		this->_max_online_c *= 2;
-		this->_pfds = (struct pollfd *) realloc(this->_pfds, this->_max_online_c);
-		this->_clients = (Client *) realloc(this->_clients, this->_max_online_c);
+		this->_pfds = (struct pollfd *)realloc(this->_pfds, this->_max_online_c);
+		this->_clients = (Client *)realloc(this->_clients, this->_max_online_c);
 	}
 	this->_pfds[this->_online_c].fd = newfd;
 	this->_pfds[this->_online_c].events = POLLIN;
@@ -44,7 +44,7 @@ void	Server::_addToPoll( int newfd )
 	this->_online_c++;
 }
 
-void	Server::_removeFromPoll( int i )
+void	Server::_removeFromPoll(int i)
 {
 	this->_pfds[i] = this->_pfds[this->_online_c - 1];
 	// this->_clients[i] = NULL;
@@ -52,9 +52,9 @@ void	Server::_removeFromPoll( int i )
 	this->_online_c--;
 };
 
-std::string	Server::_welcomemsg( void )
+std::string	Server::_welcomemsg(void)
 {
-	std::string welcome  = RED;
+	std::string welcome = RED;
 	// welcome.append(this->_name);
 	welcome.append("	 __       __          __\n");
 	welcome.append("|  \\  _  |  \\        |  \\\n");
@@ -78,7 +78,7 @@ std::string	Server::_printError(int num, std::string reply, std::string message)
 	// std::cout << num << " " << reply << "\n\t" << message << std::endl;
 }
 
-void	Server::_newClient( void )
+void	Server::_newClient(void)
 {
 	/* all those varibles will be deleted when adding client class */
 	struct sockaddr_storage	remotaddr;
@@ -92,19 +92,19 @@ void	Server::_newClient( void )
 		std::cout << "accept() error: " << strerror(errno) << std::endl;
 	else
 	{
-		_addToPoll( newfd );
+		_addToPoll(newfd);
 		std::string welcome = _welcomemsg();
 		if (send(newfd, welcome.c_str(), welcome.length(), 0) == -1)
 			std::cout << "send() error: " << strerror(errno) << std::endl;
 		std::cout << "server: new connection from "
-				<< inet_ntoa(((struct sockaddr_in*)&remotaddr)->sin_addr)
-				<< " on socket " << newfd << std::endl;
+			<< inet_ntoa(((struct sockaddr_in*)&remotaddr)->sin_addr)
+			<< " on socket " << newfd << std::endl;
 	}
 };
 
-void	Server::_broadcastmsg( int sender_fd, std::string buf, int nbytes )
+void	Server::_broadcastmsg(int sender_fd, std::string buf, int nbytes)
 {
-	for(int j = 0; j < this->_online_c; j++)
+	for (int j = 0; j < this->_online_c; j++)
 	{
 		int dest_fd = this->_clients[j].getClientfd();
 		// Except the listener and ourselves
@@ -114,7 +114,7 @@ void	Server::_broadcastmsg( int sender_fd, std::string buf, int nbytes )
 	}
 }
 
-Request	Server::_splitRequest( std::string req )
+Request	Server::_splitRequest(std::string req)
 {
 	// std::vector<std::string>	split;
 	// int space = message.find(" ");
@@ -175,7 +175,7 @@ Request	Server::_splitRequest( std::string req )
 // 	};
 // };
 
-std::string	Server::_sendMessage( std::string message, int i )
+std::string	Server::_sendMessage(std::string message, int i)
 {
 	if (this->_clients[i].getRegistered())
 	{
@@ -188,7 +188,7 @@ std::string	Server::_sendMessage( std::string message, int i )
 		return("To send messages you Need to Loggin\n");
 }
 
-int			Server::_sendall( int destfd, std::string message )
+int			Server::_sendall(int destfd, std::string message)
 {
 	int total = 0;
 	int bytesleft = message.length();
@@ -205,7 +205,7 @@ int			Server::_sendall( int destfd, std::string message )
 	return (b == -1 ? -1 : 0);
 };
 
-std::string	Server::_setPassWord( Request request, int i)
+std::string	Server::_setPassWord(Request request, int i)
 {
 	if (request.args.size() < 1)
 		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters\n"));
@@ -215,7 +215,7 @@ std::string	Server::_setPassWord( Request request, int i)
 	return ("PassWord is set\n");
 };
 
-std::string	Server::_setNickName( Request request, int i)
+std::string	Server::_setNickName(Request request, int i)
 {
 	std::cout << "args: " << request.args[0] << std::endl;
 	if (request.args.size() < 1)
@@ -232,7 +232,7 @@ std::string	Server::_setNickName( Request request, int i)
 	return ("NickName is set\n");
 };
 
-std::string	Server::_setUserName( Request request, int i)
+std::string	Server::_setUserName(Request request, int i)
 {
 	if (this->_clients[i].getRegistered())
 		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)\n"));
@@ -245,7 +245,7 @@ std::string	Server::_setUserName( Request request, int i)
 	return ("UserName is set\n");
 };
 
-std::string	Server::_quit( Request request, int i)
+std::string	Server::_quit(Request request, int i)
 {
 	std::string ret = ";" + this->_clients[i].getID() + " QUIT ";
 	if (request.args.size())
@@ -255,7 +255,27 @@ std::string	Server::_quit( Request request, int i)
 		return (ret.append("\n"));
 };
 
-std::string	Server::_printUserInfo( int i )
+std::string	Server::_printHelpInfo(int i)
+{
+	std::string	helpInfo;
+
+	helpInfo.append(GREEN);
+	helpInfo.append("STEP 1: PASS (Optional)\n");
+	helpInfo.append(RESET);
+	helpInfo.append("\tUse PASS command to set a password. e.g: PASS MyAwesomePassword123\n\n");
+	helpInfo.append(GREEN);
+	helpInfo.append("STEP 2: NICK\n");
+	helpInfo.append(RESET);
+	helpInfo.append("\tUse NICK command to set a nickname. e.g: NICK deezNuts69\n\n");
+	helpInfo.append(GREEN);
+	helpInfo.append("STEP 3: USER\n");
+	helpInfo.append(RESET);
+	helpInfo.append("\tUse USER command to register your username and fullname.e.g: USER deez * * : Deez Nuts\n\n");
+	return (helpInfo);
+}
+
+
+std::string	Server::_printUserInfo(int i)
 {
 	std::string info;
 	info.append("NickName: " + this->_clients[i].getNickName() + "\n");
@@ -273,7 +293,7 @@ std::string	Server::_printUserInfo( int i )
 	return (info);
 }
 
-std::string	Server::_parsing( std::string message, int i )
+std::string	Server::_parsing(std::string message, int i)
 {
 	Request	request(_splitRequest(message));
 
@@ -295,7 +315,7 @@ std::string	Server::_parsing( std::string message, int i )
 	else if (request.command == "PRIVMSG")
 		return ("PRIVMSG command");
 	else if (request.command == "HELP")
-		return ("HELP command");
+		return (_printHelpInfo(i));
 	else if (request.command == "JOIN")
 		return ("JOIN command");
 	else if (request.command == "KICK")
@@ -308,7 +328,7 @@ std::string	Server::_parsing( std::string message, int i )
 		return ("Invalid command\n");
 }
 
-void	Server::_ClientRequest( int i )
+void	Server::_ClientRequest(int i)
 {
 	/* all those varibles will be deleted when adding client class */
 	char buf[6000];
@@ -318,7 +338,7 @@ void	Server::_ClientRequest( int i )
 	int nbytes = recv(sender_fd, buf, sizeof(buf), 0);
 
 	std::string message(buf, strlen(buf) - 1);
-	std::cout << "message length: " << message.length()  << std::endl << "message: " << message << std::endl;
+	std::cout << "message length: " << message.length() << std::endl << "message: " << message << std::endl;
 	if (nbytes <= 0)
 	{
 		if (nbytes == 0)
@@ -340,10 +360,10 @@ void	Server::_ClientRequest( int i )
 }
 
 
-void		Server::_getSocket( std::string Port)
+void		Server::_getSocket(std::string Port)
 {
 	// int socketfd;
-	int yes=1;
+	int yes = 1;
 	int status;
 
 	struct addrinfo hint, *serverinfo, *tmp;
@@ -390,7 +410,7 @@ void		Server::_getSocket( std::string Port)
 	}
 };
 
-void Server::startServer( void )
+void Server::startServer(void)
 {
 	struct sockaddr_storage	remotaddr;
 	socklen_t				addrlen;
@@ -406,7 +426,7 @@ void Server::startServer( void )
 			exit(-1);
 		}
 
-		for(int i = 0; i < this->_online_c; i++)
+		for (int i = 0; i < this->_online_c; i++)
 		{
 			if (this->_pfds[i].revents & POLLIN)
 			{
