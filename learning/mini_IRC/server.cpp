@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/16 15:51:16 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/17 13:33:41 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ Request	Server::_splitRequest( std::string req )
 	size_t	i = 0;
 	size_t	j = 0;
 
-	req.erase(req.end() - 1);
 	while (req[i] && req[i] == ' ')
 		i++;
 	j = i;
