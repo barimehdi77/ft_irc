@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 14:00:10 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/18 14:36:07 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,12 @@ std::string	Server::_setNickName(Request request, int i)
 	}
 	// std::cout << RED << "while is done " << RESET << std::endl;
 	this->_clients[i].setNickName(request.args[0]);
-	return ("NickName is set\n");
+	if (this->_clients[i].getUserName() != "") {
+		this->_clients[i].setID(this->_clients[i].getNickName() + "!" + this->_clients[i].getUserName() + "@" + this->_clients[i].getHost());
+		this->_clients[i].setRegistered(true);
+		return (_printReply(1, "RPL_WELCOME", "Welcome to the Internet Relay Network " + this->_clients[i].getID()));
+	}
+	return ("");
 };
 
 std::string	Server::_setUserName(Request request, int i)
@@ -247,9 +252,12 @@ std::string	Server::_setUserName(Request request, int i)
 		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
 	this->_clients[i].setUserName(request.args[0]);
 	this->_clients[i].setFullName(request.args[3]);
-	this->_clients[i].setID(this->_clients[i].getNickName() + "!" + this->_clients[i].getUserName() + "@" + this->_clients[i].getHost());
-	this->_clients[i].setRegistered(true);
-	return (_printReply(1, "RPL_WELCOME", "Welcome to the Internet Relay Network " + this->_clients[i].getID()));
+	if (this->_clients[i].getNickName() != "") {
+		this->_clients[i].setID(this->_clients[i].getNickName() + "!" + this->_clients[i].getUserName() + "@" + this->_clients[i].getHost());
+		this->_clients[i].setRegistered(true);
+		return (_printReply(1, "RPL_WELCOME", "Welcome to the Internet Relay Network " + this->_clients[i].getID()));
+	}
+	return ("");
 };
 
 std::string	Server::_quit(Request request, int i)
