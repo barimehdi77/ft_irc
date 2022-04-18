@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 23:47:55 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/18 23:49:16 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,9 +212,6 @@ int			Server::_sendall(int destfd, std::string message)
 
 	return (b == -1 ? -1 : 0);
 };
-
-
-
 
 void	Server::_ClientRequest(int i)
 {
