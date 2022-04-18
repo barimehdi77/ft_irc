@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/17 14:05:37 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/18 00:44:48 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "Client.hpp"
+#include "../headers/Client.hpp"
 
 
 Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host(), _NickName(), _FullName(), _ID() {};

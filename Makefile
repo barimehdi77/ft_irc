@@ -3,37 +3,90 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+         #
+#    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/17 14:02:44 by asfaihi          ###   ########.fr        #
+#    Updated: 2022/04/18 01:28:40 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = server
+# Name of the final executable files
+NAME = ./ft_irc
 
-SRC = server.cpp Client.cpp main.cpp
+# Project's directories
+SRCS_FOLDER = srcs
+OBJECTSDIR = objects
+HEADERS_FOLDER = headers
 
-FLAGS = -Wall -Wextra -Werror
-
+# Name of variables
+FLAGS = #-Wall -Wextra -Werror
 CPP_STANDARD = -std=c++98
+RED = \033[1;31m
+GREEN = \033[1;32m
+YELLOW = \033[1;33m
+BLUE = \033[1;34m
+RESET = \033[0m
 
-OBJECT = $(SRC:%.cpp=%.o)
+# Exercise files variable
+SRC_FILES = Client.cpp \
+Server.cpp
 
-all: $(NAME)
+MAIN = main.cpp
+# Define objects for all sources
+OBJS := $(addprefix $(OBJECTSDIR)/, $(SRC_FILES:.cpp=.o))
+MAIN_OBJ = $(addprefix $(OBJECTSDIR)/, $(MAIN:.cpp=.o))
 
-$(NAME): $(OBJECT)
-	c++ $(OBJECT) -o $(NAME)
+# Name the compiler
+CC = c++
 
-%.o:%.cpp
-	c++ $(CPP_STANDARD) -c $<
+# OS specific part
+RM = rm -rf
+RMDIR = rm -rf
+MKDIR = mkdir -p
+MAKE = make -C
+ECHO = /bin/echo
+ERRIGNORE = 2>/dev/null
 
+all: credit $(NAME)
+	@echo "$(BLUE)██████████████████████ Compiling is DONE ███████████████████████$(RESET)"
+	@echo "       Made with love by : \033[1;91mmbari asfaihi abdel-ke\033[m"
+
+head:
+	@echo "$(BLUE)█████████████████████ Making ft_irc Server ██████████████████████$(RESET)"
+
+# Phonebook making rules
+$(NAME): head $(OBJS) $(MAIN_OBJ) $(HEADERS_FOLDER)
+	@$(CC) $(CPP_STANDARD) -I $(HEADERS_FOLDER) $(OBJECTSDIR)/main.o $(OBJS) -o $@
+
+$(OBJECTSDIR)/%.o: $(SRCS_FOLDER)/%.cpp $(HEADERS_FOLDER)
+	@$(MKDIR) $(dir $@)
+	@echo "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
+	@$(CC) $(CPP_STANDARD) $(FLAGS) -I $(HEADERS_FOLDER) -o $@ -c $<
+
+$(OBJECTSDIR)/%.o: main.cpp $(HEADERS_FOLDER)
+	@echo "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
+	@$(CC) $(CPP_STANDARD) $(FLAGS) -I $(HEADERS_FOLDER) -o $@ -c $<
+
+# Remove all objects, dependencies and executable files generated during the build
 clean:
-	/bin/rm -f $(OBJECT)
+	@echo "$(RED)deleting$(RESET): " $(OBJECTSDIR)
+	@$(RMDIR) $(OBJECTSDIR)
+
 
 fclean: clean
-	/bin/rm -f $(NAME)
-	/bin/rm -rf a.out
-	/bin/rm -rf *.dSYM
+	@echo "$(RED)deleting$(RESET): " $(NAME)
+	@$(RM) $(NAME) philo.dSYM $(ERRIGNORE)
 
 re: fclean all
+
+# Print Credit
+credit:
+	@echo " ┏━━━┓┏━━━━┓    ┏━━┓┏━━━┓┏━━━┓"
+	@echo " ┃┏━━┛┃┏┓┏┓┃    ┗┫┣┛┃┏━┓┃┃┏━┓┃"
+	@echo " ┃┗━━┓┗┛┃┃┗┛     ┃┃ ┃┗━┛┃┃┃ ┗┛"
+	@echo " ┃┏━━┛  ┃┃       ┃┃ ┃┏┓┏┛┃┃ ┏┓"
+	@echo " ┃┃    ┏┛┗┓┏━━━┓┏┫┣┓┃┃┃┗┓┃┗━┛┃"
+	@echo " ┗┛    ┗━━┛┗━━━┛┗━━┛┗┛┗━┛┗━━━┛"
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo "━━━━━━━┃Made with love by : \033[1;91mmbari asfaihi abdel-ke\033[m┃━━━━━━━"
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

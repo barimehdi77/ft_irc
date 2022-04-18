@@ -6,11 +6,11 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 00:32:57 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/18 00:58:50 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.hpp"
+#include "../headers/Server.hpp"
 
 
 Server::Server() : _name(), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0) {};
