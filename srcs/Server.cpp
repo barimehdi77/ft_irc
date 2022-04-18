@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.cpp                                         :+:      :+:    :+:   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 15:50:51 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/18 17:06:16 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,15 +133,19 @@ Request	Server::_splitRequest(std::string req)
 	size_t	i = 0;
 	size_t	j = 0;
 
-	while (req[i] && req[i] == ' ')
-		i++;
+	if (req[i] == ' ' || !req[i]) {
+		request.invalidMessage = true;
+		return (request);
+	}
 	j = i;
 	while (req[i])
 	{
 		if (req[i] == ' ')
 		{
-			if (req[i + 1] == ' ')
+			if (req[i + 1] == ' ') {
 				request.invalidMessage = true;
+				return (request);
+			}
 			request.args.push_back(req.substr(j, i - j));
 			while (req[i] == ' ')
 				i++;
