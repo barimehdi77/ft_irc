@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 00:36:49 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 00:58:59 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/18 23:43:05 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		std::cout << "Usage ./mini_IRC PORT" << std::endl;
+		std::cout << "Usage ./ft_IRC PORT" << std::endl;
 		exit(-1);
 	}
 	Server	srv("IRC", 10, av[1]);
