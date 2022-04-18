@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
+/*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 14:36:07 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/18 15:50:51 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ std::string	Server::_welcomemsg(void)
 	welcome.append("██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝\n");
 	welcome.append("╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗\n");
 	welcome.append(" ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝\n");
-	// welcome.append("| ▓▓▓▓  \\▓▓▓▓ ▓▓▓▓▓▓▓▓ ▓▓ ▓▓_____| ▓▓ | ▓▓ | ▓▓ ▓▓▓▓▓▓▓▓\n");
-	// welcome.append("| ▓▓▓    \\▓▓▓\\▓▓     \\ ▓▓\\▓▓     \\ ▓▓ | ▓▓ | ▓▓\\▓▓     \\\n");
-	// welcome.append(" \\▓▓      \\▓▓ \\▓▓▓▓▓▓▓\\▓▓ \\▓▓▓▓▓▓▓\\▓▓  \\▓▓  \\▓▓ \\▓▓▓▓▓▓▓\n\n\n\n");
 	welcome.append(BLUE);
 	welcome.append("You need to login so you can start chatting OR you can send HELP to see how :) \n");
 	welcome.append(RESET);
@@ -249,7 +246,7 @@ std::string	Server::_setUserName(Request request, int i)
 	if (this->_clients[i].getRegistered())
 		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
 	if (request.args.size() < 4)
-		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+		return (_printError(461, "ERR_NEEDMOREPARAMS", "USER :Not enough parameters"));
 	this->_clients[i].setUserName(request.args[0]);
 	this->_clients[i].setFullName(request.args[3]);
 	if (this->_clients[i].getNickName() != "") {

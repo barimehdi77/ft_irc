@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+         #
+#    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/18 13:19:57 by asfaihi          ###   ########.fr        #
+#    Updated: 2022/04/18 15:51:10 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ clean:
 
 fclean: clean
 	@echo "$(RED)deleting$(RESET): " $(NAME)
-	@$(RM) $(NAME) philo.dSYM $(ERRIGNORE)
+	@$(RM) $(NAME) $(ERRIGNORE)
 
 re: fclean all
 
