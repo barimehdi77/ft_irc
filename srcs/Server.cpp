@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 17:25:11 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/18 17:34:43 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,13 +264,16 @@ std::string	Server::_setUserName(Request request, int i)
 std::string	Server::_quit(Request request, int i)
 {
 	std::string ret = ":" + this->_clients[i].getID() + " QUIT ";
-	// _broadcastmsg(this->_clients[i].getClientfd(), );
+	if (request.args.size())
+		ret.append(":" + request.args[0] + "\n");
+		// return (ret.append(":" + request.args[0] + "\n"));
+	else
+		ret.append("\n");
+		// return (ret.append("\n"));
+	_broadcastmsg(this->_clients[i].getClientfd(), ret, ret.length());
 	close(this->_clients[i].getClientfd());
 	_removeFromPoll(i);
-	if (request.args.size())
-		return (ret.append(":" + request.args[0] + "\n"));
-	else
-		return (ret.append("\n"));
+	return ("QUIT");
 };
 
 std::string	Server::_printHelpInfo(int i)
@@ -372,9 +375,9 @@ void	Server::_ClientRequest(int i)
 	else
 	{
 		std::string ret = _parsing(message, i);
-		// if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
-		// 	std::cout << "send() error: " << strerror(errno) << std::endl;
-		_broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
+		if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
+			std::cout << "send() error: " << strerror(errno) << std::endl;
+		// _broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
 	}
 	memset(&buf, 0, 6000);
 }

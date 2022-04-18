@@ -6,7 +6,7 @@
 #    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/18 15:51:10 by mbari            ###   ########.fr        #
+#    Updated: 2022/04/18 17:28:40 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ all: credit $(NAME)
 	@echo "       Made with love by : \033[1;91mmbari asfaihi abdel-ke\033[m"
 
 head:
-	@echo "$(BLUE)█████████████████████ Making ft_irc Server ██████████████████████$(RESET)"
+	@echo "$(BLUE)█████████████████████ Making ft_irc Server █████████████████████$(RESET)"
 
 # Phonebook making rules
 $(NAME): head $(OBJS) $(MAIN_OBJ) $(HEADERS_FOLDER)
