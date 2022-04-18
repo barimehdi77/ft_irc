@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.cpp                                         :+:      :+:    :+:   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 00:58:50 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/18 14:00:10 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ Request	Server::_splitRequest(std::string req)
 	{
 		if (req[i] == ' ')
 		{
+			if (req[i + 1] == ' ')
+				request.invalidMessage = true;
 			request.args.push_back(req.substr(j, i - j));
 			while (req[i] == ' ')
 				i++;
@@ -311,6 +313,8 @@ std::string	Server::_parsing(std::string message, int i)
 	// else
 	// 	return ("Command not found\nUsage: USERNAME (your_username)\n");
 	// std::cout << "command: " << request.command << std::endl;
+	if (request.invalidMessage)
+		return ("Invalid message!\n");
 	if (request.command == "PASS")
 		return (_setPassWord(request, i));
 	else if (request.command == "NICK")

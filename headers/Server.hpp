@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/17 16:30:34 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/18 13:54:29 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ class Request
 public:
 	std::vector<std::string>	args;
 	std::string					command;
+	bool						invalidMessage;
 
-	Request() : args(), command() {}
+	Request() : args(), command(), invalidMessage(false) {}
 };
 
 
