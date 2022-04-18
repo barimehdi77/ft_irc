@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 16:03:52 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/18 16:26:54 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ private:
 	std::string				_NickName;
 	std::string				_UserName;
 	std::string				_FullName;
-	std::string				_Host;
+	const std::string		_Host;
 	std::string				_ID;
 	std::string				_PassWord;
 	struct sockaddr_storage	_remotaddr;
 	socklen_t				_addrlen;
+	// list vector				_channels;
 
 // private:
 
@@ -71,7 +72,7 @@ public:
 	void		setNickName(std::string NickName);
 	void		setFullName(std::string FullName);
 	void		setPassWord(std::string PassWord);
-	void		setHost(std::string Host);
+	// void		setHost(std::string Host);
 	void		setID(std::string ID);
 	void		setClientfd(int clientfd);
 	void		setRegistered(int Registered);

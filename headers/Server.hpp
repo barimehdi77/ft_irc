@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 13:54:29 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/18 16:45:50 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ private:
 	struct pollfd	*_pfds;
 	int				_online_c;
 	int				_max_online_c;
+	std::string		_prefix;
 
 private:
 	Server();

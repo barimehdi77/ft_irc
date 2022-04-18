@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 14:21:16 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/18 16:26:44 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../headers/Client.hpp"
 
 
-Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host(), _NickName(), _FullName(), _ID() {};
+Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID() {};
 
 
 // Client & Client::operator=( const Client& rhs)
@@ -37,7 +37,7 @@ void		Client::setUserName( std::string UserName )	{ this->_UserName = UserName; 
 void		Client::setNickName( std::string NickName )	{ this->_NickName = NickName; };
 void		Client::setFullName( std::string FullName )	{ this->_FullName = FullName; };
 void		Client::setPassWord( std::string PassWord )	{ this->_PassWord = PassWord; };
-void		Client::setHost( std::string Host )			{ this->_Host = Host; };
+// void		Client::setHost( std::string Host )			{ this->_Host = Host; };
 void		Client::setID( std::string ID )				{ this->_ID = ID; };
 void		Client::setClientfd( int Clientfd )			{ this->_clientfd = Clientfd; };
 void		Client::setRegistered( int Registered )		{ this->_Registered = Registered; };

@@ -32,6 +32,7 @@ a.out.dSYM
 *.lib
 
 # Executables
+ft_irc
 *.exe
 *.out
 *.app

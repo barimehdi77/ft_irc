@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
+/*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 17:06:16 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/18 17:21:38 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Server.hpp"
 
 
-Server::Server() : _name(), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0) {};
+Server::Server() : _name(), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0), _prefix(":") {};
 Server::Server(std::string Name, int max_online, std::string Port)
 {
 	this->_name = Name;
@@ -47,7 +47,7 @@ void	Server::_addToPoll(int newfd)
 void	Server::_removeFromPoll(int i)
 {
 	this->_pfds[i] = this->_pfds[this->_online_c - 1];
-	// this->_clients[i] = NULL;
+	// this->_clients[i] = nullptr;
 
 	this->_online_c--;
 };
@@ -264,9 +264,11 @@ std::string	Server::_setUserName(Request request, int i)
 std::string	Server::_quit(Request request, int i)
 {
 	std::string ret = ":" + this->_clients[i].getID() + " QUIT ";
+	// _broadcastmsg(this->_clients[i].getClientfd(), );
+	close(this->_clients[i].getClientfd());
+	_removeFromPoll(i);
 	if (request.args.size())
-		return (ret.append(request.args[0] + "\n"));
-		// std::cout << ":" << this->_clients[i].getID() << " QUIT :" << request.args[0] << std::endl;
+		return (ret.append(":" + request.args[0] + "\n"));
 	else
 		return (ret.append("\n"));
 };
@@ -370,9 +372,9 @@ void	Server::_ClientRequest(int i)
 	else
 	{
 		std::string ret = _parsing(message, i);
-		if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
-			std::cout << "send() error: " << strerror(errno) << std::endl;
-		// _broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
+		// if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
+		// 	std::cout << "send() error: " << strerror(errno) << std::endl;
+		_broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
 	}
 	memset(&buf, 0, 6000);
 }
