@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/17 16:42:27 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/18 00:32:57 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,15 @@ std::string	Server::_welcomemsg(void)
 {
 	std::string welcome = RED;
 	// welcome.append(this->_name);
-	welcome.append("__       __          __\n");
-	welcome.append("|  \\  _  |  \\        |  \\\n");
-	welcome.append("| ▓▓ / \\ | ▓▓ ______ | ▓▓ _______ ______ ____   ______\n");
-	welcome.append("| ▓▓/  ▓\\| ▓▓/      \\| ▓▓/       \\      \\    \\ /      \\\n");
-	welcome.append("| ▓▓  ▓▓▓\\ ▓▓  ▓▓▓▓▓▓\\ ▓▓  ▓▓▓▓▓▓▓ ▓▓▓▓▓▓\\▓▓▓▓\\  ▓▓▓▓▓▓\\\n");
-	welcome.append("| ▓▓ ▓▓\\▓▓\\▓▓ ▓▓    ▓▓ ▓▓ ▓▓     | ▓▓ | ▓▓ | ▓▓ ▓▓    ▓▓\n");
-	welcome.append("| ▓▓▓▓  \\▓▓▓▓ ▓▓▓▓▓▓▓▓ ▓▓ ▓▓_____| ▓▓ | ▓▓ | ▓▓ ▓▓▓▓▓▓▓▓\n");
-	welcome.append("| ▓▓▓    \\▓▓▓\\▓▓     \\ ▓▓\\▓▓     \\ ▓▓ | ▓▓ | ▓▓\\▓▓     \\\n");
-	welcome.append(" \\▓▓      \\▓▓ \\▓▓▓▓▓▓▓\\▓▓ \\▓▓▓▓▓▓▓\\▓▓  \\▓▓  \\▓▓ \\▓▓▓▓▓▓▓\n\n\n\n");
+	welcome.append("██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗\n");
+	welcome.append("██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝\n");
+	welcome.append("██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗\n");
+	welcome.append("██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝\n");
+	welcome.append("╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗\n");
+	welcome.append(" ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝\n");
+	// welcome.append("| ▓▓▓▓  \\▓▓▓▓ ▓▓▓▓▓▓▓▓ ▓▓ ▓▓_____| ▓▓ | ▓▓ | ▓▓ ▓▓▓▓▓▓▓▓\n");
+	// welcome.append("| ▓▓▓    \\▓▓▓\\▓▓     \\ ▓▓\\▓▓     \\ ▓▓ | ▓▓ | ▓▓\\▓▓     \\\n");
+	// welcome.append(" \\▓▓      \\▓▓ \\▓▓▓▓▓▓▓\\▓▓ \\▓▓▓▓▓▓▓\\▓▓  \\▓▓  \\▓▓ \\▓▓▓▓▓▓▓\n\n\n\n");
 	welcome.append(BLUE);
 	welcome.append("You need to login so you can start chatting OR you can send HELP to see how :) \n");
 	welcome.append(RESET);
@@ -80,7 +80,7 @@ std::string	Server::_printError(int num, std::string reply, std::string message)
 
 std::string	Server::_printReply(int num, std::string reply, std::string message)
 {
-	return (std::to_string(num) + " " + reply + "\n\t" + message + "\n");	
+	return (std::to_string(num) + " " + reply + "\n\t" + message + "\n");
 }
 
 void	Server::_newClient(void)
@@ -318,13 +318,13 @@ std::string	Server::_parsing(std::string message, int i)
 	else if (request.command == "USER")
 		return (_setUserName(request, i));
 	else if (request.command == "PRIVMSG")
-		return ("PRIVMSG command");
+		return ("PRIVMSG command\n");
 	else if (request.command == "HELP")
 		return (_printHelpInfo(i));
 	else if (request.command == "JOIN")
-		return ("JOIN command");
+		return ("JOIN command\n");
 	else if (request.command == "KICK")
-		return ("KICK command");
+		return ("KICK command\n");
 	else if (request.command == "QUIT")
 		return (_quit(request, i));
 	else if (request.command == "INFO")
