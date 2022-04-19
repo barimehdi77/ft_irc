@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 23:45:50 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/19 15:08:16 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ class Server
 		int								_max_online_c;
 		std::string						_prefix;
 
+		///
+		std::vector<std::string>		_clientNicknames;
+		///
+
 	private:
 		Server();
 		std::string						_welcomemsg(void);
@@ -54,6 +58,7 @@ class Server
 		std::string						_setNickName(Request request, int i);
 		std::string						_setFullName(Request request, int i);
 		std::string						_setPassWord(Request request, int i);
+		std::string						_setOper(Request request, int i);
 		std::string						_quit(Request request, int i);
 		std::string						_sendMessage(std::string message, int i);
 		std::string						_printError(int num, std::string reply, std::string message);

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/19 00:00:36 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/19 13:52:25 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Server.hpp"
 
 
-Server::Server() : _name(), _unavailableUserName(), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0), _prefix(":") {};
+Server::Server() : _name(), _unavailableUserName(), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0), _prefix(":"), _clientNicknames() {};
 
 Server::Server(std::string Name, int max_online, std::string Port)
 {

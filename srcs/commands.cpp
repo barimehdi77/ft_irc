@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/19 00:05:14 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/19 15:26:18 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_setNickName(request, i));
 	else if (request.command == "USER")
 		return (_setUserName(request, i));
+	else if (request.command == "OPER")
+		return (_setOper(request, i));
 	else if (request.command == "PRIVMSG")
 		return ("PRIVMSG command\n");
 	else if (request.command == "HELP")
@@ -41,6 +43,17 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
+std::string	Server::_setOper(Request request, int i)
+{
+	if (!this->_clients[i].getRegistered())
+		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+	if (request.args.size() < 2)
+		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+	if (request.args[1] != this->_clients[i].getPassWord())
+		return (_printError(464, "ERR_PASSWDMISMATCH", ":Password incorrect"));
+	return (_printReply(381, "RPL_YOUREOPER", ":You are now an IRC operator"));
+}
+
 std::string	Server::_setPassWord(Request request, int i)
 {
 	if (request.args.size() < 1)
@@ -53,7 +66,6 @@ std::string	Server::_setPassWord(Request request, int i)
 
 std::string	Server::_setNickName(Request request, int i)
 {
-	std::cout << "args: " << request.args[0] << std::endl;
 	if (request.args.size() < 1)
 		return (_printError(431, "ERR_NONICKNAMEGIVEN", ":No nickname given"));
 	int	j = 0;
@@ -63,8 +75,11 @@ std::string	Server::_setNickName(Request request, int i)
 			return (_printError(432, "ERR_ERRONEUSNICKNAME", request.args[0] + " :Erroneous nickname"));
 		j++;
 	}
-	// std::cout << RED << "while is done " << RESET << std::endl;
+	if (std::find(this->_clientNicknames.begin(), this->_clientNicknames.end(), request.args[0]) != this->_clientNicknames.end())
+		return (_printError(433, "ERR_NICKNAMEINUSE", request.args[0] + " :Nickname is already in use"));
+
 	this->_clients[i].setNickName(request.args[0]);
+	this->_clientNicknames.push_back(this->_clients[i].getNickName());
 	if (this->_clients[i].getUserName() != "") {
 		this->_clients[i].setID(this->_clients[i].getNickName() + "!" + this->_clients[i].getUserName() + "@" + this->_clients[i].getHost());
 		this->_clients[i].setRegistered(true);
@@ -79,6 +94,7 @@ std::string	Server::_setUserName(Request request, int i)
 		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
 	if (request.args.size() < 4)
 		return (_printError(461, "ERR_NEEDMOREPARAMS", "USER :Not enough parameters"));
+
 	this->_clients[i].setUserName(request.args[0]);
 	this->_clients[i].setFullName(request.args[3]);
 	if (this->_clients[i].getNickName() != "") {
@@ -117,7 +133,7 @@ std::string	Server::_printHelpInfo(int i)
 	helpInfo.append(GREEN);
 	helpInfo.append("STEP 3: USER\n");
 	helpInfo.append(RESET);
-	helpInfo.append("\tUse USER command to register your username and fullname.e.g: USER deez * * : Deez Nuts\n\n");
+	helpInfo.append("\tUse USER command to register your username and fullname.e.g: USER deez * * :Deez Nuts\n\n");
 	return (helpInfo);
 };
 
