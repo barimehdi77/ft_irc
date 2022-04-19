@@ -6,7 +6,7 @@
 #    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/18 23:48:45 by mbari            ###   ########.fr        #
+#    Updated: 2022/04/19 00:02:33 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,11 @@ RESET = \033[0m
 # Exercise files variable
 SRC_FILES = Client.cpp \
 Server.cpp \
-commands.cpp
+commands.cpp \
+getSocket.cpp \
+messagesHandling.cpp \
+pollHandling.cpp \
+requestHandling.cpp \
 
 MAIN = main.cpp
 # Define objects for all sources
