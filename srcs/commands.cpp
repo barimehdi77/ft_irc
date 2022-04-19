@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/19 15:41:45 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/19 16:15:29 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_setUserName(request, i));
 	else if (request.command == "OPER")
 		return (_setOper(request, i));
+	else if (request.command == "MODE")
+		return (_setMode(request, i));
 	else if (request.command == "PRIVMSG")
 		return ("PRIVMSG command\n");
 	else if (request.command == "HELP")
@@ -42,6 +44,14 @@ std::string	Server::_parsing(std::string message, int i)
 	else
 		return ("Invalid command\n");
 };
+
+std::string	Server::_setMode(Request request, int i)
+{
+	if (!this->_clients[i].getRegistered())
+		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+	if (request.args.size() < 2)
+		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+}
 
 std::string	Server::_setOper(Request request, int i)
 {
