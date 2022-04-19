@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/19 15:26:18 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/19 15:41:45 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ std::string	Server::_setOper(Request request, int i)
 		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
 	if (request.args[1] != this->_clients[i].getPassWord())
 		return (_printError(464, "ERR_PASSWDMISMATCH", ":Password incorrect"));
+	this->_clients[i].setIsOperator(true);
 	return (_printReply(381, "RPL_YOUREOPER", ":You are now an IRC operator"));
 }
 
@@ -147,5 +148,6 @@ std::string	Server::_printUserInfo(int i)
 	info.append("Host: " + this->_clients[i].getHost() + "\n");
 	info.append("ID: " + this->_clients[i].getID() + "\n");
 	info.append("PassWord: " + this->_clients[i].getPassWord() + "\n");
+	info.append("Operator: " + std::to_string(this->_clients[i].getisOperator()) + "\n");
 	return (info);
 };

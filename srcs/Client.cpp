@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 16:26:44 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/19 15:39:55 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ std::string Client::getHost()		const { return (this->_Host); };
 std::string Client::getID()			const { return (this->_ID); }
 int			Client::getClientfd()	const { return (this->_clientfd); };
 int			Client::getRegistered()	const { return (this->_Registered); };
+int			Client::getisOperator()	const { return (this->_isOperator); };
 
-void		Client::setUserName( std::string UserName )	{ this->_UserName = UserName; };
+
+void		Client::setUserName(std::string UserName) { this->_UserName = UserName; };
 void		Client::setNickName( std::string NickName )	{ this->_NickName = NickName; };
 void		Client::setFullName( std::string FullName )	{ this->_FullName = FullName; };
 void		Client::setPassWord( std::string PassWord )	{ this->_PassWord = PassWord; };
@@ -41,3 +43,5 @@ void		Client::setPassWord( std::string PassWord )	{ this->_PassWord = PassWord; 
 void		Client::setID( std::string ID )				{ this->_ID = ID; };
 void		Client::setClientfd( int Clientfd )			{ this->_clientfd = Clientfd; };
 void		Client::setRegistered( int Registered )		{ this->_Registered = Registered; };
+void		Client::setIsOperator( int isOperator )		{ this->_isOperator = isOperator; };
+

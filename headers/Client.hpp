@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/19 00:19:35 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/19 15:39:35 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ class Client
 private:
 	int						_clientfd;
 	bool					_Registered;
+	bool					_isOperator;
 	std::string				_NickName;
 	std::string				_UserName;
 	std::string				_FullName;
@@ -67,6 +68,7 @@ public:
 	std::string	getPassWord()	const;
 	int			getClientfd()	const;
 	int			getRegistered()	const;
+	int			getisOperator()	const;
 
 public:
 	void		setUserName(std::string UserName);
@@ -77,7 +79,7 @@ public:
 	void		setID(std::string ID);
 	void		setClientfd(int clientfd);
 	void		setRegistered(int Registered);
-
+	void		setIsOperator(int isOperator);
 };
 
 
