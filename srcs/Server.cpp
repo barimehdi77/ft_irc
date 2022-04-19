@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 23:57:46 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/19 00:00:36 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,11 @@ Server::Server(std::string Name, int max_online, std::string Port)
 
 Server::~Server() {}
 
-std::string	Server::_welcomemsg(void)
-{
-	std::string welcome = RED;
-	// welcome.append(this->_name);
-	welcome.append("██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗\n");
-	welcome.append("██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝\n");
-	welcome.append("██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗\n");
-	welcome.append("██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝\n");
-	welcome.append("╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗\n");
-	welcome.append(" ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝\n");
-	welcome.append(BLUE);
-	welcome.append("You need to login so you can start chatting OR you can send HELP to see how :) \n");
-	welcome.append(RESET);
-	return (welcome);
-};
-
 std::string	Server::_printError(int num, std::string reply, std::string message)
 {
 	// std::string ret = num + " " + reply + "\n\t" + message + "\n";
 	return (std::to_string(num) + " " + reply + "\n\t" + message + "\n");
 	// std::cout << num << " " << reply << "\n\t" << message << std::endl;
-}
-
-std::string	Server::_printReply(int num, std::string reply, std::string message)
-{
-	return (std::to_string(num) + " " + reply + "\n\t" + message + "\n");
 }
 
 void	Server::_newClient(void)
@@ -80,48 +59,6 @@ void	Server::_newClient(void)
 			<< inet_ntoa(((struct sockaddr_in*)&remotaddr)->sin_addr)
 			<< " on socket " << newfd << std::endl;
 	}
-};
-
-void	Server::_broadcastmsg(int sender_fd, std::string buf, int nbytes)
-{
-	for (int j = 0; j < this->_online_c; j++)
-	{
-		int dest_fd = this->_clients[j].getClientfd();
-		// Except the listener and ourselves
-		if (dest_fd != this->_socketfd && dest_fd != sender_fd && this->_clients[j].getRegistered())
-			if (_sendall(dest_fd, buf) == -1)
-				std::cout << "_sendall() error: " << strerror(errno) << std::endl;
-	}
-}
-
-std::string	Server::_sendMessage(std::string message, int i)
-{
-	if (this->_clients[i].getRegistered())
-	{
-		std::string	send = this->_clients[i].getUserName() + ": " + message + "\n";
-		std::cout << send << std::endl;
-		_broadcastmsg(this->_clients[i].getClientfd(), send, send.length());
-		return (std::string());
-	}
-	else
-		return("To send messages you Need to Loggin\n");
-}
-
-int			Server::_sendall(int destfd, std::string message)
-{
-	int total = 0;
-	int bytesleft = message.length();
-	int b;
-
-	while (total < message.length())
-	{
-		b = send(destfd, message.c_str() + total, bytesleft, 0);
-		if (b == -1) break;
-		total += b;
-		bytesleft -= b;
-	}
-
-	return (b == -1 ? -1 : 0);
 };
 
 void Server::startServer(void)
