@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 23:47:57 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/19 00:05:14 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,6 @@ std::string	Server::_parsing(std::string message, int i)
 {
 	Request	request(_splitRequest(message));
 
-	// if (request.command == "HELP")
-	// 	return ("To login you need to request 'USERNAME (your_username)'\n");
-	// else if (request.command == "USERNAME")
-	// 	return (_setUsername(request.args, i));
-	// else if (request.command == "MESSAGE")
-	// 	return (_sendMessage(request.args, i));
-	// else
-	// 	return ("Command not found\nUsage: USERNAME (your_username)\n");
-	// std::cout << "command: " << request.command << std::endl;
 	if (request.invalidMessage)
 		return ("Invalid message!\n");
 	if (request.command == "PASS")
@@ -103,10 +94,8 @@ std::string	Server::_quit(Request request, int i)
 	std::string ret = ":" + this->_clients[i].getID() + " QUIT ";
 	if (request.args.size())
 		ret.append(":" + request.args[0] + "\n");
-		// return (ret.append(":" + request.args[0] + "\n"));
 	else
 		ret.append("\n");
-		// return (ret.append("\n"));
 	_broadcastmsg(this->_clients[i].getClientfd(), ret, ret.length());
 	close(this->_clients[i].getClientfd());
 	_removeFromPoll(i);
@@ -142,11 +131,5 @@ std::string	Server::_printUserInfo(int i)
 	info.append("Host: " + this->_clients[i].getHost() + "\n");
 	info.append("ID: " + this->_clients[i].getID() + "\n");
 	info.append("PassWord: " + this->_clients[i].getPassWord() + "\n");
-	// info << "Nick: " << client._Nick << std::endl;
-	// info << "UserName: " << client._UserName << std::endl;
-	// info << "FullName: " << client._FullName << std::endl;
-	// info << "Host: " << client._Host << std::endl;
-	// info << "PassWord: " << client._PassWord << std::endl;
-	// info << "ID: " << client._ID << std::endl;
 	return (info);
 };
