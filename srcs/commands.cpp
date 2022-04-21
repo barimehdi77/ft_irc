@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/21 13:46:23 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/21 14:33:39 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ std::string	Server::_setMode(Request request, int i)
 	if (!this->_clients[i].getRegistered())
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() < 2) {
-		std::cout << "Print user settings";
-		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+		std::string	ret;
+		if (request.args[0] == this->_clients[i].getNickName())
+			ret.append("User MODE settings\n");
+		ret.append(std::to_string(461) + " ERR_NEEDMOREPARAMS\n\tPASS :Not enough parameters\n");
+		return (ret);
 	}
 	if (request.args[0] != this->_clients[i].getNickName())
 		return (_printError(502, "ERR_USERSDONTMATCH", ":Cannot change mode for other users"));
