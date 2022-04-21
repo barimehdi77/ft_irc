@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/19 16:14:43 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/21 13:41:02 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ class Server
 		std::string						_setPassWord(Request request, int i);
 		std::string						_setOper(Request request, int i);
 		std::string						_setMode(Request request, int i);
+		bool							_validMode(Request request);
 		std::string						_quit(Request request, int i);
 		std::string						_sendMessage(std::string message, int i);
 		std::string						_printError(int num, std::string reply, std::string message);

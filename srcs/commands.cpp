@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/19 16:15:29 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/21 13:46:23 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,28 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
+bool		Server::_validMode(Request request) {
+	char	c = request.args[1][0];
+	if (request.args[1].length() != 2 || (request.args[1][0] != '-' && request.args[1][0] != '+'))
+		return false;
+	if (c != 'a' && c != 'i' && c != 'w' && c != 'r' && c != 'o' && c != 'O' && c != 's')
+		return false;
+	return true;
+}
+
 std::string	Server::_setMode(Request request, int i)
 {
 	if (!this->_clients[i].getRegistered())
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
-	if (request.args.size() < 2)
+	if (request.args.size() < 2) {
+		std::cout << "Print user settings";
 		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+	}
+	if (request.args[0] != this->_clients[i].getNickName())
+		return (_printError(502, "ERR_USERSDONTMATCH", ":Cannot change mode for other users"));
+	if (!_validMode(request))
+		return (_printError(501, "ERR_UMODEUNKNOWNFLAG", ":Unknown MODE flag"));
+	return (_printReply(221, "RPL_UMODEIS", request.args[1]));
 }
 
 std::string	Server::_setOper(Request request, int i)
