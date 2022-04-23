@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/22 21:44:50 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/23 13:29:41 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,24 @@ std::string	Server::_parsing(std::string message, int i)
 };
 
 bool		Server::_validMode(Request request) {
-	char	c = request.args[1][0];
+	char	c = request.args[1][1];
 	if (request.args[1].length() != 2 || (request.args[1][0] != '-' && request.args[1][0] != '+'))
 		return false;
 	if (c != 'a' && c != 'i' && c != 'w' && c != 'r' && c != 'o' && c != 'O' && c != 's')
 		return false;
 	return true;
+}
+
+std::string	Server::_printUserModes(std::string ret, int i)
+{
+	ret.append("a: " + std::to_string(this->_clients[i].getMode('a')));
+	ret.append("\ni: " + std::to_string(this->_clients[i].getMode('i')));
+	ret.append("\nw: " + std::to_string(this->_clients[i].getMode('w')));
+	ret.append("\nr: " + std::to_string(this->_clients[i].getMode('r')));
+	ret.append("\no: " + std::to_string(this->_clients[i].getMode('o')));
+	ret.append("\nO: " + std::to_string(this->_clients[i].getMode('O')));
+	ret.append("\ns: " + std::to_string(this->_clients[i].getMode('s')) + "\n");
+	return ret;
 }
 
 std::string	Server::_setMode(Request request, int i)
@@ -60,8 +72,8 @@ std::string	Server::_setMode(Request request, int i)
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() < 2) {
 		std::string	ret;
-		if (request.args[0] == this->_clients[i].getNickName())
-			ret.append("User MODE settings\n");
+		if (request.args.size() == 1 && request.args[0] == this->_clients[i].getNickName())
+			ret = _printUserModes(ret, i);
 		ret.append(std::to_string(461) + " ERR_NEEDMOREPARAMS\n\tPASS :Not enough parameters\n");
 		return (ret);
 	}
@@ -69,6 +81,10 @@ std::string	Server::_setMode(Request request, int i)
 		return (_printError(502, "ERR_USERSDONTMATCH", ":Cannot change mode for other users"));
 	if (!_validMode(request))
 		return (_printError(501, "ERR_UMODEUNKNOWNFLAG", ":Unknown MODE flag"));
+	if (request.args[1][0] == '+')
+		this->_clients[i].setMode(true, request.args[1][1]);
+	else
+		this->_clients[i].setMode(false, request.args[1][1]);		
 	return (_printReply(221, "RPL_UMODEIS", request.args[1]));
 }
 

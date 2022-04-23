@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/22 22:56:49 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/23 13:41:37 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../headers/Client.hpp"
 
 
-Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID() {};
+Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID(), _modes() {};
 Client::Client( const Client& x ): _Host(x._Host) { *this = x; };
 
 
@@ -38,15 +38,32 @@ Client & Client::operator=( const Client& rhs)
 
 Client::~Client() {};
 
-std::string	Client::getUserName()	const { return (this->_UserName); };
-std::string	Client::getNickName()	const { return (this->_NickName); };
-std::string	Client::getFullName()	const { return (this->_FullName); };
-std::string	Client::getPassWord()	const { return (this->_PassWord); };
-std::string Client::getHost()		const { return (this->_Host); };
-std::string Client::getID()			const { return (this->_ID); }
-int			Client::getClientfd()	const { return (this->_clientfd); };
-int			Client::getRegistered()	const { return (this->_Registered); };
-int			Client::getisOperator()	const { return (this->_isOperator); };
+std::string	Client::getUserName()		const { return (this->_UserName); };
+std::string	Client::getNickName()		const { return (this->_NickName); };
+std::string	Client::getFullName()		const { return (this->_FullName); };
+std::string	Client::getPassWord()		const { return (this->_PassWord); };
+std::string Client::getHost()			const { return (this->_Host); };
+std::string Client::getID()				const { return (this->_ID); }
+int			Client::getClientfd()		const { return (this->_clientfd); };
+int			Client::getRegistered()		const { return (this->_Registered); };
+int			Client::getisOperator()		const { return (this->_isOperator); };
+int			Client::getMode(char mode)	const
+{
+	if (mode == 'a')
+		return this->_modes.away;
+	else if (mode == 'i')
+		return this->_modes.invisible;
+	else if (mode == 'w')
+		return this->_modes.wallops;
+	else if (mode == 'r')
+		return this->_modes.restricted;
+	else if (mode == 'o')
+		return this->_modes.op;
+	else if (mode == 'O')
+		return this->_modes.localOp;
+	else if (mode == 's')
+		return this->_modes.server;
+}
 
 
 void		Client::setUserName(std::string UserName) { this->_UserName = UserName; };
@@ -57,5 +74,24 @@ void		Client::setPassWord( std::string PassWord )	{ this->_PassWord = PassWord; 
 void		Client::setID( std::string ID )				{ this->_ID = ID; };
 void		Client::setClientfd( int Clientfd )			{ this->_clientfd = Clientfd; };
 void		Client::setRegistered( int Registered )		{ this->_Registered = Registered; };
-void		Client::setIsOperator( int isOperator )		{ this->_isOperator = isOperator; };
-
+void		Client::setIsOperator(int isOperator)
+{
+	this->_isOperator = isOperator;
+	this->_modes.op = isOperator;
+	this->_modes.localOp = isOperator;
+};
+void		Client::setMode(int value, char mode)
+{
+	if (mode == 'i')
+		this->_modes.invisible = value;
+	else if (mode == 'w')
+		this->_modes.wallops = value;
+	else if (mode == 'r' && value == 1)
+		this->_modes.restricted = value;
+	else if (mode == 'o' && value == 0)
+		this->_modes.op = value;
+	else if (mode == 'O' && value == 0)
+		this->_modes.localOp = value;
+	else if (mode == 's')
+		this->_modes.server = value;
+}

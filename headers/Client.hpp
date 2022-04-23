@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/22 22:53:57 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/23 12:53:05 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,16 @@
 # define PURPLE "\e[1;35m"
 # define BLUE "\e[1;34m"
 
+struct Modes
+{
+	bool	away;
+	bool	invisible;
+	bool	wallops;
+	bool	restricted;
+	bool	op;
+	bool	localOp;
+	bool	server;
+};
 
 class Client
 {
@@ -54,6 +64,7 @@ class Client
 		std::string				_PassWord;
 		struct sockaddr_storage	_remotaddr;
 		socklen_t				_addrlen;
+		struct Modes			_modes;
 		// list vector				_channels;
 
 	// private:
@@ -65,15 +76,16 @@ class Client
 		Client & operator= ( const Client & rhs );
 
 	public:
-		std::string	getUserName()	const;
-		std::string	getNickName()	const;
-		std::string	getFullName()	const;
-		std::string	getID()			const;
-		std::string	getHost()		const;
-		std::string	getPassWord()	const;
-		int			getClientfd()	const;
-		int			getRegistered()	const;
-		int			getisOperator()	const;
+		std::string	getUserName()		const;
+		std::string	getNickName()		const;
+		std::string	getFullName()		const;
+		std::string	getID()				const;
+		std::string	getHost()			const;
+		std::string	getPassWord()		const;
+		int			getClientfd()		const;
+		int			getRegistered()		const;
+		int			getisOperator()		const;
+		int			getMode(char mode)	const;
 
 	public:
 		void		setUserName(std::string UserName);
@@ -85,6 +97,7 @@ class Client
 		void		setClientfd(int clientfd);
 		void		setRegistered(int Registered);
 		void		setIsOperator(int isOperator);
+		void		setMode(int value, char mode);
 };
 
 

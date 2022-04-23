@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/22 22:39:36 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/23 13:01:02 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ class Server
 		std::string						_printUserInfo(int i);
 		std::string						_printHelpInfo(int i);
 		std::string						_printReply(int num, std::string reply, std::string message);
+		std::string						_printUserModes(std::string ret, int i);
 
 	// private:
 	// 	class ArgsError: public std::exception
