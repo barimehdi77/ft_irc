@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+         #
+#    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/19 13:26:34 by asfaihi          ###   ########.fr        #
+#    Updated: 2022/04/22 21:47:42 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ HEADERS_FOLDER = headers
 
 # Name of variables
 FLAGS = #-Wall -Wextra -Werror
-CPP_STANDARD = -std=c++98
+CPP_STANDARD = #-std=c++98
 RED = \033[1;31m
 GREEN = \033[1;32m
 YELLOW = \033[1;33m
@@ -65,12 +65,12 @@ $(NAME): head $(OBJS) $(MAIN_OBJ) $(HEADERS_FOLDER)
 
 $(OBJECTSDIR)/%.o: $(SRCS_FOLDER)/%.cpp $(HEADERS_FOLDER)
 	@$(MKDIR) $(dir $@)
-	@echo "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
 	@$(CC) $(CPP_STANDARD) $(FLAGS) -I $(HEADERS_FOLDER) -o $@ -c $<
+	@echo "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
 
 $(OBJECTSDIR)/%.o: main.cpp $(HEADERS_FOLDER)
-	@echo "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
 	@$(CC) $(CPP_STANDARD) $(FLAGS) -I $(HEADERS_FOLDER) -o $@ -c $<
+	@echo "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
 
 # Remove all objects, dependencies and executable files generated during the build
 clean:
