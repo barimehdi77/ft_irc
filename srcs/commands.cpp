@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/23 13:29:41 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/23 23:42:52 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ std::string	Server::_parsing(std::string message, int i)
 	else if (request.command == "HELP")
 		return (_printHelpInfo(i));
 	else if (request.command == "JOIN")
-		return ("JOIN command\n");
+		return (_joinChannel(request, i));
 	else if (request.command == "KICK")
 		return ("KICK command\n");
 	else if (request.command == "QUIT")
@@ -43,6 +43,13 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_printUserInfo(i));
 	else
 		return ("Invalid command\n");
+};
+
+std::string	Server::_joinChannel( Request request, int i )
+{
+	std::cout << "cmd: " << request.command
+				<< "args: " << request.args[0] << " " << request.args[1] << std::endl;
+	return ("");
 };
 
 bool		Server::_validMode(Request request) {
@@ -84,7 +91,7 @@ std::string	Server::_setMode(Request request, int i)
 	if (request.args[1][0] == '+')
 		this->_clients[i].setMode(true, request.args[1][1]);
 	else
-		this->_clients[i].setMode(false, request.args[1][1]);		
+		this->_clients[i].setMode(false, request.args[1][1]);
 	return (_printReply(221, "RPL_UMODEIS", request.args[1]));
 }
 

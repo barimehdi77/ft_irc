@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/23 13:01:02 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/23 23:44:36 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 
 #include "Client.hpp"
+
 /*  This class is temporarily		*/
 
 class Request
@@ -27,21 +28,23 @@ class Request
 	Request() : args(), command(), invalidMessage(false) {}
 };
 
+class Channel;
 
 class Server
 {
 	private:
-		std::string						_name;
-		std::vector<std::string>		_unavailableUserName;
-		int								_socketfd;
-		Client							*_clients;
-		struct pollfd					*_pfds;
-		int								_online_c;
-		int								_max_online_c;
-		std::string						_prefix;
+		std::string							_name;
+		int									_socketfd;
+		Client								*_clients;				// switch to vector or map
+		struct pollfd						*_pfds;					// find a way to reallocate without using realloc()
+		int									_online_c;
+		int									_max_online_c;
+		std::string							_prefix;
+		std::map<std::string, Channel>		_allChannels;
 
 		///
-		std::vector<std::string>		_clientNicknames;
+		std::vector<std::string>			_unavailableUserName;
+		std::vector<std::string>			_clientNicknames;
 		///
 
 	private:
@@ -60,6 +63,7 @@ class Server
 		std::string						_setPassWord(Request request, int i);
 		std::string						_setOper(Request request, int i);
 		std::string						_setMode(Request request, int i);
+		std::string						_joinChannel(Request request, int i);
 		bool							_validMode(Request request);
 		std::string						_quit(Request request, int i);
 		std::string						_sendMessage(std::string message, int i);
@@ -87,7 +91,7 @@ class Server
 		void	startServer(void);
 };
 
-
+#include "Channel.hpp"
 
 #endif
 

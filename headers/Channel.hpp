@@ -6,12 +6,15 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/22 22:57:24 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/23 23:45:49 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Server.hpp"
 
+#ifndef CHANNEL_HPP
+#define CHANNEL_HPP
+
+#include "Server.hpp"
 
 class Channel
 {
@@ -33,5 +36,7 @@ class Channel
 		Channel &operator=( const Channel& rhs );
 		~Channel();
 };
+
+#endif
 
 
