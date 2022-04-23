@@ -6,7 +6,7 @@
 #    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/22 21:47:42 by mbari            ###   ########.fr        #
+#    Updated: 2022/04/22 22:49:50 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ getSocket.cpp \
 messagesHandling.cpp \
 pollHandling.cpp \
 requestHandling.cpp \
+Channel.cpp \
 
 MAIN = main.cpp
 # Define objects for all sources
@@ -65,12 +66,14 @@ $(NAME): head $(OBJS) $(MAIN_OBJ) $(HEADERS_FOLDER)
 
 $(OBJECTSDIR)/%.o: $(SRCS_FOLDER)/%.cpp $(HEADERS_FOLDER)
 	@$(MKDIR) $(dir $@)
+	@echo -n "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t"
 	@$(CC) $(CPP_STANDARD) $(FLAGS) -I $(HEADERS_FOLDER) -o $@ -c $<
-	@echo "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
+	@echo "$(GREEN){DONE}$(BLUE) █$(RESET)"
 
 $(OBJECTSDIR)/%.o: main.cpp $(HEADERS_FOLDER)
+	@echo -n "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t"
 	@$(CC) $(CPP_STANDARD) $(FLAGS) -I $(HEADERS_FOLDER) -o $@ -c $<
-	@echo "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
+	@echo "$(GREEN){DONE}$(BLUE) █$(RESET)"
 
 # Remove all objects, dependencies and executable files generated during the build
 clean:

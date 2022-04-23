@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/19 15:39:55 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/22 22:56:49 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,26 @@
 
 
 Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID() {};
+Client::Client( const Client& x ): _Host(x._Host) { *this = x; };
 
 
-// Client & Client::operator=( const Client& rhs)
-// {
-// 		return (*this);
-// }
+Client & Client::operator=( const Client& rhs)
+{
+	if (this == &rhs)
+		return (*this);
+	this->_clientfd = rhs._clientfd;
+	this->_Registered = rhs._Registered;
+	this->_isOperator = rhs._isOperator;
+	this->_NickName = rhs._NickName;
+	this->_UserName = rhs._UserName;
+	this->_FullName = rhs._FullName;
+	// this->_Host = rhs._Host;
+	this->_ID = rhs._ID;
+	this->_PassWord = rhs._PassWord;
+	this->_remotaddr = rhs._remotaddr;
+	this->_addrlen = rhs._addrlen;
+	return (*this);
+};
 
 Client::~Client() {};
 

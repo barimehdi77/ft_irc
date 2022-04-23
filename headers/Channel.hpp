@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/22 22:44:35 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/22 22:57:24 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ class Channel
 
 	private:
 		Channel();
-		Channel( const Channel& x );
 
 	public:
 		Channel( std::string channelName, Client Creater );
+		Channel( const Channel& x );
 		Channel &operator=( const Channel& rhs );
 		~Channel();
 };
