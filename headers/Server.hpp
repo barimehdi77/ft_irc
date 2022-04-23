@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/23 00:13:41 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/22 22:39:36 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ class Server
 		Server(std::string Name, int max_online, std::string Port);
 		Server(const Server & x);
 		~Server();
-		Server & operator=(const Server & rhs);
+		Server & operator=( const Server & rhs );
 
 	public:
 		void	startServer(void);
