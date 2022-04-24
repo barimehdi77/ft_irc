@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/24 00:27:32 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/24 01:06:57 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ class Channel
 		Channel( const Channel& x );
 		Channel &operator=( const Channel& rhs );
 		~Channel();
+
+	public:
+		std::string	getName() const;
+		std::map<int, Client> getOperators() const;
 };
 
 #endif

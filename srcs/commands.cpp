@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/24 00:30:44 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/24 01:19:12 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,37 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
+std::vector<std::string> Server::_commaSeparator(std::string arg)
+{
+	std::vector<std::string> ret;
+	int pos = 0;
+	std::cout << "start parsing" << std::endl;
+	while ((pos = arg.find(",")) != std::string::npos)
+	{
+		ret.push_back(arg.substr(0, pos));
+		std::cout << ret.back() << std::endl;
+		arg.erase(0, pos + 1);
+	}
+	ret.push_back(arg.substr(0, pos));
+	std::cout << ret.back() << std::endl;
+	return (ret);
+}
+
 std::string	Server::_joinChannel( Request request, int i )
 {
-	if (request.args.size() >= 3)
+	if (request.args.size() >= 2)
 		return (_printError(405, " ERR_TOOMANYCHANNELS\n", " :You have joined too many channels"));
-	if (request.args.size() < 2)
+	if (request.args.size() == 0)
 		return (_printError(461, " ERR_NEEDMOREPARAMS\n", " :Not enough parameters"));
+	if (request.args.size() == 1)
+	{
+		std::vector<std::string> parsChannels(_commaSeparator(request.args[0]));
+		std::vector<std::string>::iterator it = parsChannels.begin();
+		while (it != parsChannels.end())
+		{
+			this->_allChannels.insert(std::pair<std::string, Channel>(*it, Channel(*it++, this->_clients[i])));
+		}
+	}
 
 	return ("");
 };
@@ -204,5 +229,16 @@ std::string	Server::_printUserInfo(int i)
 	info.append("ID: " + this->_clients[i].getID() + "\n");
 	info.append("PassWord: " + this->_clients[i].getPassWord() + "\n");
 	info.append("Operator: " + std::to_string(this->_clients[i].getisOperator()) + "\n");
+
+	info.append("/************************ List All Channels *****************************/\n");
+	std::map<std::string, Channel>::iterator it = this->_allChannels.begin();
+	while (it != this->_allChannels.end())
+	{
+		info.append(BLUE + it->first + RESET + ":\n");
+		info.append(YELLOW "\tChannel Name: " RESET + it->first + "\n");
+		info.append(YELLOW "\tChannel Name inside class: " RESET + it->second.getName() + "\n");
+		info.append(YELLOW  "\tChannel Creator: " RESET + it->second.getOperators().begin()->second.getFullName() + "\n");
+		it++;
+	}
 	return (info);
 };

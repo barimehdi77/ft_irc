@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/23 23:44:36 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/24 00:56:13 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ class Server
 		std::string						_printHelpInfo(int i);
 		std::string						_printReply(int num, std::string reply, std::string message);
 		std::string						_printUserModes(std::string ret, int i);
+		std::vector<std::string>		_commaSeparator(std::string arg);
+		// Channel							_createChannel( std::)
 
 	// private:
 	// 	class ArgsError: public std::exception
