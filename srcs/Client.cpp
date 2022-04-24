@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/23 23:43:28 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/24 01:28:36 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nut
 Client::Client( const Client& x ): _Host(x._Host) { *this = x; };
 
 
-Client & Client::operator=( const Client& rhs)
+Client & Client::operator=( const Client& rhs )
 {
 	if (this == &rhs)
 		return (*this);

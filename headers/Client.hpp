@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/23 12:53:05 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/24 01:26:21 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ class Client
 
 	public:
 		Client();
-		Client(const Client & x);
+		Client( const Client & x );
 		~Client();
 		Client & operator= ( const Client & rhs );
 

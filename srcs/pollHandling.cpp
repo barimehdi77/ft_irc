@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:54:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/18 23:54:45 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/24 01:35:58 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	Server::_addToPoll(int newfd)
 void	Server::_removeFromPoll(int i)
 {
 	close(this->_pfds[i].fd);
+	// fill this with null if i == this->_online_c - 1
 	this->_pfds[i] = this->_pfds[this->_online_c - 1];
-	// this->_clients[i] = nullptr;
+	this->_clients[i] = this->_clients[this->_online_c - 1];
 
 	this->_online_c--;
 };
