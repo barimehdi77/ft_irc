@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/23 23:42:52 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/24 00:10:31 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,12 @@ std::string	Server::_parsing(std::string message, int i)
 
 std::string	Server::_joinChannel( Request request, int i )
 {
-	std::cout << "cmd: " << request.command
-				<< "args: " << request.args[0] << " " << request.args[1] << std::endl;
-	return ("");
+	if (request.args.size() >= 3)
+		return (_printError(405, " ERR_TOOMANYCHANNELS\n", " :You have joined too many channels"));
+	if (request.args.size() < 2)
+		return (_printError(461, " ERR_NEEDMOREPARAMS\n", " :Not enough parameters"));
+
+
 };
 
 bool		Server::_validMode(Request request) {

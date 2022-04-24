@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/22 22:44:57 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/24 00:16:49 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 Channel::Channel() {};
 Channel::Channel( const Channel& x ) { *this = x; };
 Channel::Channel( std::string channelName, Client Creator): _name(channelName), _onlineUsers(1), _topic(), _prefix()
+{
+	this->_operators.insert(std::pair<int, Client>(Creator.getClientfd(), Creator));
+};
+Channel::Channel( std::string channelName, std::string channelKey, Client Creater ): _name(channelName), _key(channelKey), _onlineUsers(1), _topic(), _prefix()
 {
 	this->_operators.insert(std::pair<int, Client>(Creator.getClientfd(), Creator));
 };

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/23 23:45:49 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/24 00:16:28 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ class Channel
 		char					_prefix;			//
 		int						_onlineUsers;
 		std::string				_name;
+		std::string				_key
 		std::string				_topic;
 		std::map<int, Client>	_members;
 		std::map<int, Client>	_operators;			// The first operator is also the one who created the channel need to add "!" to his name
@@ -32,6 +33,7 @@ class Channel
 
 	public:
 		Channel( std::string channelName, Client Creater );
+		Channel( std::string channelName, std::string channelKey, Client Creater );
 		Channel( const Channel& x );
 		Channel &operator=( const Channel& rhs );
 		~Channel();
