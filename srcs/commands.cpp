@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/24 00:10:31 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/24 00:30:44 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ std::string	Server::_joinChannel( Request request, int i )
 	if (request.args.size() < 2)
 		return (_printError(461, " ERR_NEEDMOREPARAMS\n", " :Not enough parameters"));
 
-
+	return ("");
 };
 
 bool		Server::_validMode(Request request) {

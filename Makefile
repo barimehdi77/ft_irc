@@ -6,7 +6,7 @@
 #    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/04/23 23:46:32 by mbari            ###   ########.fr        #
+#    Updated: 2022/04/24 00:32:18 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,14 +66,14 @@ $(NAME): head $(OBJS) $(MAIN_OBJ) $(HEADERS_FOLDER)
 
 $(OBJECTSDIR)/%.o: $(SRCS_FOLDER)/%.cpp $(HEADERS_FOLDER)
 	@$(MKDIR) $(dir $@)
-	@printf "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t"
+	@printf "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t..."
 	@$(CC) $(CPP_STANDARD) $(FLAGS) -I $(HEADERS_FOLDER) -o $@ -c $<
-	@echo "$(GREEN){DONE}$(BLUE) █$(RESET)"
+	@echo "\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
 
 $(OBJECTSDIR)/%.o: main.cpp $(HEADERS_FOLDER)
-	@printf "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t"
+	@printf "$(BLUE)█ $(YELLOW)Compiling$(RESET) $<:\r\t\t\t\t\t\t\t..."
 	@$(CC) $(CPP_STANDARD) $(FLAGS) -I $(HEADERS_FOLDER) -o $@ -c $<
-	@echo "$(GREEN){DONE}$(BLUE) █$(RESET)"
+	@echo "\r\t\t\t\t\t\t\t$(GREEN){DONE}$(BLUE) █$(RESET)"
 
 # Remove all objects, dependencies and executable files generated during the build
 clean:
