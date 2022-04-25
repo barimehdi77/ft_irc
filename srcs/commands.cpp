@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 14:52:17 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/25 15:04:58 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_joinChannel(request, i));
 	else if (request.command == "KICK")
 		return ("KICK command\n");
+	else if (request.command == "PART")
+		return ("PART command\n");
 	else if (request.command == "QUIT")
 		return (_quit(request, i));
 	else if (request.command == "INFO")
@@ -44,6 +46,17 @@ std::string	Server::_parsing(std::string message, int i)
 	else
 		return ("Invalid command\n");
 };
+
+std::string	Server::_part( Request request, int i ) {
+	if (!this->_clients[i]->getRegistered())
+		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+	if (request.args.size() == 0)
+		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+	if (0 /* No such channel */)
+		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
+	if (0 /* Not in channel */)
+		return (_printError(442, " ERR_NOTONCHANNEL", " <channel> :You're not on that channel"));
+}
 
 std::vector<std::string> Server::_commaSeparator(std::string arg)
 {
@@ -84,9 +97,9 @@ std::string	Server::_joinChannel( Request request, int i )
 				if (0 /* Channel key doesn't match */)
 					return (_printError(475, " ERR_BADCHANNELKEY", " <channel> :Cannot join channel (+k)"));
 				if (0 /* Channel is full */)
-					return (_printError(475, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
+					return (_printError(471, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
 				if (0 /* No such channel */)
-					return (_printError(475, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
+					return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
 				Channel test(*it, this->_clients[i]);
 				this->_allChannels.insert(std::pair<std::string, Channel *>(*it, &test));
 				this->_clients[i]->joinChannel( *it, &test );

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 13:16:13 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 14:59:11 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ class Server
 		std::string						_joinChannel(Request request, int i);
 		bool							_validMode(Request request);
 		std::string						_quit(Request request, int i);
+		std::string						_part(Request request, int i);
 		std::string						_sendMessage(std::string message, int i);
 		std::string						_printError(int num, std::string reply, std::string message);
 		// std::string						_setUsername( std::string username, int i );
