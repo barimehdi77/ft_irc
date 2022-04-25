@@ -6,30 +6,14 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/24 01:26:21 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 00:38:55 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __CLIENT_HPP
 #define __CLIENT_HPP
 
-
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <unistd.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <cstring>
-#include <algorithm>
-#include <utility>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <poll.h>
+#include "Server.hpp"
 
 # define GREEN "\e[1;32m"
 # define RESET "\e[0m"
@@ -53,19 +37,19 @@ struct Modes
 class Client
 {
 	private:
-		int						_clientfd;
-		bool					_Registered;
-		bool					_isOperator;
-		std::string				_NickName;
-		std::string				_UserName;
-		std::string				_FullName;
-		const std::string		_Host;
-		std::string				_ID;
-		std::string				_PassWord;
-		struct sockaddr_storage	_remotaddr;
-		socklen_t				_addrlen;
-		struct Modes			_modes;
-		// list vector				_channels;
+		int									_clientfd;
+		bool								_Registered;
+		bool								_isOperator;
+		std::string							_NickName;
+		std::string							_UserName;
+		std::string							_FullName;
+		const std::string					_Host;
+		std::string							_ID;
+		std::string							_PassWord;
+		struct sockaddr_storage				_remotaddr;
+		socklen_t							_addrlen;
+		struct Modes						_modes;
+		std::map<std::string, Channel>		_joinedChannels;
 
 	// private:
 
@@ -75,7 +59,7 @@ class Client
 		~Client();
 		Client & operator= ( const Client & rhs );
 
-	public:
+	public: /*             Getters                         */
 		std::string	getUserName()		const;
 		std::string	getNickName()		const;
 		std::string	getFullName()		const;
@@ -87,7 +71,7 @@ class Client
 		int			getisOperator()		const;
 		int			getMode(char mode)	const;
 
-	public:
+	public: /*             Setters                         */
 		void		setUserName(std::string UserName);
 		void		setNickName(std::string NickName);
 		void		setFullName(std::string FullName);
@@ -98,6 +82,13 @@ class Client
 		void		setRegistered(int Registered);
 		void		setIsOperator(int isOperator);
 		void		setMode(int value, char mode);
+		void		joinChannel( std::string ChannelName, Channel channel );
+
+	public:
+		int			isJoined( std::string ChannelName ) const;
+
+	public:
+		std::string		JoinedChannels() const;
 };
 
 

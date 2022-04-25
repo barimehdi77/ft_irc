@@ -6,17 +6,30 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/24 01:24:22 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 00:35:52 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __SERVER_HPP
 #define __SERVER_HPP
 
-
-#include "Client.hpp"
-
 /*  This class is temporarily		*/
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <unistd.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <cstring>
+#include <algorithm>
+#include <utility>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <poll.h>
 
 class Request
 {
@@ -28,6 +41,7 @@ class Request
 	Request() : args(), command(), invalidMessage(false) {}
 };
 
+class Client;
 class Channel;
 
 class Server
@@ -94,6 +108,7 @@ class Server
 };
 
 #include "Channel.hpp"
+#include "Client.hpp"
 
 #endif
 

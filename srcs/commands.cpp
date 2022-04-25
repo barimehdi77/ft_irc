@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/24 01:19:12 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 01:24:40 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,15 @@ std::string	Server::_joinChannel( Request request, int i )
 		std::vector<std::string>::iterator it = parsChannels.begin();
 		while (it != parsChannels.end())
 		{
-			this->_allChannels.insert(std::pair<std::string, Channel>(*it, Channel(*it++, this->_clients[i])));
-		}
+			std::cout << "Adding " << *it << " to Channels list" << std::endl;
+			if (this->_allChannels.find(*it) == this->_allChannels.end())
+			{
+				Channel test(*it, this->_clients[i]);
+				this->_allChannels.insert(std::pair<std::string, Channel>(*it, test));
+				this->_clients[i].joinChannel( *it, test );
+			}
+			it++;
+		};
 	}
 
 	return ("");
@@ -230,15 +237,21 @@ std::string	Server::_printUserInfo(int i)
 	info.append("PassWord: " + this->_clients[i].getPassWord() + "\n");
 	info.append("Operator: " + std::to_string(this->_clients[i].getisOperator()) + "\n");
 
-	info.append("/************************ List All Channels *****************************/\n");
-	std::map<std::string, Channel>::iterator it = this->_allChannels.begin();
-	while (it != this->_allChannels.end())
-	{
-		info.append(BLUE + it->first + RESET + ":\n");
-		info.append(YELLOW "\tChannel Name: " RESET + it->first + "\n");
-		info.append(YELLOW "\tChannel Name inside class: " RESET + it->second.getName() + "\n");
-		info.append(YELLOW  "\tChannel Creator: " RESET + it->second.getOperators().begin()->second.getFullName() + "\n");
-		it++;
-	}
+	info.append("/************************ List All Your Channels *****************************/\n");
+	// std::map<std::string, Channel>::iterator it = this->_allChannels.begin();
+	// while (it != this->_allChannels.end())
+	// {
+	// 	info.append(BLUE + it->first + RESET + ":\n");
+	// 	info.append(YELLOW "\tChannel Name: " RESET + it->first + "\n");
+	// 	info.append(YELLOW "\tChannel Name inside class: " RESET + it->second.getName() + "\n");
+	// 	info.append(YELLOW  "\tChannel Creator: " RESET + it->second.getOperators().begin()->second.getFullName() + "\n");
+	// 	it++;
+	// }
+	info.append(this->_clients[i].JoinedChannels());
 	return (info);
 };
+
+
+
+// USER mbari * * :Bari mehdi
+// JOIN #test,&help
