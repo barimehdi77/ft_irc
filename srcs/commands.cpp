@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 13:03:23 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 14:52:17 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,12 @@ std::vector<std::string> Server::_commaSeparator(std::string arg)
 
 std::string	Server::_joinChannel( Request request, int i )
 {
-	if (request.args.size() >= 2)
-		return (_printError(405, " ERR_TOOMANYCHANNELS\n", " :You have joined too many channels"));
+	if (!this->_clients[i]->getRegistered())
+		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() == 0)
-		return (_printError(461, " ERR_NEEDMOREPARAMS\n", " :Not enough parameters"));
+		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+	if (0 /* User is banned */)
+		return (_printError(474, " ERR_BANNEDFROMCHAN", " <channel> :Cannot join channel (+b)"));
 	if (request.args.size() == 1)
 	{
 		std::vector<std::string> parsChannels(_commaSeparator(request.args[0]));
@@ -76,6 +78,15 @@ std::string	Server::_joinChannel( Request request, int i )
 			std::cout << "Adding " << *it << " to Channels list" << std::endl;
 			if (this->_allChannels.find(*it) == this->_allChannels.end())
 			{
+				
+				if (0 /* User joined maximum number of allowed channels */)
+					return (_printError(405, " ERR_TOOMANYCHANNELS", "<channel name> :You have joined too many channels"));
+				if (0 /* Channel key doesn't match */)
+					return (_printError(475, " ERR_BADCHANNELKEY", " <channel> :Cannot join channel (+k)"));
+				if (0 /* Channel is full */)
+					return (_printError(475, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
+				if (0 /* No such channel */)
+					return (_printError(475, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
 				Channel test(*it, this->_clients[i]);
 				this->_allChannels.insert(std::pair<std::string, Channel *>(*it, &test));
 				this->_clients[i]->joinChannel( *it, &test );
@@ -83,8 +94,7 @@ std::string	Server::_joinChannel( Request request, int i )
 			it++;
 		};
 	}
-
-	return ("");
+	return (_printReply(332, "RPL_TOPIC", "<channel> :<channel's topic>"));
 };
 
 bool		Server::_validMode(Request request) {
