@@ -6,24 +6,25 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 01:21:53 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 13:46:27 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Channel.hpp"
 
-Channel::Channel() {};
+Channel::Channel(): _operators(), _members(), _voice(), _name(), _prefix(), _onlineUsers(), _key(), _topic() {};
 Channel::Channel( const Channel& x ) { *this = x; };
-Channel::Channel( std::string channelName, Client Creator): _name(channelName), _onlineUsers(1), _topic(), _prefix()
+Channel::Channel( std::string channelName, Client *Creator): _name(channelName), _onlineUsers(1), _topic(), _prefix(), _operators(), _members(), _voice()
 {
-	this->_operators.insert(std::pair<int, Client>(Creator.getClientfd(), Creator));
-	// Creator.joinChannel(channelName, *this);
+	this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
+	// this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
+	// Creator->joinChannel(channelName, this);
 	// std::cout << Creator.JoinedChannels() << std::endl;
 };
-Channel::Channel( std::string channelName, std::string channelKey, Client Creator ): _name(channelName), _key(channelKey), _onlineUsers(1), _topic(), _prefix()
+Channel::Channel( std::string channelName, std::string channelKey, Client *Creator ): _name(channelName), _key(channelKey), _onlineUsers(1), _topic(), _prefix(), _operators(), _members(), _voice()
 {
-	this->_operators.insert(std::pair<int, Client>(Creator.getClientfd(), Creator));
-	// Creator.joinChannel(channelName, *this);
+	this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
+	// Creator->joinChannel(channelName, this);
 };
 Channel::~Channel() {};
 
@@ -43,4 +44,4 @@ Channel& Channel::operator=( const Channel& rhs )
 
 
 std::string	Channel::getName() const { return (this->_name); };
-std::map<int, Client>	Channel::getOperators() const { return (this->_operators); };
+Client*	Channel::getOperators( int i ) const { return (this->_operators.at(i)); };

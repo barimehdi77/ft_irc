@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/23 23:31:52 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 13:12:41 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 Server::Server() : _name(), _unavailableUserName(), _socketfd(0), _pfds(nullptr), _online_c(0), _max_online_c(0), _prefix(":"), _clientNicknames(), _allChannels() {};
 
-Server::Server(std::string Name, int max_online, std::string Port)
+Server::Server(std::string Name, int max_online, std::string Port): _clients()
 {
 	this->_name = Name;
 	this->_max_online_c = max_online + 1;
 	this->_online_c = 0;
 	this->_pfds = new struct pollfd[max_online];
-	this->_clients = new Client[max_online];
+	// this->_clients = new Client[max_online];
 	_getSocket(Port);
 	this->_pfds[0].fd = this->_socketfd;
 	this->_pfds[0].events = POLLIN;

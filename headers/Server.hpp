@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 00:35:52 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 13:16:13 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,13 @@ class Server
 	private:
 		std::string							_name;
 		int									_socketfd;
-		Client								*_clients;				// switch to vector or map
+		// Client								*_clients;				// switch to vector or map
+		std::map<int, Client *>				_clients;
 		struct pollfd						*_pfds;					// find a way to reallocate without using realloc()
 		int									_online_c;
 		int									_max_online_c;
 		std::string							_prefix;
-		std::map<std::string, Channel>		_allChannels;
+		std::map<std::string, Channel *>	_allChannels;
 
 		///
 		std::vector<std::string>			_unavailableUserName;

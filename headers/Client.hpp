@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 00:38:55 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 13:01:53 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,13 @@ class Client
 		struct sockaddr_storage				_remotaddr;
 		socklen_t							_addrlen;
 		struct Modes						_modes;
-		std::map<std::string, Channel>		_joinedChannels;
+		std::map<std::string, Channel *>	_joinedChannels;
 
 	// private:
 
 	public:
 		Client();
+		Client( int fd );
 		Client( const Client & x );
 		~Client();
 		Client & operator= ( const Client & rhs );
@@ -82,7 +83,7 @@ class Client
 		void		setRegistered(int Registered);
 		void		setIsOperator(int isOperator);
 		void		setMode(int value, char mode);
-		void		joinChannel( std::string ChannelName, Channel channel );
+		void		joinChannel( std::string ChannelName, Channel *channel );
 
 	public:
 		int			isJoined( std::string ChannelName ) const;

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 01:12:38 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/25 13:38:38 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 
 Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID(), _modes(), _joinedChannels() {};
+Client::Client( int fd ): _UserName(), _clientfd(fd), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID(), _modes(), _joinedChannels() {};
 Client::Client( const Client& x ): _Host(x._Host) { *this = x; };
 
 
@@ -105,24 +106,25 @@ int		Client::isJoined( std::string ChannelName ) const
 	return (0);
 };
 
-void	Client::joinChannel( std::string ChannelName, Channel channel )
+void	Client::joinChannel( std::string ChannelName, Channel *channel )
 {
 	// std::cout << "trying to join " << ChannelName << " isJoined: " << isJoined(ChannelName) << " ?" << std::endl;
 	if (!isJoined(ChannelName))
-		this->_joinedChannels.insert(std::pair<std::string, Channel>(ChannelName, channel));
+		this->_joinedChannels.insert(std::pair<std::string, Channel *>(ChannelName, channel));
 	// std::cout << "number of channels is : " << this->_joinedChannels.size() << std::endl;
 };
 
 std::string	Client::JoinedChannels() const
 {
 	std::string	channels;
-	std::map<std::string, Channel>::const_iterator it = this->_joinedChannels.begin();
+	std::map<std::string, Channel *>::const_iterator it = this->_joinedChannels.begin();
 	while (it != this->_joinedChannels.end())
 	{
 		channels.append(BLUE + it->first + RESET + ":\n");
 		channels.append(YELLOW "\tChannel Name: " RESET + it->first + "\n");
-		channels.append(YELLOW "\tChannel Name inside class: " RESET + it->second.getName() + "\n");
-		channels.append(YELLOW  "\tChannel Creator: " RESET + it->second.getOperators().begin()->second.getFullName() + "\n");
+		channels.append(YELLOW "\tChannel Name inside class: " RESET + it->second->getName() + "\n");
+		// Client *test = it->second->getOperators();
+		// channels.append(YELLOW  "\tChannel Creator: " RESET + it->second->getOperators().begin()->second->getFullName() + "\n");
 		it++;
 	};
 	return (channels);
