@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 13:46:27 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/26 03:23:22 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,18 @@ Channel& Channel::operator=( const Channel& rhs )
 
 
 std::string	Channel::getName() const { return (this->_name); };
-Client*	Channel::getOperators( int i ) const { return (this->_operators.at(i)); };
+// Client*	Channel::getOperators( int UserFd ) const { return (this->_operators.at(UserFd)); };
+Client*		Channel::getCreator() const { return (this->_operators.begin()->second); };
+
+
+int	Channel::addMember( Client *member )
+{
+	if (this->_banned.find(member->getUserName()) != this->_banned.end())
+		return (USERISBANNED);
+	if (this->_members.find(member->getClientfd()) == this->_members.end())
+	{
+		this->_members.insert(std::pair<int, Client *>(member->getClientfd(), member));
+		return (USERISJOINED);
+	};
+	return (-1);
+}

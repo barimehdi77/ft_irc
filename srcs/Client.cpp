@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 02:52:52 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/26 03:10:23 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ std::string	Client::JoinedChannels() const
 		channels.append(YELLOW "\tChannel Name: " RESET + it->first + "\n");
 		channels.append(YELLOW "\tChannel Name inside class: " RESET + it->second->getName() + "\n");
 		// Client *test = it->second->getOperators();
-		channels.append(YELLOW  "\tChannel Creator: " RESET + it->second->getOperators(this->_clientfd)->getFullName() + "\n");
+		channels.append(YELLOW  "\tChannel Creator: " RESET + it->second->getCreator()->getFullName() + "\n");
 		it++;
 	};
 	return (channels);

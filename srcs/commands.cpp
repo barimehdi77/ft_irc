@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 02:44:28 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/26 03:25:43 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
-std::string	Server::_part( Request request, int i ) {
+std::string	Server::_part( Request request, int i )
+{
 	if (!this->_clients[i]->getRegistered())
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() == 0)
@@ -56,7 +57,8 @@ std::string	Server::_part( Request request, int i ) {
 		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
 	if (0 /* Not in channel */)
 		return (_printError(442, " ERR_NOTONCHANNEL", " <channel> :You're not on that channel"));
-}
+	return ("");
+};
 
 std::vector<std::string> Server::_commaSeparator(std::string arg)
 {
@@ -72,7 +74,29 @@ std::vector<std::string> Server::_commaSeparator(std::string arg)
 	ret.push_back(arg.substr(0, pos));
 	std::cout << ret.back() << std::endl;
 	return (ret);
-}
+};
+
+void	Server::_createChannel( std::string ChannelName, int CreatorFd )
+{
+	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
+	if (it == this->_allChannels.end())
+	{
+		Channel *channel = new Channel(ChannelName, this->_clients[CreatorFd]);
+		this->_allChannels.insert(std::pair<std::string, Channel *>(ChannelName, channel));
+		this->_clients[CreatorFd]->joinChannel( ChannelName, channel );
+	}
+	else
+	{
+		int i = it->second->addMember(this->_clients[CreatorFd]);
+		if (i == USERISJOINED)
+			this->_clients[CreatorFd]->joinChannel( it->first, it->second );
+		else if (i == USERALREADYJOINED)
+			return ; // do something
+		else if (i == USERISBANNED)
+			return ; // do something
+		return ;
+	}
+};
 
 std::string	Server::_joinChannel( Request request, int i )
 {
@@ -82,28 +106,21 @@ std::string	Server::_joinChannel( Request request, int i )
 		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
 	if (0 /* User is banned */)
 		return (_printError(474, " ERR_BANNEDFROMCHAN", " <channel> :Cannot join channel (+b)"));
+	if (0 /* User joined maximum number of allowed channels */)
+		return (_printError(405, " ERR_TOOMANYCHANNELS", "<channel name> :You have joined too many channels"));
+	if (0 /* Channel key doesn't match */)
+		return (_printError(475, " ERR_BADCHANNELKEY", " <channel> :Cannot join channel (+k)"));
+	if (0 /* Channel is full */)
+		return (_printError(471, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
+	if (0 /* No such channel */)
+		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
 	if (request.args.size() == 1)
 	{
 		std::vector<std::string> parsChannels(_commaSeparator(request.args[0]));
 		std::vector<std::string>::iterator it = parsChannels.begin();
 		while (it != parsChannels.end())
 		{
-			std::cout << "Adding " << *it << " to Channels list" << std::endl;
-			if (this->_allChannels.find(*it) == this->_allChannels.end())
-			{
-
-				if (0 /* User joined maximum number of allowed channels */)
-					return (_printError(405, " ERR_TOOMANYCHANNELS", "<channel name> :You have joined too many channels"));
-				if (0 /* Channel key doesn't match */)
-					return (_printError(475, " ERR_BADCHANNELKEY", " <channel> :Cannot join channel (+k)"));
-				if (0 /* Channel is full */)
-					return (_printError(471, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
-				if (0 /* No such channel */)
-					return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
-				Channel *test = new Channel(*it, this->_clients[i]);
-				this->_allChannels.insert(std::pair<std::string, Channel *>(*it, test));
-				this->_clients[i]->joinChannel( *it, test );
-			}
+			_createChannel(*it, i);
 			it++;
 		};
 	}
