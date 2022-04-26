@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 13:38:38 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/26 02:52:52 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 
 Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID(), _modes(), _joinedChannels() {};
-Client::Client( int fd ): _UserName(), _clientfd(fd), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID(), _modes(), _joinedChannels() {};
+Client::Client( int fd, int pollNumber ): _UserName(), _clientfd(fd), _pollNumber(pollNumber), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID(), _modes(), _joinedChannels() {};
 Client::Client( const Client& x ): _Host(x._Host) { *this = x; };
 
 
@@ -124,7 +124,7 @@ std::string	Client::JoinedChannels() const
 		channels.append(YELLOW "\tChannel Name: " RESET + it->first + "\n");
 		channels.append(YELLOW "\tChannel Name inside class: " RESET + it->second->getName() + "\n");
 		// Client *test = it->second->getOperators();
-		// channels.append(YELLOW  "\tChannel Creator: " RESET + it->second->getOperators().begin()->second->getFullName() + "\n");
+		channels.append(YELLOW  "\tChannel Creator: " RESET + it->second->getOperators(this->_clientfd)->getFullName() + "\n");
 		it++;
 	};
 	return (channels);

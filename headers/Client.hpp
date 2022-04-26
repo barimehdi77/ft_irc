@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 13:01:53 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/26 02:48:01 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class Client
 {
 	private:
 		int									_clientfd;
+		int									_pollNumber;
 		bool								_Registered;
 		bool								_isOperator;
 		std::string							_NickName;
@@ -55,7 +56,7 @@ class Client
 
 	public:
 		Client();
-		Client( int fd );
+		Client( int fd, int pollNumber );
 		Client( const Client & x );
 		~Client();
 		Client & operator= ( const Client & rhs );

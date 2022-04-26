@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 15:04:58 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/26 02:44:28 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ std::string	Server::_joinChannel( Request request, int i )
 			std::cout << "Adding " << *it << " to Channels list" << std::endl;
 			if (this->_allChannels.find(*it) == this->_allChannels.end())
 			{
-				
+
 				if (0 /* User joined maximum number of allowed channels */)
 					return (_printError(405, " ERR_TOOMANYCHANNELS", "<channel name> :You have joined too many channels"));
 				if (0 /* Channel key doesn't match */)
@@ -100,9 +100,9 @@ std::string	Server::_joinChannel( Request request, int i )
 					return (_printError(471, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
 				if (0 /* No such channel */)
 					return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
-				Channel test(*it, this->_clients[i]);
-				this->_allChannels.insert(std::pair<std::string, Channel *>(*it, &test));
-				this->_clients[i]->joinChannel( *it, &test );
+				Channel *test = new Channel(*it, this->_clients[i]);
+				this->_allChannels.insert(std::pair<std::string, Channel *>(*it, test));
+				this->_clients[i]->joinChannel( *it, test );
 			}
 			it++;
 		};
