@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 03:25:43 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/26 13:27:31 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,24 @@ std::string	Server::_parsing(std::string message, int i)
 	else
 		return ("Invalid command\n");
 };
+
+std::string	Server::_topic(Request request, int i)
+{
+	if (!this->_clients[i]->getRegistered())
+		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+	if (0 /* Not in channel */)
+		return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
+	if (!this->_clients[i]->getisOperator())
+		return (_printError(482, " ERR_CHANOPRIVSNEEDED", request.args[0] + " :You're not channel operator"));
+	if (request.args.size() == 0)
+	{
+		if (0 /* Channel doesn't have a topic */)
+			return (_printReply(331, "RPL_NOTOPIC", "<channel> :No topic is set"));
+		else
+			return (_printReply(332, "RPL_TOPIC", "<channel> :<topic>"));
+	}
+	return ("");
+}
 
 std::string	Server::_part( Request request, int i )
 {
@@ -124,7 +142,7 @@ std::string	Server::_joinChannel( Request request, int i )
 			it++;
 		};
 	}
-	return (_printReply(332, "RPL_TOPIC", "<channel> :<channel's topic>"));
+	return (_printReply(332, "RPL_TOPIC", "<channel> :<topic>"));
 };
 
 bool		Server::_validMode(Request request) {
@@ -189,7 +207,7 @@ std::string	Server::_setPassWord(Request request, int i)
 	if (this->_clients[i]->getRegistered())
 		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
 	this->_clients[i]->setPassWord(request.args[0]);
-	return ("PassWord is set\n");
+	return ("");
 };
 
 std::string	Server::_setNickName(Request request, int i)

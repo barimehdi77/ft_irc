@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 03:05:21 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/26 13:14:11 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,13 @@ class Server
 		int									_socketfd;
 		// Client								*_clients;				// switch to vector or map
 		std::map<int, Client *>				_clients;
-		struct pollfd						*_pfds;					// find a way to reallocate without using realloc()
+		struct pollfd						*_pfds;					// find a way to reallocate without using realloc() (realloc is allowed)
 		int									_online_c;
 		int									_max_online_c;
 		std::string							_prefix;
 		std::map<std::string, Channel *>	_allChannels;
-
-		///
 		std::vector<std::string>			_unavailableUserName;
 		std::vector<std::string>			_clientNicknames;
-		///
 
 	private:
 		Server();
@@ -82,6 +79,7 @@ class Server
 		bool							_validMode(Request request);
 		std::string						_quit(Request request, int i);
 		std::string						_part(Request request, int i);
+		std::string						_topic(Request request, int i);
 		std::string						_sendMessage(std::string message, int i);
 		std::string						_printError(int num, std::string reply, std::string message);
 		// std::string						_setUsername( std::string username, int i );
