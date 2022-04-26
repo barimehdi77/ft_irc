@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 13:27:31 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/26 15:59:50 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_printHelpInfo(i));
 	else if (request.command == "JOIN")
 		return (_joinChannel(request, i));
+	else if (request.command == "TOPIC")
+		return (_topic(request, i));
 	else if (request.command == "KICK")
 		return ("KICK command\n");
 	else if (request.command == "PART")
@@ -51,17 +53,19 @@ std::string	Server::_topic(Request request, int i)
 {
 	if (!this->_clients[i]->getRegistered())
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
-	if (0 /* Not in channel */)
-		return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
-	if (!this->_clients[i]->getisOperator())
-		return (_printError(482, " ERR_CHANOPRIVSNEEDED", request.args[0] + " :You're not channel operator"));
 	if (request.args.size() == 0)
+		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+	// if (0 /* Not in channel */)
+		return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
+	if (request.args.size() == 1)
 	{
 		if (0 /* Channel doesn't have a topic */)
-			return (_printReply(331, "RPL_NOTOPIC", "<channel> :No topic is set"));
+			return (_printReply(331, "RPL_NOTOPIC", request.args[0] + " :No topic is set"));
 		else
-			return (_printReply(332, "RPL_TOPIC", "<channel> :<topic>"));
+			return (_printReply(332, "RPL_TOPIC", request.args[0] + " :"));
 	}
+	if (!this->_clients[i]->getisOperator())
+		return (_printError(482, " ERR_CHANOPRIVSNEEDED", request.args[0] + " :You're not channel operator"));
 	return ("");
 }
 
