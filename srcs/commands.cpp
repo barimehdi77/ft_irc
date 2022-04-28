@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 15:59:50 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/28 13:16:35 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ std::string	Server::_parsing(std::string message, int i)
 	else if (request.command == "TOPIC")
 		return (_topic(request, i));
 	else if (request.command == "KICK")
-		return ("KICK command\n");
+		return (_kick(request, i));
 	else if (request.command == "PART")
 		return ("PART command\n");
 	else if (request.command == "QUIT")
@@ -49,13 +49,31 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
+std::string	Server::_kick(Request request, int i)
+{
+	if (!this->_clients[i]->getRegistered())
+		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+	if (request.args.size() < 2)
+		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+	if (0 /* No such channel */)
+		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
+	if (!this->_clients[i]->getisOperator())
+		return (_printError(482, " ERR_CHANOPRIVSNEEDED", request.args[0] + " :You're not channel operator"));
+	if (0 /* User is not in channel */)
+		return (_printError(441, " ERR_USERNOTINCHANNEL", "<nick> <channel> :They aren't on that channel"));
+	if (0 /* Not in channel */)
+		return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
+	return ("");
+}
+
+
 std::string	Server::_topic(Request request, int i)
 {
 	if (!this->_clients[i]->getRegistered())
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() == 0)
 		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
-	// if (0 /* Not in channel */)
+	if (0 /* Not in channel */)
 		return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
 	if (request.args.size() == 1)
 	{

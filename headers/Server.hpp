@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 13:14:11 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/28 13:10:26 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ class Server
 		std::string						_quit(Request request, int i);
 		std::string						_part(Request request, int i);
 		std::string						_topic(Request request, int i);
+		std::string						_kick(Request request, int i);
 		std::string						_sendMessage(std::string message, int i);
 		std::string						_printError(int num, std::string reply, std::string message);
 		// std::string						_setUsername( std::string username, int i );
