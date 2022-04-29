@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/28 13:16:35 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/04/29 19:12:01 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,34 @@ std::vector<std::string> Server::_commaSeparator(std::string arg)
 	return (ret);
 };
 
+void	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey, int CreatorFd)
+{
+	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
+	if (it == this->_allChannels.end())
+	{
+		Channel *channel = new Channel(ChannelName, ChannelKey, this->_clients[CreatorFd]);
+		this->_allChannels.insert(std::pair<std::string, Channel *>(ChannelName, channel));
+		this->_clients[CreatorFd]->joinChannel(ChannelName, channel);
+	}
+	else
+	{
+		if (it->second->getKey() == ChannelKey)
+		{
+			int i = it->second->addMember(this->_clients[CreatorFd]);
+			if (i == USERISJOINED)
+				this->_clients[CreatorFd]->joinChannel( it->first, it->second );
+			else if (i == USERALREADYJOINED)
+				return ; // do something
+			else if (i == USERISBANNED)
+				return ; // do something
+			return ;
+		}
+		else
+			return; // return message error of key is wrong
+	}
+	return ;
+}
+
 void	Server::_createChannel( std::string ChannelName, int CreatorFd )
 {
 	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
@@ -127,14 +155,17 @@ void	Server::_createChannel( std::string ChannelName, int CreatorFd )
 	}
 	else
 	{
-		int i = it->second->addMember(this->_clients[CreatorFd]);
-		if (i == USERISJOINED)
-			this->_clients[CreatorFd]->joinChannel( it->first, it->second );
-		else if (i == USERALREADYJOINED)
-			return ; // do something
-		else if (i == USERISBANNED)
-			return ; // do something
-		return ;
+		if (it->second->getKey().empty())
+		{
+			int i = it->second->addMember(this->_clients[CreatorFd]);
+			if (i == USERISJOINED)
+				this->_clients[CreatorFd]->joinChannel( it->first, it->second );
+			else if (i == USERALREADYJOINED)
+				return ; // do something
+			else if (i == USERISBANNED)
+				return ; // do something
+			return ; // return message error need key
+		}
 	}
 };
 
@@ -154,15 +185,29 @@ std::string	Server::_joinChannel( Request request, int i )
 		return (_printError(471, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
 	if (0 /* No such channel */)
 		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
+	std::vector<std::string> parsChannels(_commaSeparator(request.args[0]));
+	std::vector<std::string>::iterator itChannels = parsChannels.begin();
 	if (request.args.size() == 1)
 	{
-		std::vector<std::string> parsChannels(_commaSeparator(request.args[0]));
-		std::vector<std::string>::iterator it = parsChannels.begin();
-		while (it != parsChannels.end())
+		while (itChannels != parsChannels.end())
 		{
-			_createChannel(*it, i);
-			it++;
+			_createChannel(*itChannels, i);
+			itChannels++;
 		};
+	}
+	else if (request.args.size() == 2)
+	{
+		std::vector<std::string> parsKeys(_commaSeparator(request.args[1]));
+		std::vector<std::string>::iterator itKeys = parsKeys.begin();
+		while (itChannels != parsChannels.end())
+		{
+			if ( itKeys != parsKeys.end())
+				_createPrvChannel(*itChannels, *itKeys, i);
+			else
+				_createChannel(*itChannels, i);
+			itKeys++;
+			itChannels++;
+		}
 	}
 	return (_printReply(332, "RPL_TOPIC", "<channel> :<topic>"));
 };

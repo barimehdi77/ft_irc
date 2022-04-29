@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 03:22:51 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/29 18:49:51 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ class Channel
 
 	public: /*             Getters                         */
 		std::string	getName() const;
+		std::string getKey() const;
 		// Client* getOperators( int UserFd ) const;
 		Client* getCreator() const;
 

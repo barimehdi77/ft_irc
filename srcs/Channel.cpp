@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 03:23:22 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/29 19:05:12 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 Channel::Channel(): _operators(), _members(), _voice(), _name(), _prefix(), _onlineUsers(), _key(), _topic() {};
 Channel::Channel( const Channel& x ) { *this = x; };
-Channel::Channel( std::string channelName, Client *Creator): _name(channelName), _onlineUsers(1), _topic(), _prefix(), _operators(), _members(), _voice()
+Channel::Channel( std::string channelName, Client *Creator): _name(channelName), _key(), _onlineUsers(1), _topic(), _prefix(), _operators(), _members(), _voice()
 {
 	this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
 	// this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
@@ -44,6 +44,7 @@ Channel& Channel::operator=( const Channel& rhs )
 
 
 std::string	Channel::getName() const { return (this->_name); };
+std::string	Channel::getKey() const { return (this->_key); };
 // Client*	Channel::getOperators( int UserFd ) const { return (this->_operators.at(UserFd)); };
 Client*		Channel::getCreator() const { return (this->_operators.begin()->second); };
 
