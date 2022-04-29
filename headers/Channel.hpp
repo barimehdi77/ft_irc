@@ -52,6 +52,40 @@ class Channel
 
 	public:
 		int	addMember( Client *member );
+	// getters
+	public:
+		char	const &getPrefix()  { return _prefix;}
+		int		const &getOnlineUsers()  { return _onlineUsers;}
+		std::string		const &getName()   { return _name;}
+		std::string		const &getKey()  { return _key;}
+		std::string		const &getTopic()  { return _topic;}
+		std::map<int, Client *>	const &getMembers()  { return _members;}
+		std::map<int, Client *>	const &getOperators()  { return _operators;}
+		std::map<int, Client *>	const &getVoice()  { return _voice;}
+		std::map<std::string, Client *>	const &getBanned()  { return _banned;}
+	// setters
+	public:
+		void	setPrefix(char prefix) { _prefix = prefix;}
+		void	setOnlineUsers(int online) {_onlineUsers = online;}
+		void	setName(std::string name) {_name = name;}
+		void	setKey(std::string key) { _key = key;}
+		void	setTopic(std::string topic) { _topic = topic;}
+		void	setMembres(std::map<int, Client *> membre)
+		{
+			// di_it ur self :D
+		}
+		void	setOperator(std::map<int, Client *> opr)
+		{
+			// di_it ur self :D
+		}
+		void	setVoice(std::map<int, Client *> voice)
+		{
+			// di_it ur self :D
+		}
+		void	setBanned(std::map<std::string, Client *> banne)
+		{
+			// di_it ur self :D
+		}
 };
 
 #endif
