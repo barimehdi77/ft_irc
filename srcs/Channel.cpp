@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/29 19:05:12 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/30 18:59:52 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,28 @@ Channel& Channel::operator=( const Channel& rhs )
 	return (*this);
 };
 
+char							const &Channel::getPrefix()			const { return this->_prefix; };
+int								const &Channel::getOnlineUsers()	const { return this->_onlineUsers; };
+std::string						const &Channel::getName() 			const { return this->_name; };
+std::string						const &Channel::getKey()			const { return this->_key; };
+std::string						const &Channel::getTopic()			const { return this->_topic; };
+std::map<int, Client *>			const &Channel::getMembers()		const { return this->_members; };
+std::map<int, Client *>			const &Channel::getOperators()		const { return this->_operators; };
+std::map<int, Client *>			const &Channel::getVoice()			const { return this->_voice; };
+std::map<std::string, Client *>	const &Channel::getBanned()			const { return this->_banned; };
 
 
-std::string	Channel::getName() const { return (this->_name); };
-std::string	Channel::getKey() const { return (this->_key); };
+
+std::string	const &Channel::getName() const { return (this->_name); };
+std::string	const &Channel::getKey() const { return (this->_key); };
 // Client*	Channel::getOperators( int UserFd ) const { return (this->_operators.at(UserFd)); };
 Client*		Channel::getCreator() const { return (this->_operators.begin()->second); };
+
+void	Channel::setPrefix(char prefix)			{ this->_prefix = prefix; };
+void	Channel::setOnlineUsers(int online)		{ this->_onlineUsers = online; };
+void	Channel::setName(std::string name)		{ this->_name = name; };
+void	Channel::setKey(std::string key)		{ this->_key = key; };
+void	Channel::setTopic(std::string topic)	{ this->_topic = topic; };
 
 
 int	Channel::addMember( Client *member )
