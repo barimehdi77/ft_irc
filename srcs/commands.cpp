@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/29 19:12:01 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/30 20:14:26 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ std::vector<std::string> Server::_commaSeparator(std::string arg)
 	return (ret);
 };
 
-void	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey, int CreatorFd)
+int	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey, int CreatorFd)
 {
 	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
 	if (it == this->_allChannels.end())
@@ -133,18 +133,18 @@ void	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey,
 			if (i == USERISJOINED)
 				this->_clients[CreatorFd]->joinChannel( it->first, it->second );
 			else if (i == USERALREADYJOINED)
-				return ; // do something
-			else if (i == USERISBANNED)
-				return ; // do something
-			return ;
+				return (USERALREADYJOINED); // do something
+			else if (i == BANNEDFROMCHAN)
+				return (BANNEDFROMCHAN); // do something
+			return (USERISJOINED);
 		}
 		else
-			return; // return message error of key is wrong
+			return (BADCHANNELKEY); // return message error of key is wrong
 	}
-	return ;
+	return (USERISJOINED);
 }
 
-void	Server::_createChannel( std::string ChannelName, int CreatorFd )
+int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 {
 	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
 	if (it == this->_allChannels.end())
@@ -161,54 +161,46 @@ void	Server::_createChannel( std::string ChannelName, int CreatorFd )
 			if (i == USERISJOINED)
 				this->_clients[CreatorFd]->joinChannel( it->first, it->second );
 			else if (i == USERALREADYJOINED)
-				return ; // do something
-			else if (i == USERISBANNED)
-				return ; // do something
-			return ; // return message error need key
+				return (USERALREADYJOINED); // do something
+			else if (i == BANNEDFROMCHAN)
+				return (BANNEDFROMCHAN); // do something
+			return (USERISJOINED);
 		}
 	}
+	return (USERISJOINED);
 };
 
 std::string	Server::_joinChannel( Request request, int i )
 {
+	int j = -1;
 	if (!this->_clients[i]->getRegistered())
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() == 0)
 		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
-	if (0 /* User is banned */)
-		return (_printError(474, " ERR_BANNEDFROMCHAN", " <channel> :Cannot join channel (+b)"));
-	if (0 /* User joined maximum number of allowed channels */)
-		return (_printError(405, " ERR_TOOMANYCHANNELS", "<channel name> :You have joined too many channels"));
-	if (0 /* Channel key doesn't match */)
-		return (_printError(475, " ERR_BADCHANNELKEY", " <channel> :Cannot join channel (+k)"));
-	if (0 /* Channel is full */)
-		return (_printError(471, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
-	if (0 /* No such channel */)
-		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
 	std::vector<std::string> parsChannels(_commaSeparator(request.args[0]));
+	std::vector<std::string> parsKeys(_commaSeparator(request.args[1]));
 	std::vector<std::string>::iterator itChannels = parsChannels.begin();
-	if (request.args.size() == 1)
+	std::vector<std::string>::iterator itKeys = parsKeys.begin();
+	while (itChannels != parsChannels.end())
 	{
-		while (itChannels != parsChannels.end())
-		{
+		if ( itKeys != parsKeys.end())
+			_createPrvChannel(*itChannels, *itKeys, i);
+		else
 			_createChannel(*itChannels, i);
-			itChannels++;
-		};
-	}
-	else if (request.args.size() == 2)
-	{
-		std::vector<std::string> parsKeys(_commaSeparator(request.args[1]));
-		std::vector<std::string>::iterator itKeys = parsKeys.begin();
-		while (itChannels != parsChannels.end())
-		{
-			if ( itKeys != parsKeys.end())
-				_createPrvChannel(*itChannels, *itKeys, i);
-			else
-				_createChannel(*itChannels, i);
+		if (itKeys != parsKeys.end())
 			itKeys++;
-			itChannels++;
-		}
-	}
+		itChannels++;
+	};
+	if (j == BANNEDFROMCHAN/* User is banned */)
+		return (_printError(474, " ERR_BANNEDFROMCHAN", " <channel> :Cannot join channel (+b)"));
+	if (j == TOOMANYCHANNELS /* User joined maximum number of allowed channels */)
+		return (_printError(405, " ERR_TOOMANYCHANNELS", "<channel name> :You have joined too many channels"));
+	if (j == BADCHANNELKEY /* Channel key doesn't match */)
+		return (_printError(475, " ERR_BADCHANNELKEY", " <channel> :Cannot join channel (+k)"));
+	if (j == CHANNELISFULL /* Channel is full */)
+		return (_printError(471, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
+	if (j == NOSUCHCHANNEL/* No such channel */)
+		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
 	return (_printReply(332, "RPL_TOPIC", "<channel> :<topic>"));
 };
 

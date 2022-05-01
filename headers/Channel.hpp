@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/30 19:01:38 by mbari            ###   ########.fr       */
+/*   Updated: 2022/04/30 20:01:18 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@
 
 #define	USERALREADYJOINED 0
 #define USERISJOINED 1
-#define USERISBANNED 2
+// #define USERISBANNED 2
+#define BANNEDFROMCHAN 3
+#define TOOMANYCHANNELS 4
+#define BADCHANNELKEY 5
+#define CHANNELISFULL 6
+#define NOSUCHCHANNEL 7
 
 
 #include "Server.hpp"
@@ -24,14 +29,15 @@
 class Channel
 {
 	private:
-		char					_prefix;			//
-		int						_onlineUsers;
-		std::string				_name;
-		std::string				_key;
-		std::string				_topic;
-		std::map<int, Client *>	_members;
-		std::map<int, Client *>	_operators;			// The first operator is also the one who created the channel need to add "!" to his name
-		std::map<int, Client *>	_voice;
+		char							_prefix;			//
+		int								_creatorFd;
+		int								_onlineUsers;
+		std::string						_name;
+		std::string						_key;
+		std::string						_topic;
+		std::map<int, Client *>			_members;
+		std::map<int, Client *>			_operators;			// The first operator is also the one who created the channel need to add "!" to his name
+		std::map<int, Client *>			_voice;
 		std::map<std::string, Client *> _banned;
 
 	private:
@@ -55,7 +61,7 @@ class Channel
 		std::map<int, Client *>			const &getVoice()		const;
 		std::map<std::string, Client *>	const &getBanned()		const;
 
-		Client*		Channel::getCreator() const;
+		Client*		getCreator() const;
 
 
 	public:
@@ -65,12 +71,12 @@ class Channel
 		void	addBanned( Client *member );
 
 
-	public: /*             Getters                         */
-		void	setPrefix(char prefix) { _prefix = prefix;}
-		void	setOnlineUsers(int online) {_onlineUsers = online;}
-		void	setName(std::string name) {_name = name;}
-		void	setKey(std::string key) { _key = key;}
-		void	setTopic(std::string topic) { _topic = topic;}
+	public: /*             Setters                         */
+		void	setPrefix(char prefix);
+		void	setOnlineUsers(int online);
+		void	setName(std::string name);
+		void	setKey(std::string key);
+		void	setTopic(std::string topic);
 };
 
 #endif
