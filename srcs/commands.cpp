@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/30 20:14:26 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/01 14:23:27 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,13 @@ int	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey, 
 			if (i == USERISJOINED)
 				this->_clients[CreatorFd]->joinChannel( it->first, it->second );
 			else if (i == USERALREADYJOINED)
-				return (USERALREADYJOINED); // do something
+				return (USERALREADYJOINED);
 			else if (i == BANNEDFROMCHAN)
-				return (BANNEDFROMCHAN); // do something
+				return (BANNEDFROMCHAN);
 			return (USERISJOINED);
 		}
 		else
-			return (BADCHANNELKEY); // return message error of key is wrong
+			return (BADCHANNELKEY);
 	}
 	return (USERISJOINED);
 }
@@ -161,9 +161,9 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 			if (i == USERISJOINED)
 				this->_clients[CreatorFd]->joinChannel( it->first, it->second );
 			else if (i == USERALREADYJOINED)
-				return (USERALREADYJOINED); // do something
+				return (USERALREADYJOINED);
 			else if (i == BANNEDFROMCHAN)
-				return (BANNEDFROMCHAN); // do something
+				return (BANNEDFROMCHAN);
 			return (USERISJOINED);
 		}
 	}
@@ -172,7 +172,7 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 
 std::string	Server::_joinChannel( Request request, int i )
 {
-	int j = -1;
+	int j = 1;
 	if (!this->_clients[i]->getRegistered())
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() == 0)
@@ -181,27 +181,28 @@ std::string	Server::_joinChannel( Request request, int i )
 	std::vector<std::string> parsKeys(_commaSeparator(request.args[1]));
 	std::vector<std::string>::iterator itChannels = parsChannels.begin();
 	std::vector<std::string>::iterator itKeys = parsKeys.begin();
-	while (itChannels != parsChannels.end())
+	while (itChannels != parsChannels.end() && j == 1)
 	{
 		if ( itKeys != parsKeys.end())
-			_createPrvChannel(*itChannels, *itKeys, i);
+			j = _createPrvChannel(*itChannels, *itKeys, i);
 		else
-			_createChannel(*itChannels, i);
+			j = _createChannel(*itChannels, i);
 		if (itKeys != parsKeys.end())
 			itKeys++;
 		itChannels++;
 	};
-	if (j == BANNEDFROMCHAN/* User is banned */)
-		return (_printError(474, " ERR_BANNEDFROMCHAN", " <channel> :Cannot join channel (+b)"));
-	if (j == TOOMANYCHANNELS /* User joined maximum number of allowed channels */)
-		return (_printError(405, " ERR_TOOMANYCHANNELS", "<channel name> :You have joined too many channels"));
-	if (j == BADCHANNELKEY /* Channel key doesn't match */)
-		return (_printError(475, " ERR_BADCHANNELKEY", " <channel> :Cannot join channel (+k)"));
-	if (j == CHANNELISFULL /* Channel is full */)
-		return (_printError(471, " ERR_CHANNELISFULL", " <channel> :Cannot join channel (+l)"));
-	if (j == NOSUCHCHANNEL/* No such channel */)
-		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
-	return (_printReply(332, "RPL_TOPIC", "<channel> :<topic>"));
+	--itChannels;
+	if (j == BANNEDFROMCHAN)
+		return (_printError(474, " ERR_BANNEDFROMCHAN", *itChannels + " :Cannot join channel (+b)"));
+	if (j == TOOMANYCHANNELS )
+		return (_printError(405, " ERR_TOOMANYCHANNELS", *itChannels + " :You have joined too many channels"));
+	if (j == BADCHANNELKEY )
+		return (_printError(475, " ERR_BADCHANNELKEY", *itChannels + " :Cannot join channel (+k)"));
+	if (j == CHANNELISFULL )
+		return (_printError(471, " ERR_CHANNELISFULL", *itChannels + " :Cannot join channel (+l)"));
+	if (j == NOSUCHCHANNEL)
+		return (_printError(403, " ERR_NOSUCHCHANNEL", *itChannels + " :No such channel"));
+	return (_printReply(332, "RPL_TOPIC", *itChannels + " :" + this->_allChannels.find(*itChannels)->second->getTopic()));
 };
 
 bool		Server::_validMode(Request request) {
