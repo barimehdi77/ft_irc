@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/01 14:23:27 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/01 15:43:02 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ std::string	Server::_topic(Request request, int i)
 		if (0 /* Channel doesn't have a topic */)
 			return (_printReply(331, "RPL_NOTOPIC", request.args[0] + " :No topic is set"));
 		else
-			return (_printReply(332, "RPL_TOPIC", request.args[0] + " :"));
+			return (_printReply(332, "RPL_TOPIC", request.args[0] + " :" + this->_allChannels.find(request.args[0])->second->getTopic()));
 	}
 	if (!this->_clients[i]->getisOperator())
 		return (_printError(482, " ERR_CHANOPRIVSNEEDED", request.args[0] + " :You're not channel operator"));
+	this->_allChannels.find(request.args[0])->second->setTopic(request.args[1]);
 	return ("");
 }
 
