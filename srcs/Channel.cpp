@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/30 20:02:52 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/01 22:24:44 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ std::string						const &Channel::getTopic()			const { return this->_topic; };
 std::map<int, Client *>			const &Channel::getMembers()		const { return this->_members; };
 std::map<int, Client *>			const &Channel::getOperators()		const { return this->_operators; };
 std::map<int, Client *>			const &Channel::getVoice()			const { return this->_voice; };
-std::map<std::string, Client *>	const &Channel::getBanned()			const { return this->_banned; };
+// std::map<std::string, Client *>	const &Channel::getBanned()			const { return this->_banned; };
 
 
 // std::string	const &Channel::getName() const { return (this->_name); };
@@ -66,12 +66,51 @@ void	Channel::setTopic(std::string topic)	{ this->_topic = topic; };
 
 int	Channel::addMember( Client *member )
 {
-	if (this->_banned.find(member->getUserName()) != this->_banned.end())
-		return (BANNEDFROMCHAN);
+	// if (this->_banned.find(member->getUserName()) != this->_banned.end())
+	// 	return (BANNEDFROMCHAN);
 	if (this->_members.find(member->getClientfd()) == this->_members.end())
 	{
 		this->_members.insert(std::pair<int, Client *>(member->getClientfd(), member));
 		return (USERISJOINED);
 	};
 	return (-1);
+};
+
+void	Channel::removeOperator( int i)
+{
+	this->_operators.erase(i);
+};
+void	Channel::removeVoice( int i)
+{
+	this->_voice.erase(i);
+};
+// void	Channel::removeBanned( int i)
+// {
+// 	this->_banned.erase(i);
+// };
+void	Channel::removeMember( int i)
+{
+	this->_members.erase(i);
+};
+
+
+std::map<int, Client *>	Channel::getAllUsers() const
+{
+	std::map<int, Client *>	allUsers(this->_members.begin(), this->_members.end());
+	allUsers.insert(this->_operators.begin(), this->_operators.end());
+	allUsers.insert(this->_voice.begin(), this->_voice.end());
+	return (allUsers);
+};
+
+std::pair<Client *, int> Channel::findUserRole( int i )
+{
+	std::map<int, Client *>::iterator it = this->_members.find(i);
+	if (it != this->_members.end())
+		return (std::pair<Client *, int>(it->second, 0));
+	it = this->_operators.find(i);
+	if (it != this->_operators.end())
+		return (std::pair<Client *, int>(it->second, 1));
+	it = this->_voice.find(i);
+		return (std::pair<Client *, int>(it->second, 2));
+	return (std::pair<Client *, int>(NULL, -1));
 }

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 02:48:01 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/01 22:34:38 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,19 @@ class Client
 		int			getMode(char mode)	const;
 
 	public: /*             Setters                         */
-		void		setUserName(std::string UserName);
-		void		setNickName(std::string NickName);
-		void		setFullName(std::string FullName);
-		void		setPassWord(std::string PassWord);
-		// void		setHost(std::string Host);
-		void		setID(std::string ID);
-		void		setClientfd(int clientfd);
-		void		setRegistered(int Registered);
-		void		setIsOperator(int isOperator);
-		void		setMode(int value, char mode);
-		void		joinChannel( std::string ChannelName, Channel *channel );
+		void			setUserName(std::string UserName);
+		void			setNickName(std::string NickName);
+		void			setFullName(std::string FullName);
+		void			setPassWord(std::string PassWord);
+		// void			setHost(std::string Host);
+		void			setID(std::string ID);
+		void			setClientfd(int clientfd);
+		void			setRegistered(int Registered);
+		void			setIsOperator(int isOperator);
+		void			setMode(int value, char mode);
+		void			joinChannel( std::string ChannelName, Channel *channel );
+		void			leaveChannel( std::string ChannelName );
+		std::string		leaveAllChannels();
 
 	public:
 		int			isJoined( std::string ChannelName ) const;

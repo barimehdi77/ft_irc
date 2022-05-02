@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/01 15:43:02 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/01 22:34:00 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ std::string	Server::_parsing(std::string message, int i)
 	else if (request.command == "KICK")
 		return (_kick(request, i));
 	else if (request.command == "PART")
-		return ("PART command\n");
+		return (_part(request, i));
 	else if (request.command == "QUIT")
 		return (_quit(request, i));
 	else if (request.command == "INFO")
@@ -88,16 +88,49 @@ std::string	Server::_topic(Request request, int i)
 	return ("");
 }
 
+int	Server::_partChannel( std::string ChannelName, int i )
+{
+	std::map<std::string, Channel *>::iterator itCh= this->_allChannels.find(ChannelName);
+	if (itCh == this->_allChannels.end() /* No such channel */)
+		return (NOSUCHCHANNEL);
+	else
+	{
+		std::pair<Client *, int> user(itCh->second->findUserRole(i));
+		if (user.second == -1 /* Not in channel */)
+			return (NOTINCHANNEL);
+		else
+		{
+			if (user.second == 0)
+				itCh->second->removeMember(i);
+			else if (user.second == 1)
+				itCh->second->removeOperator(i);
+			else
+				itCh->second->removeVoice(i);
+			user.first->leaveChannel(itCh->second->getName());
+		}
+	}
+	return (0);
+}
+
 std::string	Server::_part( Request request, int i )
 {
 	if (!this->_clients[i]->getRegistered())
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() == 0)
 		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
-	if (0 /* No such channel */)
-		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
-	if (0 /* Not in channel */)
-		return (_printError(442, " ERR_NOTONCHANNEL", " <channel> :You're not on that channel"));
+	std::vector<std::string>	parsChannels(_commaSeparator(request.args[0]));
+	std::vector<std::string>::iterator it = parsChannels.begin();
+	while (it != parsChannels.end())
+	{
+		int j = _partChannel(*it, i);
+		if (j == NOSUCHCHANNEL /* No such channel */)
+			return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
+		if (j == NOTINCHANNEL /* Not in channel */)
+			return (_printError(442, " ERR_NOTONCHANNEL", " <channel> :You're not on that channel"));
+		it++;
+	}
+	// if (0 /* No such channel */)
+	// if (0 /* Not in channel */)
 	return ("");
 };
 
@@ -178,8 +211,12 @@ std::string	Server::_joinChannel( Request request, int i )
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() == 0)
 		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+	if (request.args[0] == "0")
+		return(this->_clients[i]->leaveAllChannels());
 	std::vector<std::string> parsChannels(_commaSeparator(request.args[0]));
-	std::vector<std::string> parsKeys(_commaSeparator(request.args[1]));
+		std::vector<std::string> parsKeys;
+	if (request.args.size() == 2)
+		parsKeys = _commaSeparator(request.args[1]);
 	std::vector<std::string>::iterator itChannels = parsChannels.begin();
 	std::vector<std::string>::iterator itKeys = parsKeys.begin();
 	while (itChannels != parsChannels.end() && j == 1)
@@ -188,21 +225,21 @@ std::string	Server::_joinChannel( Request request, int i )
 			j = _createPrvChannel(*itChannels, *itKeys, i);
 		else
 			j = _createChannel(*itChannels, i);
+		if (j == BANNEDFROMCHAN)
+			return (_printError(474, " ERR_BANNEDFROMCHAN", *itChannels + " :Cannot join channel (+b)"));
+		if (j == TOOMANYCHANNELS )
+			return (_printError(405, " ERR_TOOMANYCHANNELS", *itChannels + " :You have joined too many channels"));
+		if (j == BADCHANNELKEY )
+			return (_printError(475, " ERR_BADCHANNELKEY", *itChannels + " :Cannot join channel (+k)"));
+		if (j == CHANNELISFULL )
+			return (_printError(471, " ERR_CHANNELISFULL", *itChannels + " :Cannot join channel (+l)"));
+		if (j == NOSUCHCHANNEL)
+			return (_printError(403, " ERR_NOSUCHCHANNEL", *itChannels + " :No such channel"));
 		if (itKeys != parsKeys.end())
 			itKeys++;
 		itChannels++;
 	};
 	--itChannels;
-	if (j == BANNEDFROMCHAN)
-		return (_printError(474, " ERR_BANNEDFROMCHAN", *itChannels + " :Cannot join channel (+b)"));
-	if (j == TOOMANYCHANNELS )
-		return (_printError(405, " ERR_TOOMANYCHANNELS", *itChannels + " :You have joined too many channels"));
-	if (j == BADCHANNELKEY )
-		return (_printError(475, " ERR_BADCHANNELKEY", *itChannels + " :Cannot join channel (+k)"));
-	if (j == CHANNELISFULL )
-		return (_printError(471, " ERR_CHANNELISFULL", *itChannels + " :Cannot join channel (+l)"));
-	if (j == NOSUCHCHANNEL)
-		return (_printError(403, " ERR_NOSUCHCHANNEL", *itChannels + " :No such channel"));
 	return (_printReply(332, "RPL_TOPIC", *itChannels + " :" + this->_allChannels.find(*itChannels)->second->getTopic()));
 };
 

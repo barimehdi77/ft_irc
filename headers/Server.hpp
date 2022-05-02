@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/30 19:59:54 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/01 22:10:56 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ class Server
 		std::vector<std::string>		_commaSeparator(std::string arg);
 		int								_createPrvChannel( std::string ChannelName, std::string ChannelKey, int	 CreatorFd );
 		int								_createChannel( std::string channelName, int CreatorFd );
+		int								_partChannel( std::string ChannelName, int i );
 
 	// private:
 	// 	class ArgsError: public std::exception

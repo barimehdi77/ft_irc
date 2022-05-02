@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/26 03:10:23 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/01 22:45:43 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,3 +129,26 @@ std::string	Client::JoinedChannels() const
 	};
 	return (channels);
 };
+
+void	Client::leaveChannel( std::string ChannelName )
+{
+	this->_joinedChannels.erase(ChannelName);
+};
+
+std::string	Client::leaveAllChannels()
+{
+	std::map<std::string, Channel *>::iterator it = this->_joinedChannels.begin();
+	while( it != this->_joinedChannels.end())
+	{
+		std::pair<Client *, int> user(it->second->findUserRole(this->_clientfd));
+		if (user.second == 0)
+			it->second->removeMember(this->_clientfd);
+		else if (user.second == 1)
+			it->second->removeOperator(this->_clientfd);
+		else
+			it->second->removeVoice(this->_clientfd);
+		user.first->leaveChannel(it->second->getName());
+		it = this->_joinedChannels.begin();
+	}
+	return ("");
+}
