@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/01 22:34:00 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/03 14:01:43 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,9 @@ std::string	Server::_part( Request request, int i )
 	{
 		int j = _partChannel(*it, i);
 		if (j == NOSUCHCHANNEL /* No such channel */)
-			return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
+			return (_printError(403, " ERR_NOSUCHCHANNEL", *it + " :No such channel"));
 		if (j == NOTINCHANNEL /* Not in channel */)
-			return (_printError(442, " ERR_NOTONCHANNEL", " <channel> :You're not on that channel"));
+			return (_printError(442, " ERR_NOTONCHANNEL", *it + " :You're not on that channel"));
 		it++;
 	}
 	// if (0 /* No such channel */)
