@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/03 14:01:43 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/03 15:15:39 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ std::string	Server::_topic(Request request, int i)
 		return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
 	if (request.args.size() == 1)
 	{
-		if (0 /* Channel doesn't have a topic */)
+		if (this->_allChannels.find(request.args[0])->second->getTopic() == "")
 			return (_printReply(331, "RPL_NOTOPIC", request.args[0] + " :No topic is set"));
 		else
 			return (_printReply(332, "RPL_TOPIC", request.args[0] + " :" + this->_allChannels.find(request.args[0])->second->getTopic()));
