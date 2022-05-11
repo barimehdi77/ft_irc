@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/03 15:15:39 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/10 21:19:26 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_quit(request, i));
 	else if (request.command == "INFO")
 		return (_printUserInfo(i));
+	else if (request.command == "DEEZNUTS")
+		return (_DeezNuts( request, i));
 	else
 		return ("Invalid command\n");
 };

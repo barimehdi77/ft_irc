@@ -6,13 +6,13 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/01 22:10:24 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/10 20:51:04 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#ifndef CHANNEL_HPP
-#define CHANNEL_HPP
+#ifndef __CHANNEL_HPP
+#define __CHANNEL_HPP
 
 #define	USERALREADYJOINED 0
 #define USERISJOINED 1

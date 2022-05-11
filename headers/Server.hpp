@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/01 22:10:56 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/10 21:19:40 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ class Server
 		int								_createPrvChannel( std::string ChannelName, std::string ChannelKey, int	 CreatorFd );
 		int								_createChannel( std::string channelName, int CreatorFd );
 		int								_partChannel( std::string ChannelName, int i );
+		std::string						_DeezNuts( Request request, int i );
 
 	// private:
 	// 	class ArgsError: public std::exception
