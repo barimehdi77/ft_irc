@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/01 22:24:44 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 17:24:48 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ std::pair<Client *, int> Channel::findUserRole( int i )
 	if (it != this->_operators.end())
 		return (std::pair<Client *, int>(it->second, 1));
 	it = this->_voice.find(i);
+	if (it != this->_voice.end())
 		return (std::pair<Client *, int>(it->second, 2));
 	return (std::pair<Client *, int>(NULL, -1));
 }
