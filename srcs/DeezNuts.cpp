@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:01:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 16:35:47 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 16:39:08 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,7 @@ std::string	Server::_DeezNuts( Request req, int i )
 		else
 			return (Greeting);
 	}
-	// Greeting.append("[q] : to Quit\n");
-
-
-	return ("");
-
+	return (Greeting);
 };
 
 std::string Server::_serverInfo() const
@@ -140,9 +136,3 @@ std::string	Server::_listAllChannels() const
 }
 
 // "Hey, " + cl->getFullName() + "\nWelcome TO " + this->_name + "\nMy name is" + RED + " DezzNuts" RESET " Bot\n"
-
-
-// USER mbari * * :bari Mehid
-// NICK DarkSide
-// JOIN #test,&help
-// DEEZNUTS 4 #test
