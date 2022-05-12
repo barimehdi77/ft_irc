@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 19:31:01 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 19:56:30 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,38 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
-int		Server::_findFd(std::string UserName)
+std::string	Server::_privmsg(Request request, int i)
+{
+	if (!this->_clients[i]->getRegistered())
+		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+	if (request.args.size() < 2)
+		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+	if (request.args.size() == 2)
+	{
+		if (request.args[0][0] != '&' && request.args[0][0] != '#' && request.args[0][0] != '+' && request.args[0][0] != '!')
+			return (_privToUser());
+		_privToChannel();
+	}
+	return ("");
+}
+
+// int		Server::_findFdByUserName(std::string UserName)
+// {
+// 	std::map<int, Client *>::iterator it = this->_clients.begin();
+// 	while(it != this->_clients.end())
+// 	{
+// 		if (it->second->getUserName() == UserName)
+// 			return (it->second->getClientfd());
+// 		it++;
+// 	}
+// 	return (USERNOTINCHANNEL);
+// };
+int		Server::_findFdByNcikName(std::string NickName)
 {
 	std::map<int, Client *>::iterator it = this->_clients.begin();
 	while(it != this->_clients.end())
 	{
-		if (it->second->getUserName() == UserName)
+		if (it->second->getNickName() == NickName)
 			return (it->second->getClientfd());
 		it++;
 	}

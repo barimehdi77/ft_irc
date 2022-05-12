@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 17:22:00 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 19:53:18 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ std::string	Server::_joinChannel( Request request, int i )
 			j = _createPrvChannel(*itChannels, *itKeys, i);
 		else
 			j = _createChannel(*itChannels, i);
+		if (j == BADCHANMASK)
+			return (_printError(476, " ERR_BANNEDFROMCHAN", *itChannels + " :Bad Channel Mask"));
 		if (j == BANNEDFROMCHAN)
 			return (_printError(474, " ERR_BANNEDFROMCHAN", *itChannels + " :Cannot join channel (+b)"));
 		if (j == TOOMANYCHANNELS )
@@ -57,6 +59,8 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
 	if (it == this->_allChannels.end())
 	{
+		if (ChannelName[0] != '&' && ChannelName[0] != '#' && ChannelName[0] != '+' && ChannelName[0] != '!')
+			return (BADCHANMASK);
 		Channel *channel = new Channel(ChannelName, this->_clients[CreatorFd]);
 		this->_allChannels.insert(std::pair<std::string, Channel *>(ChannelName, channel));
 		this->_clients[CreatorFd]->joinChannel( ChannelName, channel );
@@ -83,6 +87,8 @@ int	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey, 
 	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
 	if (it == this->_allChannels.end())
 	{
+		if (ChannelName[0] != '&' && ChannelName[0] != '#' && ChannelName[0] != '+' && ChannelName[0] != '!')
+			return (BADCHANMASK);
 		Channel *channel = new Channel(ChannelName, ChannelKey, this->_clients[CreatorFd]);
 		this->_allChannels.insert(std::pair<std::string, Channel *>(ChannelName, channel));
 		this->_clients[CreatorFd]->joinChannel(ChannelName, channel);

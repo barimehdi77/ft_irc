@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 19:19:49 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 19:58:12 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,11 @@ class Server
 		std::string						_channelInfo(std::string ChannelName, int i);
 		std::string						_serverInfo() const;
 		std::string						_kickedFromChannel(std::string ChannelName, std::vector<std::string> users, int i);
-		int								_findFd(std::string UserName);
+		// int								_findFdByUserName(std::string UserName);
+		int								_findFdByNcikName(std::string NickName);
+		std::string						_privmsg(Request request, int i);
+		std::string 					_privToUser(std::string User, std::string messsage);
+		std::string 					_privToChannel(std::string Channel, std::string messsage);
 
 	// private:
 	// 	class ArgsError: public std::exception

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 19:30:40 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 19:30:56 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 19:43:12 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ std::string		Server::_kickedFromChannel(std::string ChannelName, std::vector<std
 			int ret = 0;
 			while (user != users.end())
 			{
-				ret = _findFd(*user);
+				ret = _findFdByNcikName(*user);
 				if (ret == -1)
 					return (_printError(441, " ERR_USERNOTINCHANNEL", (*user).append(" " + ChannelName + " :They aren't on that channel")));
 				ret = _partChannel(ChannelName, ret);
