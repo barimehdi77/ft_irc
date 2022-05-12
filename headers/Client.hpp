@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/01 22:34:38 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 12:58:06 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ class Client
 		int			getRegistered()		const;
 		int			getisOperator()		const;
 		int			getMode(char mode)	const;
+		std::string		getUserInfo() const;
+		std::string		getAllChannels() const;
+
 
 	public: /*             Setters                         */
 		void			setUserName(std::string UserName);
