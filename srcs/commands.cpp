@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 19:56:30 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 21:14:57 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,18 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
+std::string 	Server::_privToUser(std::string User, std::string messsage)
+{
+	int userFd = _findFdByNcikName(User);
+	if (send(userFd, messsage.c_str(), messsage.length(), 0) == -1)
+			std::cout << "send() error: " << strerror(errno) << std::endl;
+};
+
+std::string 	Server::_privToChannel(std::string Channel, std::string messsage)
+{
+
+};
+
 std::string	Server::_privmsg(Request request, int i)
 {
 	if (!this->_clients[i]->getRegistered())
@@ -60,8 +72,8 @@ std::string	Server::_privmsg(Request request, int i)
 	if (request.args.size() == 2)
 	{
 		if (request.args[0][0] != '&' && request.args[0][0] != '#' && request.args[0][0] != '+' && request.args[0][0] != '!')
-			return (_privToUser());
-		_privToChannel();
+			return (_privToUser(request.args[0], request.args[1]));
+		_privToChannel(request.args[0], request.args[1]);
 	}
 	return ("");
 }
