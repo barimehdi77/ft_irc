@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/10 21:19:26 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 17:15:24 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,7 +359,7 @@ std::string	Server::_quit(Request request, int i)
 	else
 		ret.append("\n");
 	_broadcastmsg(this->_clients[i]->getClientfd(), ret, ret.length());
-	close(this->_clients[i]->getClientfd());
+	// close(this->_clients[i]->getClientfd());
 	_removeFromPoll(i);
 	return ("QUIT");
 };
