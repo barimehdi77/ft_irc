@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 13:22:39 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 16:31:09 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ class Server
 	private:
 		std::string							_name;
 		int									_socketfd;
-		// Client								*_clients;				// switch to vector or map
 		std::map<int, Client *>				_clients;
 		struct pollfd						*_pfds;					// find a way to reallocate without using realloc() (realloc is allowed)
 		int									_online_c;
@@ -97,6 +96,8 @@ class Server
 		std::string						_DeezNuts( Request request, int i );
 		std::string						_getBotMessage();
 		std::string						_listAllChannels() const;
+		std::string						_channelInfo(std::string ChannelName, int i);
+		std::string						_serverInfo() const;
 
 	// private:
 	// 	class ArgsError: public std::exception
@@ -112,6 +113,8 @@ class Server
 	public:
 		void	startServer(void);
 };
+
+
 
 #include "Channel.hpp"
 #include "Client.hpp"

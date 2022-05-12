@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 12:58:06 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 15:35:27 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ struct Modes
 	bool	localOp;
 	bool	server;
 };
+
+std::string fillIt(std::string str, int len);
 
 class Client
 {

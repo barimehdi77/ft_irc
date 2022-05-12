@@ -6,7 +6,7 @@
 #    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/05/10 21:21:42 by mbari            ###   ########.fr        #
+#    Updated: 2022/05/12 15:36:39 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,8 @@ pollHandling.cpp \
 requestHandling.cpp \
 Channel.cpp \
 DeezNuts.cpp \
+utils.cpp \
+
 
 MAIN = main.cpp
 # Define objects for all sources
