@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 17:24:48 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 19:27:06 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	Channel::addMember( Client *member )
 	if (this->_members.find(member->getClientfd()) == this->_members.end())
 	{
 		this->_members.insert(std::pair<int, Client *>(member->getClientfd(), member));
+		this->_onlineUsers++;
 		return (USERISJOINED);
 	};
 	return (-1);

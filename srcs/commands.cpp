@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 17:22:41 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 19:27:16 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,65 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
+int		Server::_findFd(std::string UserName)
+{
+	std::map<int, Client *>::iterator it = this->_clients.begin();
+	while(it != this->_clients.end())
+	{
+		if (it->second->getUserName() == UserName)
+			return (it->second->getClientfd());
+		it++;
+	}
+	return (USERNOTINCHANNEL);
+};
+
+std::string		Server::_kickedFromChannel(std::string ChannelName, std::vector<std::string> users, int i)
+{
+	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
+	if (it != this->_allChannels.end())
+	{
+		std::pair<Client *, int> user = it->second->findUserRole(i);
+		if (user.second == 1)
+		{
+			std::vector<std::string>::iterator user = users.begin();
+			int ret = 0;
+			while (user != users.end())
+			{
+				ret = _findFd(*user);
+				if (ret == -1)
+					return (_printError(441, " ERR_USERNOTINCHANNEL", (*user).append(" " + ChannelName + " :They aren't on that channel")));
+				ret = _partChannel(ChannelName, ret);
+				user++;
+			}
+		}
+		else if (user.second == -1  /* Not in channel */)
+			return (_printError(442, " ERR_NOTONCHANNEL", ChannelName + " :You're not on that channel"));
+		else
+			return (_printError(482, " ERR_CHANOPRIVSNEEDED", ChannelName + " :You're not channel operator"));
+		return ("");
+	}
+	return (_printError(403, " ERR_NOSUCHCHANNEL", ChannelName.append(" :No such channel")));
+};
+
 std::string	Server::_kick(Request request, int i)
 {
 	if (!this->_clients[i]->getRegistered())
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() < 2)
 		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
-	if (0 /* No such channel */)
-		return (_printError(403, " ERR_NOSUCHCHANNEL", " <channel name> :No such channel"));
-	if (!this->_clients[i]->getisOperator())
-		return (_printError(482, " ERR_CHANOPRIVSNEEDED", request.args[0] + " :You're not channel operator"));
-	if (0 /* User is not in channel */)
-		return (_printError(441, " ERR_USERNOTINCHANNEL", "<nick> <channel> :They aren't on that channel"));
-	if (0 /* Not in channel */)
-		return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
+	std::vector<std::string> channels(_commaSeparator(request.args[0]));
+	std::vector<std::string> users(_commaSeparator(request.args[1]));
+	std::vector<std::string>::iterator it = channels.begin();
+	while (it != channels.end())
+	{
+		std::string ret = _kickedFromChannel(*it, users, i);
+		if (!ret.empty())
+			return(ret);
+		// function to send message to all users in the channel so they know that someone kicked;
+		it++;
+	}
 	return ("");
-}
+};
 
 
 std::string	Server::_topic(Request request, int i)
@@ -75,18 +118,25 @@ std::string	Server::_topic(Request request, int i)
 		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
 	if (request.args.size() == 0)
 		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
-	if (0 /* Not in channel */)
-		return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
 	if (request.args.size() == 1)
 	{
-		if (this->_allChannels.find(request.args[0])->second->getTopic() == "")
+		if (this->_allChannels.find(request.args[0])->second->getTopic().empty())
 			return (_printReply(331, "RPL_NOTOPIC", request.args[0] + " :No topic is set"));
 		else
 			return (_printReply(332, "RPL_TOPIC", request.args[0] + " :" + this->_allChannels.find(request.args[0])->second->getTopic()));
 	}
-	if (!this->_clients[i]->getisOperator())
-		return (_printError(482, " ERR_CHANOPRIVSNEEDED", request.args[0] + " :You're not channel operator"));
-	this->_allChannels.find(request.args[0])->second->setTopic(request.args[1]);
+	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(request.args[0]); //->second->setTopic(request.args[1]);
+	if (it != this->_allChannels.end())
+	{
+		std::pair<Client *, int> user = it->second->findUserRole(i);
+		if (user.second == 1)
+			it->second->setTopic(request.args[1]);
+		else if (user.second == -1  /* Not in channel */)
+			return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
+		else
+			return (_printError(482, " ERR_CHANOPRIVSNEEDED", request.args[0] + " :You're not channel operator"));
+	}
+	// if (!this->_clients[i]->getisOperator())
 	return ("");
 }
 
