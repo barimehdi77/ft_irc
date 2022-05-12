@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 12:46:36 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 13:22:39 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ class Server
 		int								_partChannel( std::string ChannelName, int i );
 		std::string						_DeezNuts( Request request, int i );
 		std::string						_getBotMessage();
+		std::string						_listAllChannels() const;
 
 	// private:
 	// 	class ArgsError: public std::exception

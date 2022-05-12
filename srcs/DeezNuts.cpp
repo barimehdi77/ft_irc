@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:01:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 13:13:50 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 13:33:29 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ std::string	Server::_DeezNuts( Request req, int i )
 		else if (req.args[0] == "1")
 			return (this->_clients[i]->getAllChannels());
 		else if (req.args[0] == "2")
-			return (std::to_string(this->_online_c - 1));
+			return ("Online Users: " + std::to_string(this->_online_c - 1) + "\n");
 		else if (req.args[0] == "3")
 			return ("all Users\n");
 		else if (req.args[0] == "4")
@@ -78,6 +78,23 @@ std::string	Server::_DeezNuts( Request req, int i )
 
 };
 
+std::string	Server::_listAllChannels() const
+{
+	std::string channels("██████████████████████████████████████████████████████████████████████████████████\n");
+	channels.append("█              █            █               █                    █\n");
+	channels.append("█ Channel Name █ OnlineUser █ Channel Topic █ Creator Of Channel █\n");
+	channels.append("█              █            █               █                    █\n");
+	channels.append("██████████████████████████████████████████████████████████████████████████████████\n");
+	// std::map<std::string, Channel *>::const_iterator it = this->_allChannels.begin();
+	// while (it != this->_allChannels.end())
+	// {
+	// 	if (it->second->getKey().empty())
+	// 		channels.append("");
+	// 	it++;
+	// };
+	return (channels);
+}
+
 // "Hey, " + cl->getFullName() + "\nWelcome TO " + this->_name + "\nMy name is" + RED + " DezzNuts" RESET " Bot\n"
 
 
@@ -85,4 +102,17 @@ std::string	Server::_DeezNuts( Request req, int i )
 
 
 
+
+// ██████████████████████████████████████████████████████████████████
+// █              █            █               █                    █
+// █ Channel Name █ OnlineUser █ Channel Topic █ Creator Of Channel █
+// █              █            █               █                    █
+// ██████████████████████████████████████████████████████████████████
+// █
+// █
+// █
+// █
+// █
+// █
+// █
 

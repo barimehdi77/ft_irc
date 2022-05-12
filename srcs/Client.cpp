@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 13:16:29 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/12 13:56:20 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,14 +167,31 @@ std::string	Client::getUserInfo() const
 
 std::string	Client::getAllChannels() const
 {
-	std::string	channels;
+	std::string channels("██████████████████████████████████████████████████████████████████████████████████\n");
+	channels.append("█              █              █                    █                                  █\n");
+	channels.append("█ Channel Name █ Online Users █ Creator Of Channel █           Channel Topic          █\n");
+	channels.append("█              █              █                    █                                  █\n");
+	channels.append("██████████████████████████████████████████████████████████████████████████████████\n");
+	// std::map<std::string, Channel *>::const_iterator it = this->_allChannels.begin();
+	// while (it != this->_allChannels.end())
+	// {
+	// 	if (it->second->getKey().empty())
+	// 		channels.append("");
+	// 	it++;
+	// };
+	// return (channels);
+	// std::string	channels;
 	if (this->_joinedChannels.size() == 0)
 		return ("YOU JOINED NO CHANNEL\n");
 	std::map<std::string, Channel *>::const_iterator it = this->_joinedChannels.begin();
 	while (it != this->_joinedChannels.end())
 	{
-		channels.append("-> " + it->first + "\n");
+		channels.append("█              █            █               █                    █\n");
+		channels.append("█ " + it->first + "\r\t\t█ " + std::to_string(it->second->getOnlineUsers()) + "\r\t\t\t\t█ " + it->second->getTopic() + "\r\t\t\t\t\t\t█ " + it->second->getCreator()->getFullName() + "\r\t\t\t\t\t\t\t█\n");
+		channels.append("█              █            █               █                    █\n");
+		channels.append("██████████████████████████████████████████████████████████████████████████████████\n");
 		it++;
 	};
+	channels.append("\n\n");
 	return (channels);
 };
