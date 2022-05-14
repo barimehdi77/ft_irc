@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 19:27:06 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 13:30:11 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,22 @@ int	Channel::addMember( Client *member )
 void	Channel::removeOperator( int i)
 {
 	this->_operators.erase(i);
+	this->_onlineUsers--;
 };
 void	Channel::removeVoice( int i)
 {
 	this->_voice.erase(i);
+	this->_onlineUsers--;
 };
 // void	Channel::removeBanned( int i)
 // {
 // 	this->_banned.erase(i);
+this->_onlineUsers--;
 // };
 void	Channel::removeMember( int i)
 {
 	this->_members.erase(i);
+	this->_onlineUsers--;
 };
 
 

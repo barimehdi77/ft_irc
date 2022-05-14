@@ -6,13 +6,13 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:22:28 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 17:22:39 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 13:18:27 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Server.hpp"
 
-int	Server::_partChannel( std::string ChannelName, int i )
+int	Server::_partChannel( std::string ChannelName, int i, std::string message )
 {
 	std::map<std::string, Channel *>::iterator itCh= this->_allChannels.find(ChannelName);
 	if (itCh == this->_allChannels.end() /* No such channel */)
@@ -31,6 +31,14 @@ int	Server::_partChannel( std::string ChannelName, int i )
 			else
 				itCh->second->removeVoice(i);
 			user.first->leaveChannel(itCh->second->getName());
+
+
+			std::string reply = this->_clients[i]->getUserPerfix() + "PART " + ChannelName;
+			if (message.empty())
+				reply.append("\n");
+			else
+				reply.append(" " + message + "\n");
+			_sendToAllUsers(itCh->second, i, reply);
 		}
 	}
 	return (0);
@@ -46,7 +54,11 @@ std::string	Server::_part( Request request, int i )
 	std::vector<std::string>::iterator it = parsChannels.begin();
 	while (it != parsChannels.end())
 	{
-		int j = _partChannel(*it, i);
+		int j = 0;
+		if (request.args.size() == 2)
+			j = _partChannel(*it, i, request.args[1]);
+		else
+			j = _partChannel(*it, i, "");
 		if (j == NOSUCHCHANNEL /* No such channel */)
 			return (_printError(403, " ERR_NOSUCHCHANNEL", *it + " :No such channel"));
 		if (j == NOTINCHANNEL /* Not in channel */)

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 12:43:27 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 12:49:18 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 13:27:38 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ std::string 	Server::_privToChannel(std::string ChannelName, std::string message
 		if (user.second == -1 )
 			_printError(404, "ERR_CANNOTSENDTOCHAN", ChannelName.append(" :Cannot send to channel"));
 		std::string msg("PRIVMSG " + ChannelName + " :" + message + "\n");
-		_sendToAllUsers(it->second, i, message);
+		_sendToAllUsers(it->second, i, msg);
 	}
 	else
 		return (_printError(401, "ERR_NOSUCHNICK", ChannelName.append(" :No such nick/channel")));
@@ -66,11 +66,12 @@ std::string		Server::_sendToAllUsers( Channel *channel, int senderFd, std::strin
 	reply.append(message);
 	while (it != allusers.end())
 	{
-		if (_sendall(it->first, reply) == -1)
-		{
-			std::cout << "_sendall() error: " << strerror(errno) << std::endl;
-			return ("");
-		}
+		if (senderFd != it->first)
+			if (_sendall(it->first, reply) == -1)
+			{
+				std::cout << "_sendall() error: " << strerror(errno) << std::endl;
+				return ("");
+			}
 		it++;
 	}
 	return ("");

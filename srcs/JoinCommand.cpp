@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 19:53:18 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 13:24:25 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 				return (USERALREADYJOINED);
 			else if (i == BANNEDFROMCHAN)
 				return (BANNEDFROMCHAN);
+			std::string reply = this->_clients[CreatorFd]->getUserPerfix() + "JOIN " + ChannelName + "\n";
+			_sendToAllUsers(it->second, CreatorFd, reply);
 			return (USERISJOINED);
 		}
 	}
@@ -104,6 +106,8 @@ int	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey, 
 				return (USERALREADYJOINED);
 			else if (i == BANNEDFROMCHAN)
 				return (BANNEDFROMCHAN);
+			std::string reply = this->_clients[CreatorFd]->getUserPerfix() + "JOIN " + ChannelName + "\n";
+			_sendToAllUsers(it->second, CreatorFd, reply);
 			return (USERISJOINED);
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 13:00:13 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 13:08:05 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ std::string	Server::_setUserName(Request request, int i)
 
 std::string	Server::_quit(Request request, int i)
 {
-	std::string ret = ":" + this->_clients[i]->getID() + " QUIT ";
+	std::string ret = this->_clients[i]->getUserPerfix() + "QUIT ";
 	if (request.args.size())
 		ret.append(":" + request.args[0] + "\n");
 	else
