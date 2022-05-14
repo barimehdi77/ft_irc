@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 15:17:38 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/14 15:22:30 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ class Server
 {
 	private:
 		std::string							_name;
+		std::string							_password;
 		int									_socketfd;
 		std::map<int, Client *>				_clients;
 		struct pollfd						*_pfds;					// find a way to reallocate without using realloc() (realloc is allowed)
@@ -106,6 +107,7 @@ class Server
 		std::string 					_privToUser(std::string User, std::string message, int i);
 		std::string 					_privToChannel(std::string ChannelName, std::string message, int i);
 		std::string						_sendToAllUsers( Channel *channel, int senderFd, std::string message);
+		std::string						_getPassword() const;
 
 	// private:
 	// 	class ArgsError: public std::exception

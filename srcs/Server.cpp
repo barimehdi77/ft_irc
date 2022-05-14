@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 12:06:15 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 15:29:37 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,3 +89,5 @@ void Server::startServer(void)
 		}
 	}
 };
+
+std::string				Server::_getPassword() const { return (this->_password); };
