@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   FileTransfer.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 11:37:57 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/05/14 13:59:06 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/14 15:30:34 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,5 @@ std::string	Server::_fileTransfer(Request request, int i) {
 			break;
 	}
 	fclose(fd);
+	return ("");
 }
