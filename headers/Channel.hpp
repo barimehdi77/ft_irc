@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 19:50:17 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 11:52:51 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 #define BADCHANNELKEY 5
 #define CHANNELISFULL 6
 #define NOSUCHCHANNEL 7
-#define USERNOTINCHANNEL 8
+#define USERNOTINCHANNEL -1
+#define USERNOTFOUND -1
 #define BADCHANMASK 9
 
 

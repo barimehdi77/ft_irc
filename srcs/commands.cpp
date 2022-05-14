@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/13 11:52:38 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 12:11:20 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ std::string	Server::_parsing(std::string message, int i)
 	else if (request.command == "MODE")
 		return (_setMode(request, i));
 	else if (request.command == "PRIVMSG")
-		return ("PRIVMSG command\n");
+		return (_privmsg(request, i));
 	else if (request.command == "HELP")
 		return (_printHelpInfo(i));
 	else if (request.command == "JOIN")
@@ -54,13 +54,18 @@ std::string	Server::_parsing(std::string message, int i)
 std::string 	Server::_privToUser(std::string User, std::string messsage)
 {
 	int userFd = _findFdByNcikName(User);
-	if (send(userFd, messsage.c_str(), messsage.length(), 0) == -1)
+	if (userFd == USERNOTFOUND)
+		return (_printError(401, "ERR_NOSUCHNICK", User.append(" :No such nick/channel")));
+	std::string reply = this->_clients[userFd]->getUserPerfix();
+	reply.append("PRIVMSG " + User + " :" + messsage + "\n");
+	if (send(userFd, reply.c_str(), reply.length(), 0) == -1)
 			std::cout << "send() error: " << strerror(errno) << std::endl;
+	return ("");
 };
 
 std::string 	Server::_privToChannel(std::string Channel, std::string messsage)
 {
-
+	return ("");
 };
 
 std::string	Server::_privmsg(Request request, int i)
@@ -71,6 +76,8 @@ std::string	Server::_privmsg(Request request, int i)
 		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
 	if (request.args.size() == 2)
 	{
+		if (request.args[0].find(",") != std::string::npos)
+			return (_printError(401, "ERR_TOOMANYTARGETS", request.args[0].append(" :Too many recipients.")));
 		if (request.args[0][0] != '&' && request.args[0][0] != '#' && request.args[0][0] != '+' && request.args[0][0] != '!')
 			return (_privToUser(request.args[0], request.args[1]));
 		_privToChannel(request.args[0], request.args[1]);

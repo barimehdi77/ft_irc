@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 15:35:27 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 11:47:17 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,17 @@ class Client
 		Client & operator= ( const Client & rhs );
 
 	public: /*             Getters                         */
-		std::string	getUserName()		const;
-		std::string	getNickName()		const;
-		std::string	getFullName()		const;
-		std::string	getID()				const;
-		std::string	getHost()			const;
-		std::string	getPassWord()		const;
-		int			getClientfd()		const;
-		int			getRegistered()		const;
-		int			getisOperator()		const;
-		int			getMode(char mode)	const;
+		std::string		getUserName()		const;
+		std::string		getNickName()		const;
+		std::string		getFullName()		const;
+		std::string		getID()				const;
+		std::string		getHost()			const;
+		std::string		getPassWord()		const;
+		int				getClientfd()		const;
+		int				getRegistered()		const;
+		int				getisOperator()		const;
+		int				getMode(char mode)	const;
+		std::string		getUserPerfix() const;
 		std::string		getUserInfo() const;
 		std::string		getAllChannels() const;
 

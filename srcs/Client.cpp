@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 16:03:34 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 11:50:58 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,3 +196,4 @@ std::string	Client::getAllChannels() const
 	return (channels);
 };
 
+std::string		Client::getUserPerfix() const { return (":" + this->_NickName + "!" + this->_UserName + "@" + this->_Host + " "); };

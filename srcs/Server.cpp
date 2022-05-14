@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/25 13:12:41 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 12:06:15 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ Server::~Server() {}
 std::string	Server::_printError(int num, std::string reply, std::string message)
 {
 	// std::string ret = num + " " + reply + "\n\t" + message + "\n";
-	return (std::to_string(num) + " " + reply + "\n\t" + message + "\n");
+	return (std::to_string(num) + " " + reply + "\t" + message + "\n");
 	// std::cout << num << " " << reply << "\n\t" << message << std::endl;
 }
 
