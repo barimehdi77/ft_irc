@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 21:14:57 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/13 11:52:38 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ std::string	Server::_privmsg(Request request, int i)
 // 	}
 // 	return (USERNOTINCHANNEL);
 // };
+
 int		Server::_findFdByNcikName(std::string NickName)
 {
 	std::map<int, Client *>::iterator it = this->_clients.begin();
@@ -296,4 +297,6 @@ std::string	Server::_printUserInfo(int i)
 
 
 // USER mbari * * :Bari mehdi
+// NICK DarkSide
 // JOIN #test,&help
+

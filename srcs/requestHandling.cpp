@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:52:05 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/01 22:01:24 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/13 17:10:14 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,4 @@ Request	Server::_splitRequest(std::string req)
 	request.args.erase(request.args.begin());
 	return (request);
 };
-
 
