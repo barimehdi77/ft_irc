@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 13:24:25 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 17:56:00 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ std::string	Server::_joinChannel( Request request, int i )
 			return (_printError(471, " ERR_CHANNELISFULL", *itChannels + " :Cannot join channel (+l)"));
 		if (j == NOSUCHCHANNEL)
 			return (_printError(403, " ERR_NOSUCHCHANNEL", *itChannels + " :No such channel"));
+		if (j == USERISJOINED)
+			_sendall(i, this->_clients[i]->getUserPerfix() + "JOIN " + *itChannels + "\n");
 		if (itKeys != parsKeys.end())
 			itKeys++;
 		itChannels++;
@@ -76,7 +78,7 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 				return (USERALREADYJOINED);
 			else if (i == BANNEDFROMCHAN)
 				return (BANNEDFROMCHAN);
-			std::string reply = this->_clients[CreatorFd]->getUserPerfix() + "JOIN " + ChannelName + "\n";
+			std::string reply = "JOIN " + ChannelName + "\n";
 			_sendToAllUsers(it->second, CreatorFd, reply);
 			return (USERISJOINED);
 		}
@@ -106,7 +108,7 @@ int	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey, 
 				return (USERALREADYJOINED);
 			else if (i == BANNEDFROMCHAN)
 				return (BANNEDFROMCHAN);
-			std::string reply = this->_clients[CreatorFd]->getUserPerfix() + "JOIN " + ChannelName + "\n";
+			std::string reply = "JOIN " + ChannelName + "\n";
 			_sendToAllUsers(it->second, CreatorFd, reply);
 			return (USERISJOINED);
 		}

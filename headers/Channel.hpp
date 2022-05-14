@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 12:23:06 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 17:44:32 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@
 #define BADCHANNELKEY 5
 #define CHANNELISFULL 6
 #define NOSUCHCHANNEL 7
+#define USERISBANNED 8
+#define BADCHANMASK 9
 #define USERNOTINCHANNEL -1
 #define USERNOTFOUND -1
-#define BADCHANMASK 9
 
 
 
@@ -42,7 +43,7 @@ class Channel
 		std::map<int, Client *>			_members;
 		std::map<int, Client *>			_operators;			// The first operator is also the one who created the channel need to add "!" to his name
 		std::map<int, Client *>			_voice;
-		// std::map<int, Client *> _banned;
+		std::vector<std::string>		_banned;
 
 	private:
 		Channel();
@@ -74,10 +75,10 @@ class Channel
 		int		addMember( Client *member );
 		void	addOperator( Client *member );
 		void	addVoice( Client *member );
-		// void	addBanned( Client *member );
+		int		banUser( Client *member );
 		void	removeOperator( int i );
 		void	removeVoice( int i );
-		// void	removeBanned( int i );
+		void	removeBanned( std::string NickName );
 		void	removeMember( int i );
 
 

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 12:53:33 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 15:56:18 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ class Client
 		int									_clientfd;
 		int									_pollNumber;
 		bool								_Registered;
+		bool								_PassWord;
 		bool								_isOperator;
 		std::string							_NickName;
 		std::string							_UserName;
 		std::string							_FullName;
 		const std::string					_Host;
 		std::string							_ID;
-		std::string							_PassWord;
 		struct sockaddr_storage				_remotaddr;
 		socklen_t							_addrlen;
 		struct Modes						_modes;
@@ -69,7 +69,7 @@ class Client
 		std::string							getFullName()		const;
 		std::string							getID()				const;
 		std::string							getHost()			const;
-		std::string							getPassWord()		const;
+		bool							getPassWord()		const;
 		int									getClientfd()		const;
 		int									getRegistered()		const;
 		int									getisOperator()		const;
@@ -84,7 +84,7 @@ class Client
 		void			setUserName(std::string UserName);
 		void			setNickName(std::string NickName);
 		void			setFullName(std::string FullName);
-		void			setPassWord(std::string PassWord);
+		void			setPassWord(bool PassWord);
 		// void			setHost(std::string Host);
 		void			setID(std::string ID);
 		void			setClientfd(int clientfd);

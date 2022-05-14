@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 15:22:30 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 17:52:25 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ class Server
 		std::vector<std::string>		_commaSeparator(std::string arg);
 		int								_createPrvChannel( std::string ChannelName, std::string ChannelKey, int	 CreatorFd );
 		int								_createChannel( std::string channelName, int CreatorFd );
-		int								_partChannel( std::string ChannelName, int i, std::string message );
+		int								_partChannel( std::string ChannelName, int i, std::string message, int isPart );
 		std::string						_DeezNuts( Request request, int i );
 		std::string						_fileTransfer( Request request, int i );
 		std::string						_getBotMessage();
