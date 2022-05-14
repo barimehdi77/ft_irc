@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 11:52:51 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 12:23:06 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ class Channel
 		std::map<std::string, Client *>	const &getBanned()		const;
 
 		Client*		getCreator() const;
-		std::map<int, Client *> getAllUsers() const;
+		std::map<int, Client *>		getAllUsers() const;
 		std::pair<Client *, int>	findUserRole( int i );
 
 

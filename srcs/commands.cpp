@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 12:11:20 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 12:41:29 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,50 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
-std::string 	Server::_privToUser(std::string User, std::string messsage)
+std::string 	Server::_privToUser(std::string User, std::string message, int i)
 {
-	int userFd = _findFdByNcikName(User);
+	int userFd = _findFdByNickName(User);
 	if (userFd == USERNOTFOUND)
 		return (_printError(401, "ERR_NOSUCHNICK", User.append(" :No such nick/channel")));
-	std::string reply = this->_clients[userFd]->getUserPerfix();
-	reply.append("PRIVMSG " + User + " :" + messsage + "\n");
-	if (send(userFd, reply.c_str(), reply.length(), 0) == -1)
-			std::cout << "send() error: " << strerror(errno) << std::endl;
+	std::string reply = this->_clients[i]->getUserPerfix();
+	reply.append("PRIVMSG " + User + " :" + message + "\n");
+	if (_sendall(userFd, reply) == -1)
+				std::cout << "_sendall() error: " << strerror(errno) << std::endl;
+	// if (send(userFd, reply.c_str(), reply.length(), 0) == -1)
+	// 		std::cout << "send() error: " << strerror(errno) << std::endl;
 	return ("");
 };
 
-std::string 	Server::_privToChannel(std::string Channel, std::string messsage)
+std::string		Server::_sendToAllUsers( Channel *channel, int senderFd, std::string message)
 {
+	std::map<int, Client *> allusers = channel->getAllUsers();
+	std::map<int, Client *>::iterator it = allusers.begin();
+	std::string reply = this->_clients[senderFd]->getUserPerfix();
+	reply.append("PRIVMSG " + channel->getName() + " :" + message + "\n");
+	while (it != allusers.end())
+	{
+		if (_sendall(it->first, reply) == -1)
+		{
+			std::cout << "_sendall() error: " << strerror(errno) << std::endl;
+			return ("");
+		}
+		it++;
+	}
+	return ("");
+}
+
+std::string 	Server::_privToChannel(std::string ChannelName, std::string message, int i)
+{
+	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
+	if (it != this->_allChannels.end())
+	{
+		std::pair<Client *, int> user = it->second->findUserRole(i);
+		if (user.second == -1 )
+			_printError(404, "ERR_CANNOTSENDTOCHAN", ChannelName.append(" :Cannot send to channel"));
+		_sendToAllUsers(it->second, i, message);
+	}
+	else
+		return (_printError(401, "ERR_NOSUCHNICK", ChannelName.append(" :No such nick/channel")));
 	return ("");
 };
 
@@ -79,25 +109,13 @@ std::string	Server::_privmsg(Request request, int i)
 		if (request.args[0].find(",") != std::string::npos)
 			return (_printError(401, "ERR_TOOMANYTARGETS", request.args[0].append(" :Too many recipients.")));
 		if (request.args[0][0] != '&' && request.args[0][0] != '#' && request.args[0][0] != '+' && request.args[0][0] != '!')
-			return (_privToUser(request.args[0], request.args[1]));
-		_privToChannel(request.args[0], request.args[1]);
+			return (_privToUser(request.args[0], request.args[1], i));
+		_privToChannel(request.args[0], request.args[1], i);
 	}
 	return ("");
 }
 
-// int		Server::_findFdByUserName(std::string UserName)
-// {
-// 	std::map<int, Client *>::iterator it = this->_clients.begin();
-// 	while(it != this->_clients.end())
-// 	{
-// 		if (it->second->getUserName() == UserName)
-// 			return (it->second->getClientfd());
-// 		it++;
-// 	}
-// 	return (USERNOTINCHANNEL);
-// };
-
-int		Server::_findFdByNcikName(std::string NickName)
+int		Server::_findFdByNickName(std::string NickName)
 {
 	std::map<int, Client *>::iterator it = this->_clients.begin();
 	while(it != this->_clients.end())
