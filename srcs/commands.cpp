@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 13:08:05 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 15:18:11 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_part(request, i));
 	else if (request.command == "QUIT")
 		return (_quit(request, i));
+	else if (request.command == "FREE")
+		return (_fileTransfer(request, i));
 	else if (request.command == "INFO")
 		return (_printUserInfo(i));
 	else if (request.command == "DEEZNUTS")

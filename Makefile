@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
+#    By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/05/14 12:43:35 by mbari            ###   ########.fr        #
+#    Updated: 2022/05/14 13:24:09 by asfaihi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ PartCommand.cpp \
 JoinCommand.cpp \
 KickCommand.cpp \
 PrivmsgCommand.cpp \
+FileTransfer.cpp \
 
 MAIN = main.cpp
 # Define objects for all sources
