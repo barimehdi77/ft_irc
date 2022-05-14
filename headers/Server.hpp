@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 17:52:25 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 18:52:47 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ class Server
 		std::string						_listAllChannels() const;
 		std::string						_channelInfo(std::string ChannelName, int i);
 		std::string						_serverInfo() const;
-		std::string						_kickedFromChannel(std::string ChannelName, std::vector<std::string> users, int i);
+		std::string						_kickedFromChannel(std::string ChannelName, std::string message, std::vector<std::string> users, int i);
 		// int								_findFdByUserName(std::string UserName);
 		int								_findFdByNickName(std::string NickName);
 		std::string						_privmsg(Request request, int i);

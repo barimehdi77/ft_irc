@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 17:47:04 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 18:43:23 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,19 @@ int	Channel::addMember( Client *member )
 	if (this->_members.find(member->getClientfd()) == this->_members.end())
 	{
 		this->_members.insert(std::pair<int, Client *>(member->getClientfd(), member));
+		this->_onlineUsers++;
+		return (USERISJOINED);
+	};
+	return (-1);
+};
+
+int	Channel::addOperator( Client *member )
+{
+	if (std::find(this->_banned.begin(), this->_banned.end(), member->getNickName()) != this->_banned.end())
+		return (BANNEDFROMCHAN);
+	if (this->_operators.find(member->getClientfd()) == this->_operators.end())
+	{
+		this->_operators.insert(std::pair<int, Client *>(member->getClientfd(), member));
 		this->_onlineUsers++;
 		return (USERISJOINED);
 	};

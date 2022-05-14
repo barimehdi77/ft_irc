@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 17:44:32 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 18:45:43 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ class Channel
 
 	public:
 		int		addMember( Client *member );
-		void	addOperator( Client *member );
+		int		addOperator( Client *member );
 		void	addVoice( Client *member );
 		int		banUser( Client *member );
 		void	removeOperator( int i );

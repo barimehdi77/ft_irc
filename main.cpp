@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 00:36:49 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 15:50:45 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 18:41:39 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int main(int ac, char **av)
 		std::cout << "Usage ./ft_IRC PORT PASS" << std::endl;
 		exit(-1);
 	}
-	Server	srv("IRC", 10, av[1]);
+	Server	srv("DEEZ.NUTS", 10, av[1]);
 	try
 	{
 		srv.startServer();

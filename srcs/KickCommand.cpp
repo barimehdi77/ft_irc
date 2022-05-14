@@ -6,13 +6,13 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 19:30:40 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 18:04:54 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 18:58:25 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Server.hpp"
 
-std::string		Server::_kickedFromChannel(std::string ChannelName, std::vector<std::string> users, int i)
+std::string		Server::_kickedFromChannel(std::string ChannelName, std::string message, std::vector<std::string> users, int i)
 {
 	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(ChannelName);
 	if (it != this->_allChannels.end())
@@ -27,9 +27,14 @@ std::string		Server::_kickedFromChannel(std::string ChannelName, std::vector<std
 				ret = _findFdByNickName(*user);
 				if (ret == USERNOTINCHANNEL)
 					return (_printError(441, " ERR_USERNOTINCHANNEL", (*user).append(" " + ChannelName + " :They aren't on that channel")));
-				ret = _partChannel(ChannelName, ret, "", 0);
-				std::string reply = "KICK " + ChannelName + "\n";
+				std::string reply = "KICK " + ChannelName;
+				if (message.empty())
+					reply.append("\n");
+				else
+					reply.append(" " + message + "\n");
 				_sendToAllUsers(it->second, i, reply);
+				it->second->banUser(this->_clients[ret]);
+				ret = _partChannel(ChannelName, ret, "", 0);
 				user++;
 			}
 		}
@@ -53,7 +58,11 @@ std::string	Server::_kick(Request request, int i)
 	std::vector<std::string>::iterator it = channels.begin();
 	while (it != channels.end())
 	{
-		std::string ret = _kickedFromChannel(*it, users, i);
+		std::string ret;
+		if (request.args.size() == 3)
+			ret = _kickedFromChannel(*it, request.args[2], users, i);
+		else
+			ret = _kickedFromChannel(*it, "", users, i);
 		if (!ret.empty())
 			return(ret);
 		// function to send message to all users in the channel so they know that someone kicked;

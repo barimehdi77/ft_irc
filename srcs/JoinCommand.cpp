@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 17:56:00 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/14 18:44:34 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,11 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 	{
 		if (it->second->getKey().empty())
 		{
-			int i = it->second->addMember(this->_clients[CreatorFd]);
+			int i = 0;
+			if (this->_clients[CreatorFd]->getisOperator() == true)
+				i = it->second->addOperator(this->_clients[CreatorFd]);
+			else
+				i = it->second->addMember(this->_clients[CreatorFd]);
 			if (i == USERISJOINED)
 				this->_clients[CreatorFd]->joinChannel( it->first, it->second );
 			else if (i == USERALREADYJOINED)
@@ -101,7 +105,11 @@ int	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey, 
 	{
 		if (it->second->getKey() == ChannelKey)
 		{
-			int i = it->second->addMember(this->_clients[CreatorFd]);
+			int i = 0;
+			if (this->_clients[CreatorFd]->getisOperator() == true)
+				i = it->second->addOperator(this->_clients[CreatorFd]);
+			else
+				i = it->second->addMember(this->_clients[CreatorFd]);
 			if (i == USERISJOINED)
 				this->_clients[CreatorFd]->joinChannel( it->first, it->second );
 			else if (i == USERALREADYJOINED)
