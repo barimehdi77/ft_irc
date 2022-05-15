@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 12:43:27 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 11:49:07 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 12:51:39 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ std::string	Server::_privmsg(Request request, int i)
 			return (_printError(401, "ERR_TOOMANYTARGETS", request.args[0].append(" :Too many recipients.")));
 		if (request.args[0][0] != '&' && request.args[0][0] != '#' && request.args[0][0] != '+' && request.args[0][0] != '!')
 			return (_privToUser(request.args[0], request.args[1], "PRIVMSG", i));
-		_privToChannel(request.args[0], request.args[1], i);
+		return (_privToChannel(request.args[0], request.args[1], i));
 	}
 	return ("");
 };
@@ -49,7 +49,7 @@ std::string 	Server::_privToChannel(std::string ChannelName, std::string message
 	{
 		std::pair<Client *, int> user = it->second->findUserRole(i);
 		if (user.second == -1 )
-			_printError(404, "ERR_CANNOTSENDTOCHAN", ChannelName.append(" :Cannot send to channel"));
+			return (_printError(404, "ERR_CANNOTSENDTOCHAN", ChannelName.append(" :Cannot send to channel")));
 		std::string msg("PRIVMSG " + ChannelName + " :" + message + "\n");
 		_sendToAllUsers(it->second, i, msg);
 	}
