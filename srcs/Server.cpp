@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 15:11:05 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 16:45:08 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,13 @@ Server::Server(std::string Name, int max_online, std::string Port, std::string P
 
 Server::~Server() {}
 
-std::string	Server::_printMessage(std::string num, std::string reply, std::string message)
+std::string	Server::_printMessage(std::string num, std::string nickname, std::string message)
 {
-	// std::string ret = num + " " + reply + "\n\t" + message + "\n";
-	return (":" + this->_name + " " + num + " " + reply + " " + message + "\n");
-	// std::cout << num << " " << reply << "\n\t" << message << std::endl;
+	// std::string ret = num + " " + nickname + "\n\t" + message + "\n";
+	if (nickname == "")
+		nickname = "*";
+	return (":" + this->_name + " " + num + " " + nickname + " " + message + "\n");
+	// std::cout << num << " " << nickname << "\n\t" << message << std::endl;
 }
 
 void	Server::_newClient(void)

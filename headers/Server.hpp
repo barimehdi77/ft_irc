@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 15:10:04 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 16:45:29 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ class Server
 		std::string						_topic(Request request, int i);
 		std::string						_kick(Request request, int i);
 		std::string						_sendMessage(std::string message, int i);
-		std::string						_printMessage(std::string num, std::string reply, std::string message);
+		std::string						_printMessage(std::string num, std::string nickname, std::string message);
 		// std::string						_setUsername( std::string username, int i );
 		std::string						_parsing(std::string message, int i);
 		Request							_splitRequest(std::string req);

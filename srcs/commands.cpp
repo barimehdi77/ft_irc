@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 15:13:47 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 16:42:05 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,8 +169,8 @@ std::string	Server::_setPassWord(Request request, int i)
 		return (_printMessage("461", this->_clients[i]->getNickName(), "PASS :Not enough parameters"));
 	if (this->_clients[i]->getRegistered())
 		return (_printMessage("462", this->_clients[i]->getNickName(), ":Unauthorized command (already registered)"));
-	if (request.args[0] != "admin")
-		return (_printMessage("997", "*", ":Incorrect password"));
+	if (request.args[0] != this->_password)
+		return (_printMessage("997", this->_clients[i]->getNickName(), ":Incorrect password"));
 	else
 		this->_clients[i]->setAuth(true);
 	return ("");
@@ -179,7 +179,7 @@ std::string	Server::_setPassWord(Request request, int i)
 std::string	Server::_setNickName(Request request, int i)
 {
 	if (!this->_clients[i]->getAuth())
-		return (_printMessage("998", "*", ":You need to authenticate first"));		
+		return (_printMessage("998", this->_clients[i]->getNickName(), ":You need to authenticate first"));
 	if (request.args.size() < 1)
 		return (_printMessage("431", this->_clients[i]->getNickName(), ":No nickname given"));
 	int	j = 0;
@@ -205,7 +205,7 @@ std::string	Server::_setNickName(Request request, int i)
 std::string	Server::_setUserName(Request request, int i)
 {
 	if (!this->_clients[i]->getAuth())
-		return (_printMessage("998", "*", ":You need to authenticate first"));
+		return (_printMessage("998", this->_clients[i]->getNickName(), ":You need to authenticate first"));
 	if (this->_clients[i]->getRegistered())
 		return (_printMessage("462", this->_clients[i]->getNickName(), ":Unauthorized command (already registered)"));
 	if (request.args.size() < 4)
