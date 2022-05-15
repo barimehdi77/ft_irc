@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 20:36:30 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 20:37:11 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ std::string	Server::_topic(Request request, int i)
 		else
 			return (_printMessage("332", this->_clients[i]->getNickName(), request.args[0] + " :" + this->_allChannels.find(request.args[0])->second->getTopic()));
 	}
-	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(request.args[0]); //->second->setTopic(request.args[1]);
+	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(request.args[0]);
 	if (it != this->_allChannels.end())
 	{
 		std::pair<Client *, int> user = it->second->findUserRole(i);
@@ -103,7 +103,6 @@ std::string	Server::_topic(Request request, int i)
 		else
 			return (_printMessage("482", this->_clients[i]->getNickName(), request.args[0] + " :You're not channel operator"));
 	}
-	// if (!this->_clients[i]->getisOperator())
 	return ("");
 }
 
@@ -271,17 +270,7 @@ std::string	Server::_printUserInfo(int i)
 	info.append("Host: " + this->_clients[i]->getHost() + "\n");
 	info.append("ID: " + this->_clients[i]->getID() + "\n");
 	info.append("Operator: " + std::to_string(this->_clients[i]->getisOperator()) + "\n");
-
 	info.append("/************************ List All Your Channels *****************************/\n");
-	// std::map<std::string, Channel>::iterator it = this->_allChannels.begin();
-	// while (it != this->_allChannels.end())
-	// {
-	// 	info.append(BLUE + it->first + RESET + ":\n");
-	// 	info.append(YELLOW "\tChannel Name: " RESET + it->first + "\n");
-	// 	info.append(YELLOW "\tChannel Name inside class: " RESET + it->second.getName() + "\n");
-	// 	info.append(YELLOW  "\tChannel Creator: " RESET + it->second.getOperators().begin()->second.getFullName() + "\n");
-	// 	it++;
-	// }
 	info.append(this->_clients[i]->JoinedChannels());
 	return (info);
 };
