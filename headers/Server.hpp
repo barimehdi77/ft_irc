@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 12:52:15 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 15:10:04 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ class Server
 	// 		virtual const char* what() const throw();
 	// 	};
 	public:
-		Server(std::string Name, int max_online, std::string Port);
+		Server(std::string Name, int max_online, std::string Port, std::string Password);
 		Server(const Server & x);
 		~Server();
 		Server & operator=( const Server & rhs );

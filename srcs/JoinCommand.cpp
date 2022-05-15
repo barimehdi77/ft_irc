@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 13:14:05 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 13:34:26 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,17 @@ std::string	Server::_joinChannel( Request request, int i )
 			return (_printMessage("471", this->_clients[i]->getNickName(), *itChannels + " :Cannot join channel (+l)"));
 		if (j == NOSUCHCHANNEL)
 			return (_printMessage("403", this->_clients[i]->getNickName(), *itChannels + " :No such channel"));
-		if (j == USERISJOINED)
-		{
-			_sendall(i, this->_clients[i]->getUserPerfix() + "JOIN " + *itChannels + "\n");
-			_sendall(i, _printReply() )
-		}
+		// if (j == USERISJOINED)
+		// {
+		// 	_sendall(i, this->_clients[i]->getUserPerfix() + "JOIN " + *itChannels + "\n");
+		// 	_sendall(i, _printMessage("353", this->_clients[i]->getNickName() + "=", *itChannels, itChannels->second->listAllUsers()));
+		// }
 		if (itKeys != parsKeys.end())
 			itKeys++;
 		itChannels++;
 	};
 	--itChannels;
-	return (_printMessage("332", this->_clients[i]->getNickName(), *itChannels + " :" + this->_allChannels.find(*itChannels)->second->getTopic()));
+	return ("");
 };
 
 int	Server::_createChannel( std::string ChannelName, int CreatorFd )
@@ -85,6 +85,10 @@ int	Server::_createChannel( std::string ChannelName, int CreatorFd )
 				return (USERALREADYJOINED);
 			else if (i == BANNEDFROMCHAN)
 				return (BANNEDFROMCHAN);
+			_sendall(CreatorFd, this->_clients[CreatorFd]->getUserPerfix() + "JOIN " + ChannelName + "\n");
+			_sendall(CreatorFd, _printMessage("332", this->_clients[CreatorFd]->getNickName(), ChannelName + " :" + it->second->getTopic()));
+			_sendall(CreatorFd, _printMessage("353", this->_clients[CreatorFd]->getNickName() + " = " + ChannelName, it->second->listAllUsers()));
+			_sendall(CreatorFd, _printMessage("353", this->_clients[CreatorFd]->getNickName() + ChannelName, ":End of NAMES list"));
 			std::string reply = "JOIN " + ChannelName + "\n";
 			_sendToAllUsers(it->second, CreatorFd, reply);
 			return (USERISJOINED);
