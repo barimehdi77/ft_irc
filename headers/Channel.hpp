@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 13:07:02 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 20:38:22 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 class Channel
 {
 	private:
-		char							_prefix;			//
+		char							_prefix;
 		int								_creatorFd;
 		int								_onlineUsers;
 		std::string						_name;
@@ -72,7 +72,7 @@ class Channel
 		std::string					listAllUsers() const;
 
 
-	public:
+	public: /*             Modefiers functions                         */
 		int		addMember( Client *member );
 		int		addOperator( Client *member );
 		void	addVoice( Client *member );
