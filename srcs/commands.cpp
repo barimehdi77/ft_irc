@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 16:46:51 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 16:47:12 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,11 +179,7 @@ std::string	Server::_setPassWord(Request request, int i)
 std::string	Server::_setNickName(Request request, int i)
 {
 	if (!this->_clients[i]->getAuth())
-<<<<<<< HEAD
 		return (_printMessage("998", this->_clients[i]->getNickName(), ":You need to authenticate first"));
-=======
-		return (_printMessage("998", "*", ":You need to authenticate first"));
->>>>>>> 14244196223d825a5d28e8c8aaefdf2cdcb112d5
 	if (request.args.size() < 1)
 		return (_printMessage("431", this->_clients[i]->getNickName(), ":No nickname given"));
 	int	j = 0;
