@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   DeezNuts.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:01:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 11:38:08 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 20:41:06 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,4 @@ std::string	Server::_listAllChannels() const
 	}
 	channels.append(RESET "\n\n");
 	return (channels);
-}
-
-// "Hey, " + cl->getFullName() + "\nWelcome TO " + this->_name + "\nMy name is" + RED + " DezzNuts" RESET " Bot\n"
+};
