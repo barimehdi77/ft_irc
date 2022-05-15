@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 13:30:06 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 20:39:31 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,10 @@ Channel::Channel( const Channel& x ) { *this = x; };
 Channel::Channel( std::string channelName, Client *Creator): _name(channelName), _creatorFd(Creator->getClientfd()), _key(), _onlineUsers(1), _topic(), _prefix(), _operators(), _members(), _voice()
 {
 	this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
-	// this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
-	// Creator->joinChannel(channelName, this);
-	// std::cout << Creator.JoinedChannels() << std::endl;
 };
 Channel::Channel( std::string channelName, std::string channelKey, Client *Creator ): _name(channelName), _key(channelKey), _creatorFd(Creator->getClientfd()),_onlineUsers(1), _topic(), _prefix(), _operators(), _members(), _voice()
 {
 	this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
-	// Creator->joinChannel(channelName, this);
 };
 Channel::~Channel() {};
 
@@ -49,12 +45,7 @@ std::string						const &Channel::getTopic()			const { return this->_topic; };
 std::map<int, Client *>			const &Channel::getMembers()		const { return this->_members; };
 std::map<int, Client *>			const &Channel::getOperators()		const { return this->_operators; };
 std::map<int, Client *>			const &Channel::getVoice()			const { return this->_voice; };
-// std::map<std::string, Client *>	const &Channel::getBanned()			const { return this->_banned; };
 
-
-// std::string	const &Channel::getName() const { return (this->_name); };
-// std::string	const &Channel::getKey() const { return (this->_key); };
-// Client*	Channel::getOperators( int UserFd ) const { return (this->_operators.at(UserFd)); };
 Client*		Channel::getCreator() const { return (this->_operators.at(this->_creatorFd)); };
 
 void	Channel::setPrefix(char prefix)			{ this->_prefix = prefix; };
@@ -62,7 +53,6 @@ void	Channel::setOnlineUsers(int online)		{ this->_onlineUsers = online; };
 void	Channel::setName(std::string name)		{ this->_name = name; };
 void	Channel::setKey(std::string key)		{ this->_key = key; };
 void	Channel::setTopic(std::string topic)	{ this->_topic = topic; };
-
 
 int	Channel::addMember( Client *member )
 {
@@ -167,6 +157,5 @@ std::string		Channel::listAllUsers() const
 		AllUsers.append("+" + it->second->getNickName() + " ");
 		it++;
 	}
-	// AllUsers.append("\n");
 	return (AllUsers);
 };
