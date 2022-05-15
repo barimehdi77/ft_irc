@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 11:51:12 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 12:58:40 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ std::string	Server::_parsing(std::string message, int i)
 std::string	Server::_notice(Request request, int i)
 {
 	if (!this->_clients[i]->getRegistered())
-		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() < 2)
-		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
 	if (request.args.size() == 2)
 		_privToUser(request.args[0], request.args[1], "NOTICE", i);
 	return ("");
@@ -81,15 +81,15 @@ int		Server::_findFdByNickName(std::string NickName)
 std::string	Server::_topic(Request request, int i)
 {
 	if (!this->_clients[i]->getRegistered())
-		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() == 0)
-		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
 	if (request.args.size() == 1)
 	{
 		if (this->_allChannels.find(request.args[0])->second->getTopic().empty())
-			return (_printReply(331, "RPL_NOTOPIC", request.args[0] + " :No topic is set"));
+			return (_printMessage("331", this->_clients[i]->getNickName(), request.args[0] + " :No topic is set"));
 		else
-			return (_printReply(332, "RPL_TOPIC", request.args[0] + " :" + this->_allChannels.find(request.args[0])->second->getTopic()));
+			return (_printMessage("332", this->_clients[i]->getNickName(), request.args[0] + " :" + this->_allChannels.find(request.args[0])->second->getTopic()));
 	}
 	std::map<std::string, Channel *>::iterator it = this->_allChannels.find(request.args[0]); //->second->setTopic(request.args[1]);
 	if (it != this->_allChannels.end())
@@ -98,9 +98,9 @@ std::string	Server::_topic(Request request, int i)
 		if (user.second == 1)
 			it->second->setTopic(request.args[1]);
 		else if (user.second == -1  /* Not in channel */)
-			return (_printError(442, " ERR_NOTONCHANNEL", request.args[0] + " :You're not on that channel"));
+			return (_printMessage("442", this->_clients[i]->getNickName(), request.args[0] + " :You're not on that channel"));
 		else
-			return (_printError(482, " ERR_CHANOPRIVSNEEDED", request.args[0] + " :You're not channel operator"));
+			return (_printMessage("482", this->_clients[i]->getNickName(), request.args[0] + " :You're not channel operator"));
 	}
 	// if (!this->_clients[i]->getisOperator())
 	return ("");
@@ -130,45 +130,45 @@ std::string	Server::_printUserModes(std::string ret, int i)
 std::string	Server::_setMode(Request request, int i)
 {
 	if (!this->_clients[i]->getRegistered())
-		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() < 2) {
 		std::string	ret;
 		if (request.args.size() == 1 && request.args[0] == this->_clients[i]->getNickName())
 			ret = _printUserModes(ret, i);
-		ret.append(std::to_string(461) + " ERR_NEEDMOREPARAMS\n\tPASS :Not enough parameters\n");
+		ret.append(std::to_string(461) + "ERR_NEEDMOREPARAMS\n\tPASS :Not enough parameters\n");
 		return (ret);
 	}
 	if (request.args[0] != this->_clients[i]->getNickName())
-		return (_printError(502, "ERR_USERSDONTMATCH", ":Cannot change mode for other users"));
+		return (_printMessage("502", this->_clients[i]->getNickName(), ":Cannot change mode for other users"));
 	if (!_validMode(request))
-		return (_printError(501, "ERR_UMODEUNKNOWNFLAG", ":Unknown MODE flag"));
+		return (_printMessage("501", this->_clients[i]->getNickName(), ":Unknown MODE flag"));
 	if (request.args[1][0] == '+')
 		this->_clients[i]->setMode(true, request.args[1][1]);
 	else
 		this->_clients[i]->setMode(false, request.args[1][1]);
-	return (_printReply(221, "RPL_UMODEIS", request.args[1]));
+	return (_printMessage("221", this->_clients[i]->getNickName(), request.args[1]));
 }
 
 std::string	Server::_setOper(Request request, int i)
 {
 	if (!this->_clients[i]->getRegistered())
-		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() < 2)
-		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), "PASS :Not enough parameters"));
 	if (request.args[0] != "ADMIN")
-		return (_printError(464, "ERR_PASSWDMISMATCH", ":Username/Password incorrect"));
+		return (_printMessage("464", this->_clients[i]->getNickName(), ":Username/Password incorrect"));
 	if (request.args[1] != "DEEZNUTS")
-		return (_printError(464, "ERR_PASSWDMISMATCH", ":Username/Password incorrect"));
+		return (_printMessage("464", this->_clients[i]->getNickName(), ":Username/Password incorrect"));
 	this->_clients[i]->setIsOperator(true);
-	return (_printReply(381, "RPL_YOUREOPER", ":You are now an IRC operator"));
+	return (_printMessage("381", this->_clients[i]->getNickName(), ":You are now an IRC operator"));
 }
 
 std::string	Server::_setPassWord(Request request, int i)
 {
 	if (request.args.size() < 1)
-		return (_printError(461, "ERR_NEEDMOREPARAMS", "PASS :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), "PASS :Not enough parameters"));
 	if (this->_clients[i]->getRegistered())
-		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
+		return (_printMessage("462", this->_clients[i]->getNickName(), ":Unauthorized command (already registered)"));
 	if (request.args[0] == this->_password)
 		this->_clients[i]->setPassWord(true);
 	return ("");
@@ -177,23 +177,23 @@ std::string	Server::_setPassWord(Request request, int i)
 std::string	Server::_setNickName(Request request, int i)
 {
 	if (request.args.size() < 1)
-		return (_printError(431, "ERR_NONICKNAMEGIVEN", ":No nickname given"));
+		return (_printMessage("431", this->_clients[i]->getNickName(), ":No nickname given"));
 	int	j = 0;
 	while (request.args[0][j])
 	{
 		if (!isalnum(request.args[0][j]) && request.args[0][j] != '-')
-			return (_printError(432, "ERR_ERRONEUSNICKNAME", request.args[0] + " :Erroneous nickname"));
+			return (_printMessage("432", this->_clients[i]->getNickName(), request.args[0] + " :Erroneous nickname"));
 		j++;
 	}
 	if (std::find(this->_clientNicknames.begin(), this->_clientNicknames.end(), request.args[0]) != this->_clientNicknames.end())
-		return (_printError(433, "ERR_NICKNAMEINUSE", request.args[0] + " :Nickname is already in use"));
+		return (_printMessage("433", this->_clients[i]->getNickName(), request.args[0] + " :Nickname is already in use"));
 
 	this->_clients[i]->setNickName(request.args[0]);
 	this->_clientNicknames.push_back(this->_clients[i]->getNickName());
 	if (this->_clients[i]->getUserName() != "") {
 		this->_clients[i]->setID(this->_clients[i]->getNickName() + "!" + this->_clients[i]->getUserName() + "@" + this->_clients[i]->getHost());
 		this->_clients[i]->setRegistered(true);
-		return (_printReply(1, "RPL_WELCOME", "Welcome to the Internet Relay Network " + this->_clients[i]->getID()));
+		return (_printMessage("001", this->_clients[i]->getNickName(), "Welcome to the Internet Relay Network " + this->_clients[i]->getID()));
 	}
 	return ("");
 };
@@ -201,16 +201,16 @@ std::string	Server::_setNickName(Request request, int i)
 std::string	Server::_setUserName(Request request, int i)
 {
 	if (this->_clients[i]->getRegistered())
-		return (_printError(462, "ERR_ALREADYREGISTRED", ":Unauthorized command (already registered)"));
+		return (_printMessage("462", this->_clients[i]->getNickName(), ":Unauthorized command (already registered)"));
 	if (request.args.size() < 4)
-		return (_printError(461, "ERR_NEEDMOREPARAMS", "USER :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), "USER :Not enough parameters"));
 
 	this->_clients[i]->setUserName(request.args[0]);
 	this->_clients[i]->setFullName(request.args[3]);
 	if (this->_clients[i]->getNickName() != "") {
 		this->_clients[i]->setID(this->_clients[i]->getNickName() + "!" + this->_clients[i]->getUserName() + "@" + this->_clients[i]->getHost());
 		this->_clients[i]->setRegistered(true);
-		return (_printReply(1, "RPL_WELCOME", "Welcome to the Internet Relay Network " + this->_clients[i]->getID()));
+		return (_printMessage("001", this->_clients[i]->getNickName(), "Welcome to the Internet Relay Network " + this->_clients[i]->getID()));
 	}
 	return ("");
 };

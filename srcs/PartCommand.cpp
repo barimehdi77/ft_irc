@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PartCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:22:28 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 18:51:53 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 13:03:34 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int	Server::_partChannel( std::string ChannelName, int i, std::string message, i
 std::string	Server::_part( Request request, int i )
 {
 	if (!this->_clients[i]->getRegistered())
-		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() == 0)
-		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
 	std::vector<std::string>	parsChannels(_commaSeparator(request.args[0]));
 	std::vector<std::string>::iterator it = parsChannels.begin();
 	while (it != parsChannels.end())
@@ -61,9 +61,9 @@ std::string	Server::_part( Request request, int i )
 		else
 			j = _partChannel(*it, i, "", 1);
 		if (j == NOSUCHCHANNEL /* No such channel */)
-			return (_printError(403, " ERR_NOSUCHCHANNEL", *it + " :No such channel"));
+			return (_printMessage("403", this->_clients[i]->getNickName(), *it + " :No such channel"));
 		if (j == NOTINCHANNEL /* Not in channel */)
-			return (_printError(442, " ERR_NOTONCHANNEL", *it + " :You're not on that channel"));
+			return (_printMessage("442", this->_clients[i]->getNickName(), *it + " :You're not on that channel"));
 		it++;
 	}
 	// if (0 /* No such channel */)

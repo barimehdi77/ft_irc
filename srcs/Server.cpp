@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 16:04:19 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 13:01:01 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ Server::Server(std::string Name, int max_online, std::string Port): _clients()
 
 Server::~Server() {}
 
-std::string	Server::_printError(int num, std::string reply, std::string message)
+std::string	Server::_printMessage(std::string num, std::string reply, std::string message)
 {
 	// std::string ret = num + " " + reply + "\n\t" + message + "\n";
-	return (":" + this->_name + " " + std::to_string(num) + " " + reply + " " + message + "\n");
+	return (":" + this->_name + " " + num + " " + reply + " " + message + "\n");
 	// std::cout << num << " " << reply << "\n\t" << message << std::endl;
 }
 

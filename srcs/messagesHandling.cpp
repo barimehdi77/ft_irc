@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   messagesHandling.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:00:04 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 16:22:35 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 13:02:17 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@ std::string	Server::_welcomemsg(void)
 	welcome.append(RESET);
 	return (welcome);
 };
-
-std::string	Server::_printReply(int num, std::string reply, std::string message)
-{
-	return (":" + this->_name + " " + std::to_string(num) + " " + reply + " " + message + "\n");
-}
 
 // void	Server::_broadcastmsg(int sender_fd, std::string buf, int nbytes)
 // {

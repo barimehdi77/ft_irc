@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   JoinCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 18:44:34 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 13:08:11 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ std::string	Server::_joinChannel( Request request, int i )
 {
 	int j = 1;
 	if (!this->_clients[i]->getRegistered())
-		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() == 0)
-		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
 	if (request.args[0] == "0")
 		return(this->_clients[i]->leaveAllChannels());
 	std::vector<std::string> parsChannels(_commaSeparator(request.args[0]));
@@ -35,17 +35,17 @@ std::string	Server::_joinChannel( Request request, int i )
 		else
 			j = _createChannel(*itChannels, i);
 		if (j == BADCHANMASK)
-			return (_printError(476, " ERR_BANNEDFROMCHAN", *itChannels + " :Bad Channel Mask"));
+			return (_printMessage("476", this->_clients[i]->getNickName(), *itChannels + " :Bad Channel Mask"));
 		if (j == BANNEDFROMCHAN)
-			return (_printError(474, " ERR_BANNEDFROMCHAN", *itChannels + " :Cannot join channel (+b)"));
+			return (_printMessage("474", this->_clients[i]->getNickName(), *itChannels + " :Cannot join channel (+b)"));
 		if (j == TOOMANYCHANNELS )
-			return (_printError(405, " ERR_TOOMANYCHANNELS", *itChannels + " :You have joined too many channels"));
+			return (_printMessage("405", this->_clients[i]->getNickName(), *itChannels + " :You have joined too many channels"));
 		if (j == BADCHANNELKEY )
-			return (_printError(475, " ERR_BADCHANNELKEY", *itChannels + " :Cannot join channel (+k)"));
+			return (_printMessage("475", this->_clients[i]->getNickName(), *itChannels + " :Cannot join channel (+k)"));
 		if (j == CHANNELISFULL )
-			return (_printError(471, " ERR_CHANNELISFULL", *itChannels + " :Cannot join channel (+l)"));
+			return (_printMessage("471", this->_clients[i]->getNickName(), *itChannels + " :Cannot join channel (+l)"));
 		if (j == NOSUCHCHANNEL)
-			return (_printError(403, " ERR_NOSUCHCHANNEL", *itChannels + " :No such channel"));
+			return (_printMessage("403", this->_clients[i]->getNickName(), *itChannels + " :No such channel"));
 		if (j == USERISJOINED)
 			_sendall(i, this->_clients[i]->getUserPerfix() + "JOIN " + *itChannels + "\n");
 		if (itKeys != parsKeys.end())
@@ -53,7 +53,7 @@ std::string	Server::_joinChannel( Request request, int i )
 		itChannels++;
 	};
 	--itChannels;
-	return (_printReply(332, "RPL_TOPIC", *itChannels + " :" + this->_allChannels.find(*itChannels)->second->getTopic()));
+	return (_printMessage("332", this->_clients[i]->getNickName(), *itChannels + " :" + this->_allChannels.find(*itChannels)->second->getTopic()));
 };
 
 int	Server::_createChannel( std::string ChannelName, int CreatorFd )

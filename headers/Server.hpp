@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 11:49:26 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 12:52:15 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,12 @@ class Server
 		std::string						_topic(Request request, int i);
 		std::string						_kick(Request request, int i);
 		std::string						_sendMessage(std::string message, int i);
-		std::string						_printError(int num, std::string reply, std::string message);
+		std::string						_printMessage(std::string num, std::string reply, std::string message);
 		// std::string						_setUsername( std::string username, int i );
 		std::string						_parsing(std::string message, int i);
 		Request							_splitRequest(std::string req);
 		std::string						_printUserInfo(int i);
 		std::string						_printHelpInfo(int i);
-		std::string						_printReply(int num, std::string reply, std::string message);
 		std::string						_printUserModes(std::string ret, int i);
 		std::vector<std::string>		_commaSeparator(std::string arg);
 		int								_createPrvChannel( std::string ChannelName, std::string ChannelKey, int	 CreatorFd );
