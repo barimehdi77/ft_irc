@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 15:10:29 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 15:13:47 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ std::string	Server::_setNickName(Request request, int i)
 	int	j = 0;
 	while (request.args[0][j])
 	{
-		if (!isalnum(request.args[0][j]) && request.args[0][j] != '-')
+		if (!isalnum(request.args[0][j]) && request.args[0][j] != '-' && request.args[0][j] != '\r')
 			return (_printMessage("432", this->_clients[i]->getNickName(), request.args[0] + " :Erroneous nickname"));
 		j++;
 	}
