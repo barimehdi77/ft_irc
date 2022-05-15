@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 15:13:47 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 15:23:09 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ std::string	Server::_setPassWord(Request request, int i)
 		return (_printMessage("461", this->_clients[i]->getNickName(), "PASS :Not enough parameters"));
 	if (this->_clients[i]->getRegistered())
 		return (_printMessage("462", this->_clients[i]->getNickName(), ":Unauthorized command (already registered)"));
-	if (request.args[0] != "admin")
+	if (request.args[0] != this->_password)
 		return (_printMessage("997", "*", ":Incorrect password"));
 	else
 		this->_clients[i]->setAuth(true);
@@ -179,7 +179,7 @@ std::string	Server::_setPassWord(Request request, int i)
 std::string	Server::_setNickName(Request request, int i)
 {
 	if (!this->_clients[i]->getAuth())
-		return (_printMessage("998", "*", ":You need to authenticate first"));		
+		return (_printMessage("998", "*", ":You need to authenticate first"));
 	if (request.args.size() < 1)
 		return (_printMessage("431", this->_clients[i]->getNickName(), ":No nickname given"));
 	int	j = 0;
