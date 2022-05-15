@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 12:43:27 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 13:27:38 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 11:49:07 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ std::string	Server::_privmsg(Request request, int i)
 		if (request.args[0].find(",") != std::string::npos)
 			return (_printError(401, "ERR_TOOMANYTARGETS", request.args[0].append(" :Too many recipients.")));
 		if (request.args[0][0] != '&' && request.args[0][0] != '#' && request.args[0][0] != '+' && request.args[0][0] != '!')
-			return (_privToUser(request.args[0], request.args[1], i));
+			return (_privToUser(request.args[0], request.args[1], "PRIVMSG", i));
 		_privToChannel(request.args[0], request.args[1], i);
 	}
 	return ("");
 };
 
-std::string 	Server::_privToUser(std::string User, std::string message, int i)
+std::string 	Server::_privToUser(std::string User, std::string message, std::string cmd, int i)
 {
 	int userFd = _findFdByNickName(User);
 	if (userFd == USERNOTFOUND)
 		return (_printError(401, "ERR_NOSUCHNICK", User.append(" :No such nick/channel")));
 	std::string reply = this->_clients[i]->getUserPerfix();
-	reply.append("PRIVMSG " + User + " :" + message + "\n");
+	reply.append(cmd + " " + User + " :" + message + "\n");
 	if (_sendall(userFd, reply) == -1)
 				std::cout << "_sendall() error: " << strerror(errno) << std::endl;
 	return ("");

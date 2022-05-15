@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 16:19:22 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 11:51:12 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_setMode(request, i));
 	else if (request.command == "PRIVMSG")
 		return (_privmsg(request, i));
+	else if (request.command == "NOTICE")
+		return (_notice(request, i));
 	else if (request.command == "HELP")
 		return (_printHelpInfo(i));
 	else if (request.command == "JOIN")
@@ -51,6 +53,17 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_DeezNuts( request, i));
 	else
 		return ("Invalid command\n");
+};
+
+std::string	Server::_notice(Request request, int i)
+{
+	if (!this->_clients[i]->getRegistered())
+		return (_printError(451, "ERR_NOTREGISTERED", ":You have not registered"));
+	if (request.args.size() < 2)
+		return (_printError(461, " ERR_NEEDMOREPARAMS", " :Not enough parameters"));
+	if (request.args.size() == 2)
+		_privToUser(request.args[0], request.args[1], "NOTICE", i);
+	return ("");
 };
 
 int		Server::_findFdByNickName(std::string NickName)

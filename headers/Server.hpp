@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 18:52:47 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 11:49:26 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ class Server
 		// int								_findFdByUserName(std::string UserName);
 		int								_findFdByNickName(std::string NickName);
 		std::string						_privmsg(Request request, int i);
-		std::string 					_privToUser(std::string User, std::string message, int i);
+		std::string						_notice(Request request, int i);
+		std::string 					_privToUser(std::string User, std::string message, std::string cmd, int i);
 		std::string 					_privToChannel(std::string ChannelName, std::string message, int i);
 		std::string						_sendToAllUsers( Channel *channel, int senderFd, std::string message);
 		std::string						_getPassword() const;
