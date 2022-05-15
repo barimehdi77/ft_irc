@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   JoinCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 13:08:11 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 13:14:05 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ std::string	Server::_joinChannel( Request request, int i )
 		if (j == NOSUCHCHANNEL)
 			return (_printMessage("403", this->_clients[i]->getNickName(), *itChannels + " :No such channel"));
 		if (j == USERISJOINED)
+		{
 			_sendall(i, this->_clients[i]->getUserPerfix() + "JOIN " + *itChannels + "\n");
+			_sendall(i, _printReply() )
+		}
 		if (itKeys != parsKeys.end())
 			itKeys++;
 		itChannels++;

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 18:43:23 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 13:07:00 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,4 +144,28 @@ std::pair<Client *, int> Channel::findUserRole( int i )
 	if (it != this->_voice.end())
 		return (std::pair<Client *, int>(it->second, 2));
 	return (std::pair<Client *, int>(NULL, -1));
-}
+};
+
+std::string		Channel::listAllUsers() const
+{
+	std::string		AllUsers;
+	std::map<int, Client *>::const_iterator it = this->_operators.begin();
+	while (it != this->_operators.end())
+	{
+		AllUsers.append("@" + it->second->getNickName() + " ");
+		it++;
+	}
+	it = this->_members.begin();
+	while (it != this->_members.end())
+	{
+		AllUsers.append(it->second->getNickName() + " ");
+		it++;
+	}
+	it = this->_voice.begin();
+	while (it != this->_voice.end())
+	{
+		AllUsers.append("+" + it->second->getNickName() + " ");
+		it++;
+	}
+	return (AllUsers);
+};
