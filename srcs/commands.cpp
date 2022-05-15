@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 16:47:12 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 20:36:30 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../headers/Server.hpp"
 
@@ -287,7 +288,7 @@ std::string	Server::_printUserInfo(int i)
 
 
 
-// USER mbari * * :Bari mehdi
+// PASS 77
+// USER mbari * * :bari mehdi
 // NICK DarkSide
-// JOIN #test,&help
 
