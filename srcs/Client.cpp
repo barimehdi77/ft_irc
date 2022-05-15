@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 15:56:43 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 14:59:54 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "../headers/Client.hpp"
 
 
-Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _PassWord(false) , _ID(), _modes(), _joinedChannels() {};
-Client::Client( int fd, int pollNumber ): _UserName(), _clientfd(fd), _pollNumber(pollNumber), _Registered(false), _PassWord(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID(), _modes(), _joinedChannels() {};
+Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _Auth(false) , _ID(), _modes(), _joinedChannels() {};
+Client::Client( int fd, int pollNumber ): _UserName(), _clientfd(fd), _pollNumber(pollNumber), _Registered(false), _Auth(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID(), _modes(), _joinedChannels() {};
 Client::Client( const Client& x ): _Host(x._Host) { *this = x; };
 
 
@@ -31,7 +31,7 @@ Client & Client::operator=( const Client& rhs )
 	this->_FullName = rhs._FullName;
 	// this->_Host = rhs._Host;
 	this->_ID = rhs._ID;
-	this->_PassWord = rhs._PassWord;
+	this->_Auth = rhs._Auth;
 	this->_remotaddr = rhs._remotaddr;
 	this->_addrlen = rhs._addrlen;
 	this->_joinedChannels.insert(rhs._joinedChannels.begin(), rhs._joinedChannels.end());
@@ -45,7 +45,7 @@ std::string	Client::getNickName()		const { return (this->_NickName); };
 std::string	Client::getFullName()		const { return (this->_FullName); };
 std::string Client::getHost()			const { return (this->_Host); };
 std::string Client::getID()				const { return (this->_ID); }
-bool		Client::getPassWord()		const { return (this->_PassWord); };
+bool		Client::getAuth()			const { return (this->_Auth); };
 int			Client::getClientfd()		const { return (this->_clientfd); };
 int			Client::getRegistered()		const { return (this->_Registered); };
 int			Client::getisOperator()		const { return (this->_isOperator); };
@@ -69,14 +69,14 @@ int			Client::getMode(char mode)	const
 }
 
 
-void		Client::setUserName(std::string UserName) { this->_UserName = UserName; };
+void		Client::setUserName(std::string UserName)	{ this->_UserName = UserName; };
 void		Client::setNickName( std::string NickName )	{ this->_NickName = NickName; };
 void		Client::setFullName( std::string FullName )	{ this->_FullName = FullName; };
-void		Client::setPassWord( bool PassWord )	{ this->_PassWord = PassWord; };
 // void		Client::setHost( std::string Host )			{ this->_Host = Host; };
 void		Client::setID( std::string ID )				{ this->_ID = ID; };
 void		Client::setClientfd( int Clientfd )			{ this->_clientfd = Clientfd; };
 void		Client::setRegistered( int Registered )		{ this->_Registered = Registered; };
+void		Client::setAuth( int Auth )					{ this->_Auth = Auth; };
 void		Client::setIsOperator(int isOperator)
 {
 	this->_isOperator = isOperator;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/14 15:56:18 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/15 15:00:37 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ class Client
 	private:
 		int									_clientfd;
 		int									_pollNumber;
+		bool								_Auth;
 		bool								_Registered;
-		bool								_PassWord;
 		bool								_isOperator;
 		std::string							_NickName;
 		std::string							_UserName;
@@ -69,25 +69,25 @@ class Client
 		std::string							getFullName()		const;
 		std::string							getID()				const;
 		std::string							getHost()			const;
-		bool							getPassWord()		const;
 		int									getClientfd()		const;
+		bool								getAuth()			const;
 		int									getRegistered()		const;
 		int									getisOperator()		const;
 		int									getMode(char mode)	const;
-		std::string							getUserPerfix() const;
-		std::string							getUserInfo() const;
-		std::string							getAllChannels() const;
-		std::map<std::string, Channel *>	getJoinedChannels() const;
+		std::string							getUserPerfix()		const;
+		std::string							getUserInfo()		const;
+		std::string							getAllChannels()	const;
+		std::map<std::string, Channel *>	getJoinedChannels()	const;
 
 
 	public: /*             Setters                         */
 		void			setUserName(std::string UserName);
 		void			setNickName(std::string NickName);
 		void			setFullName(std::string FullName);
-		void			setPassWord(bool PassWord);
 		// void			setHost(std::string Host);
 		void			setID(std::string ID);
 		void			setClientfd(int clientfd);
+		void			setAuth(int Auth);
 		void			setRegistered(int Registered);
 		void			setIsOperator(int isOperator);
 		void			setMode(int value, char mode);

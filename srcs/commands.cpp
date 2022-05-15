@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 12:58:40 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 15:10:29 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,13 +169,17 @@ std::string	Server::_setPassWord(Request request, int i)
 		return (_printMessage("461", this->_clients[i]->getNickName(), "PASS :Not enough parameters"));
 	if (this->_clients[i]->getRegistered())
 		return (_printMessage("462", this->_clients[i]->getNickName(), ":Unauthorized command (already registered)"));
-	if (request.args[0] == this->_password)
-		this->_clients[i]->setPassWord(true);
+	if (request.args[0] != "admin")
+		return (_printMessage("997", "*", ":Incorrect password"));
+	else
+		this->_clients[i]->setAuth(true);
 	return ("");
 };
 
 std::string	Server::_setNickName(Request request, int i)
 {
+	if (!this->_clients[i]->getAuth())
+		return (_printMessage("998", "*", ":You need to authenticate first"));		
 	if (request.args.size() < 1)
 		return (_printMessage("431", this->_clients[i]->getNickName(), ":No nickname given"));
 	int	j = 0;
@@ -200,6 +204,8 @@ std::string	Server::_setNickName(Request request, int i)
 
 std::string	Server::_setUserName(Request request, int i)
 {
+	if (!this->_clients[i]->getAuth())
+		return (_printMessage("998", "*", ":You need to authenticate first"));
 	if (this->_clients[i]->getRegistered())
 		return (_printMessage("462", this->_clients[i]->getNickName(), ":Unauthorized command (already registered)"));
 	if (request.args.size() < 4)
@@ -263,7 +269,6 @@ std::string	Server::_printUserInfo(int i)
 	info.append("FullName: " + this->_clients[i]->getFullName() + "\n");
 	info.append("Host: " + this->_clients[i]->getHost() + "\n");
 	info.append("ID: " + this->_clients[i]->getID() + "\n");
-	info.append("PassWord: " + std::to_string(this->_clients[i]->getPassWord()) + "\n");
 	info.append("Operator: " + std::to_string(this->_clients[i]->getisOperator()) + "\n");
 
 	info.append("/************************ List All Your Channels *****************************/\n");
