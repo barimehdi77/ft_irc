@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 14:59:54 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/15 20:40:36 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ Client & Client::operator=( const Client& rhs )
 	this->_NickName = rhs._NickName;
 	this->_UserName = rhs._UserName;
 	this->_FullName = rhs._FullName;
-	// this->_Host = rhs._Host;
 	this->_ID = rhs._ID;
 	this->_Auth = rhs._Auth;
 	this->_remotaddr = rhs._remotaddr;
@@ -72,7 +71,6 @@ int			Client::getMode(char mode)	const
 void		Client::setUserName(std::string UserName)	{ this->_UserName = UserName; };
 void		Client::setNickName( std::string NickName )	{ this->_NickName = NickName; };
 void		Client::setFullName( std::string FullName )	{ this->_FullName = FullName; };
-// void		Client::setHost( std::string Host )			{ this->_Host = Host; };
 void		Client::setID( std::string ID )				{ this->_ID = ID; };
 void		Client::setClientfd( int Clientfd )			{ this->_clientfd = Clientfd; };
 void		Client::setRegistered( int Registered )		{ this->_Registered = Registered; };
@@ -108,10 +106,8 @@ int		Client::isJoined( std::string ChannelName ) const
 
 void	Client::joinChannel( std::string ChannelName, Channel *channel )
 {
-	// std::cout << "trying to join " << ChannelName << " isJoined: " << isJoined(ChannelName) << " ?" << std::endl;
 	if (!isJoined(ChannelName))
 		this->_joinedChannels.insert(std::pair<std::string, Channel *>(ChannelName, channel));
-	// std::cout << "number of channels is : " << this->_joinedChannels.size() << std::endl;
 };
 
 std::string	Client::JoinedChannels() const
@@ -123,7 +119,6 @@ std::string	Client::JoinedChannels() const
 		channels.append(BLUE + it->first + RESET + ":\n");
 		channels.append(YELLOW "\tChannel Name: " RESET + it->first + "\n");
 		channels.append(YELLOW "\tChannel Name inside class: " RESET + it->second->getName() + "\n");
-		// Client *test = it->second->getOperators();
 		channels.append(YELLOW  "\tChannel Creator: " RESET + it->second->getCreator()->getFullName() + "\n");
 		it++;
 	};
