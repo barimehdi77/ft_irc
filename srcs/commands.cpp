@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 15:25:06 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 17:12:52 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../headers/Server.hpp"
-
 
 std::string	Server::_parsing(std::string message, int i)
 {
@@ -55,6 +53,22 @@ std::string	Server::_parsing(std::string message, int i)
 	else
 		return ("Invalid command\n");
 };
+
+// std::string	Server::_getFile( Request request, int i )
+// {
+// 	std::ofstream MyFile(request.args[1]);
+// 	std::map<std::string, std::ifstream>::iterator it = this->_files.find(request.args[0]);
+// 	std::string	line;
+
+// 	if (it->second && MyFile)
+// 	{
+// 		while (getline())
+// 		{
+
+// 		}
+// 	}
+
+// };
 
 std::string	Server::_notice(Request request, int i)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 16:22:55 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 17:11:46 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,14 @@
 #include <poll.h>
 #include <time.h>
 
-class Request
-{
-	public:
-		std::vector<std::string>	args;
-		std::string					command;
-		bool						invalidMessage;
 
-	Request() : args(), command(), invalidMessage(false) {}
-};
+
+
 
 class Client;
 class Channel;
+class Request;
+class File;
 
 class Server
 {
@@ -60,7 +56,7 @@ class Server
 		std::map<std::string, Channel *>	_allChannels;
 		std::vector<std::string>			_unavailableUserName;
 		std::vector<std::string>			_clientNicknames;
-		std::map<std::string, std::fstream>	_files;
+		std::map<std::string, File>	_files;
 
 	private:
 		Server();
@@ -132,6 +128,8 @@ class Server
 
 #include "Channel.hpp"
 #include "Client.hpp"
+#include "Request.hpp"
+#include "File.hpp"
 
 #endif
 
