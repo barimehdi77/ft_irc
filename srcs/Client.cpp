@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 18:22:22 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 18:29:31 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int			Client::getMode(char mode)	const
 		return this->_modes.localOp;
 	else if (mode == 's')
 		return this->_modes.server;
-	return (0); // need to return something
+	return (0);
 }
 
 
