@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 15:04:53 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 15:49:33 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ class Server
 		std::map<std::string, Channel *>	_allChannels;
 		std::vector<std::string>			_unavailableUserName;
 		std::vector<std::string>			_clientNicknames;
-		std::vector<std::ifstream>			_files;
+		std::map<std::string, std::ifstream>	_files;
 
 	private:
 		Server();
@@ -97,7 +97,7 @@ class Server
 		int								_createChannel( std::string channelName, int CreatorFd );
 		int								_partChannel( std::string ChannelName, int i, std::string message, int isPart );
 		std::string						_DeezNuts( Request request, int i );
-		std::string						_sendfile( Request request, int i );
+		std::string						_sendFile( Request request, int i );
 		std::string						_getFile( Request request, int i );
 		std::string						_getBotMessage();
 		std::string						_listAllChannels() const;
