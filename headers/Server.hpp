@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 15:49:33 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 16:22:55 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ class Server
 		std::map<std::string, Channel *>	_allChannels;
 		std::vector<std::string>			_unavailableUserName;
 		std::vector<std::string>			_clientNicknames;
-		std::map<std::string, std::ifstream>	_files;
+		std::map<std::string, std::fstream>	_files;
 
 	private:
 		Server();
