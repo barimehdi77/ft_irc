@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   JoinCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:39:41 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 14:59:37 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ std::string	Server::_joinChannel( Request request, int i )
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() == 0)
-		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), ":Not enough parameters"));
 	if (request.args[0] == "0")
 		return(this->_clients[i]->leaveAllChannels());
 	std::vector<std::string> parsChannels(_commaSeparator(request.args[0]));

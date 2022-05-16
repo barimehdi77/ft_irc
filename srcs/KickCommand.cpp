@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   KickCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 19:30:40 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:21:45 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 15:02:18 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ std::string	Server::_kick(Request request, int i)
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() < 2)
-		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), ":Not enough parameters"));
 	std::vector<std::string> channels(_commaSeparator(request.args[0]));
 	std::vector<std::string> users(_commaSeparator(request.args[1]));
 	std::vector<std::string>::iterator it = channels.begin();

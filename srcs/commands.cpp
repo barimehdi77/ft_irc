@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 13:09:50 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 15:00:41 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ std::string	Server::_notice(Request request, int i)
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() < 2)
-		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), ":Not enough parameters"));
 	if (request.args.size() == 2)
 		_privToUser(request.args[0], request.args[1], "NOTICE", i);
 	return ("");
@@ -84,7 +84,7 @@ std::string	Server::_topic(Request request, int i)
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() == 0)
-		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), ":Not enough parameters"));
 	if (request.args.size() == 1)
 	{
 		if (this->_allChannels.find(request.args[0])->second->getTopic().empty())

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PartCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:22:28 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:22:56 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 15:02:29 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ std::string	Server::_part( Request request, int i )
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() == 0)
-		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), ":Not enough parameters"));
 	std::vector<std::string>	parsChannels(_commaSeparator(request.args[0]));
 	std::vector<std::string>::iterator it = parsChannels.begin();
 	while (it != parsChannels.end())

@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 12:43:27 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 13:09:41 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 15:02:39 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ std::string	Server::_privmsg(Request request, int i)
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() < 2)
-		return (_printMessage("461", this->_clients[i]->getNickName(), " :Not enough parameters"));
+		return (_printMessage("461", this->_clients[i]->getNickName(), ":Not enough parameters"));
 	if (request.args.size() == 2)
 	{
 		if (request.args[0].find(",") != std::string::npos)
