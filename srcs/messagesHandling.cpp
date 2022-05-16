@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   messagesHandling.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:00:04 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 13:02:17 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 12:22:45 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 std::string	Server::_welcomemsg(void)
 {
 	std::string welcome = RED;
-	// welcome.append(this->_name);
 	welcome.append("██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗\n");
 	welcome.append("██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝\n");
 	welcome.append("██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗\n");
@@ -27,34 +26,6 @@ std::string	Server::_welcomemsg(void)
 	welcome.append(RESET);
 	return (welcome);
 };
-
-// void	Server::_broadcastmsg(int sender_fd, std::string buf, int nbytes)
-// {
-// 	for (int j = 0; j < this->_online_c; j++)
-// 	{
-// 		int fd = this->_pfds[j].fd;
-// 		if (fd == this->_socketfd)
-// 			continue;
-// 		int dest_fd = this->_clients[fd]->getClientfd();
-// 		// Except the listener and ourselves
-// 		if (dest_fd != this->_socketfd && dest_fd != sender_fd && this->_clients[fd]->getRegistered())
-// 			if (_sendall(dest_fd, buf) == -1)
-// 				std::cout << "_sendall() error: " << strerror(errno) << std::endl;
-// 	}
-// }
-
-// std::string	Server::_sendMessage(std::string message, int i)
-// {
-// 	if (this->_clients[i]->getRegistered())
-// 	{
-// 		std::string	send = this->_clients[i]->getUserName() + ": " + message + "\n";
-// 		std::cout << send << std::endl;
-// 		_broadcastmsg(this->_clients[i]->getClientfd(), send, send.length());
-// 		return (std::string());
-// 	}
-// 	else
-// 		return("To send messages you Need to Loggin\n");
-// }
 
 int			Server::_sendall(int destfd, std::string message)
 {
@@ -72,4 +43,21 @@ int			Server::_sendall(int destfd, std::string message)
 	return (b == -1 ? -1 : 0);
 };
 
-
+std::string		Server::_sendToAllUsers( Channel *channel, int senderFd, std::string message)
+{
+	std::map<int, Client *> allusers = channel->getAllUsers();
+	std::map<int, Client *>::iterator it = allusers.begin();
+	std::string reply = this->_clients[senderFd]->getUserPerfix();
+	reply.append(message);
+	while (it != allusers.end())
+	{
+		if (senderFd != it->first)
+			if (_sendall(it->first, reply) == -1)
+			{
+				std::cout << "_sendall() error: " << strerror(errno) << std::endl;
+				return ("");
+			}
+		it++;
+	}
+	return ("");
+};

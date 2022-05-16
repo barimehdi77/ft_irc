@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:12:51 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 12:23:38 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ Server::Server(std::string Name, int max_online, std::string Port, std::string P
 	this->_password = Password;
 	this->_online_c = 0;
 	this->_pfds = new struct pollfd[max_online];
-	// this->_clients = new Client[max_online];
 	_getSocket(Port);
 	this->_pfds[0].fd = this->_socketfd;
 	this->_pfds[0].events = POLLIN;
@@ -33,20 +32,16 @@ Server::~Server() {}
 
 std::string	Server::_printMessage(std::string num, std::string nickname, std::string message)
 {
-	// std::string ret = num + " " + nickname + "\n\t" + message + "\n";
 	if (nickname.empty())
 		nickname = "*";
 	return (":" + this->_name + " " + num + " " + nickname + " " + message + "\n");
-	// std::cout << num << " " << nickname << "\n\t" << message << std::endl;
 }
 
 void	Server::_newClient(void)
 {
-	/* all those varibles will be deleted when adding client class */
 	struct sockaddr_storage	remotaddr;
 	socklen_t				addrlen;
 	int newfd;
-	/* *********************************************************** */
 
 	addrlen = sizeof remotaddr;
 	newfd = accept(this->_socketfd, (struct sockaddr*)&remotaddr, &addrlen);

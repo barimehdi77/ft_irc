@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:52:05 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/13 17:10:14 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 12:23:25 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 void	Server::_ClientRequest(int i)
 {
-	/* all those varibles will be deleted when adding client class */
 	char buf[6000];
-	/* *********************************************************** */
-
 	int sender_fd = this->_pfds[i].fd;
 	int nbytes = recv(sender_fd, buf, sizeof(buf), 0);
 
@@ -38,7 +35,6 @@ void	Server::_ClientRequest(int i)
 		std::string ret = _parsing(message, this->_pfds[i].fd);
 		if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
 			std::cout << "send() error: " << strerror(errno) << std::endl;
-		// _broadcastmsg( sender_fd, buf, nbytes );	// Send to everyone!
 	}
 	memset(&buf, 0, 6000);
 };

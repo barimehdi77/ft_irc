@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:01:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 20:41:06 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 12:11:54 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ std::string	Server::_DeezNuts( Request req, int i )
 			if (req.args.size() == 2)
 				return(_channelInfo(req.args[1], i));
 			else
-				return ("Usage of this Command: DEEZNUTS 4 [CHANNEL NAME] \n");
+				return ("Usage of this Command: DEEZNUTS 4 [CHANNEL NAME]\n");
 		}
 		else if (req.args[0] == "5")
 			return (_serverInfo());

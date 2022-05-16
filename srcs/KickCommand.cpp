@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   KickCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 19:30:40 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 13:08:50 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 12:21:45 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ std::string	Server::_kick(Request request, int i)
 			ret = _kickedFromChannel(*it, "", users, i);
 		if (!ret.empty())
 			return(ret);
-		// function to send message to all users in the channel so they know that someone kicked;
 		it++;
 	}
 	return ("");

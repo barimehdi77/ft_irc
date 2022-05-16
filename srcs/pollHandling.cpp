@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:54:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/12 16:46:55 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 12:23:11 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,17 @@ void	Server::_addToPoll(int newfd)
 	{
 		this->_max_online_c *= 2;
 		this->_pfds = (struct pollfd *)realloc(this->_pfds, this->_max_online_c);
-		// this->_clients = (Client *)realloc(this->_clients, this->_max_online_c);
 	}
 	this->_pfds[this->_online_c].fd = newfd;
 	this->_pfds[this->_online_c].events = POLLIN;
 	this->_clients.insert(std::pair<int, Client *>(newfd, new Client(newfd, this->_max_online_c)));
-	// this->_clients[this->_online_c].setClientfd(newfd);
-
 	this->_online_c++;
 };
 
 void	Server::_removeFromPoll(int i)
 {
 	close(this->_pfds[i].fd);
-	// fill this with null if i == this->_online_c - 1
 	this->_pfds[i] = this->_pfds[this->_online_c - 1];
-	// this->_clients[i] = this->_clients[this->_online_c - 1];
 	this->_clients.erase(this->_pfds[i].fd);
-
 	this->_online_c--;
 };

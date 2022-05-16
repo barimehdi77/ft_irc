@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PartCommand.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:22:28 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 13:03:34 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 12:22:56 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,5 @@ std::string	Server::_part( Request request, int i )
 			return (_printMessage("442", this->_clients[i]->getNickName(), *it + " :You're not on that channel"));
 		it++;
 	}
-	// if (0 /* No such channel */)
-	// if (0 /* Not in channel */)
 	return ("");
 };
