@@ -6,12 +6,12 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 17:03:56 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:11:09 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:23:44 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REQUEST
-#define REQUEST
+#ifndef REQUEST_HPP
+#define REQUEST_HPP
 
 #include "Server.hpp"
 
@@ -22,10 +22,11 @@ class Request
 		std::string					command;
 		bool						invalidMessage;
 
-	Request();
-	~Request();
-	Request( const Request &x );
-	Request & operator = ( const Request &rhs );
+	public:
+		Request();
+		~Request();
+		Request( const Request &x );
+		Request & operator = ( const Request &rhs );
 };
 
 #endif

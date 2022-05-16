@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 17:10:36 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:11:29 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:29:58 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,20 @@
 
 class File
 {
-	std::string	fileName;
-	std::string filePath;
-	std::string sender;
-	std::string receiver;
+	public:
+		std::string	Name;
+		std::string Path;
+		std::string sender;
+		std::string receiver;
 
-	File();
-	File( std::string FileName, std::string FilePath, std::string Sender, std::string Receiver );
-	File( const File &x );
-	File & operator = ( const File &rhs );
+	private:
+		File();
+
+	public:
+		File( std::string Name, std::string Path, std::string Sender, std::string Receiver );
+		File( const File &x );
+		~File();
+		File & operator = ( const File &rhs );
 };
 
 #endif

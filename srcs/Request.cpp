@@ -6,11 +6,11 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 17:05:28 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:07:58 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:24:01 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Request.hpp"
+#include "../headers/Request.hpp"
 
 
 Request::Request(): args(), command(), invalidMessage(false) {};
