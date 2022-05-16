@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:01:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:11:54 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 12:39:22 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ std::string Server::_serverInfo() const
 std::string Server::_channelInfo(std::string ChannelName, int i)
 {
 	std::map<std::string, Channel *>::const_iterator it = this->_allChannels.find(ChannelName);
-	std::cout << "find ( " << ChannelName <<  " ) == > " << it->first << std::endl;
 	if (it != this->_allChannels.end())
 	{
 		if (this->_clients[i]->isJoined(ChannelName))

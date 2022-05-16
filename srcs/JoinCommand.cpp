@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:21:28 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 12:39:41 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,14 +136,11 @@ std::vector<std::string> Server::_commaSeparator(std::string arg)
 {
 	std::vector<std::string> ret;
 	int pos = 0;
-	std::cout << "start parsing" << std::endl;
 	while ((pos = arg.find(",")) != std::string::npos)
 	{
 		ret.push_back(arg.substr(0, pos));
-		std::cout << ret.back() << std::endl;
 		arg.erase(0, pos + 1);
 	}
 	ret.push_back(arg.substr(0, pos));
-	std::cout << ret.back() << std::endl;
 	return (ret);
 };

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:23:38 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 12:49:11 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	Server::_newClient(void)
 		std::string welcome = _welcomemsg();
 		if (send(newfd, welcome.c_str(), welcome.length(), 0) == -1)
 			std::cout << "send() error: " << strerror(errno) << std::endl;
-		std::cout << "server: new connection from "
+		std::cout << "[" << currentDateTime() << "]: new connection from "
 			<< inet_ntoa(((struct sockaddr_in*)&remotaddr)->sin_addr)
 			<< " on socket " << newfd << std::endl;
 	}

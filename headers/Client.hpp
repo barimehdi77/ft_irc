@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 15:00:37 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 12:48:44 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ struct Modes
 	bool	server;
 };
 
-std::string fillIt(std::string str, int len);
+std::string			fillIt(std::string str, int len);
+const std::string	currentDateTime();
 
 class Client
 {

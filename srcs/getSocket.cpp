@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:56:39 by mbari             #+#    #+#             */
-/*   Updated: 2022/04/30 19:46:50 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 12:53:42 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		Server::_getSocket(std::string Port)
 	hint.ai_socktype = SOCK_STREAM;
 	hint.ai_protocol = getprotobyname("TCP")->p_proto;
 
-	status = getaddrinfo(NULL, Port.c_str(), &hint, &serverinfo);
+	status = getaddrinfo("0.0.0.0", Port.c_str(), &hint, &serverinfo);
 
 	if (status != 0)
 	{

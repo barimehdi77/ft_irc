@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:52:05 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:23:25 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 12:40:10 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	Server::_ClientRequest(int i)
 	else
 	{
 		std::string message(buf, strlen(buf) - 1);
-		std::cout << "message length: " << message.length() << std::endl << "message: " << message << std::endl;
 		std::string ret = _parsing(message, this->_pfds[i].fd);
 		if (send(sender_fd, ret.c_str(), ret.length(), 0) == -1)
 			std::cout << "send() error: " << strerror(errno) << std::endl;

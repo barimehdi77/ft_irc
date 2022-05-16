@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 20:37:11 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 13:09:50 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ std::string	Server::_parsing(std::string message, int i)
 		return (_part(request, i));
 	else if (request.command == "QUIT")
 		return (_quit(request, i));
-	else if (request.command == "FREE")
+	else if (request.command == "SENDFILE")
 		return (_fileTransfer(request, i));
-	else if (request.command == "INFO")
-		return (_printUserInfo(i));
+	else if (request.command == "GETFILE")
+		return (_getFile(request, i));
 	else if (request.command == "DEEZNUTS")
 		return (_DeezNuts( request, i));
 	else
@@ -246,9 +246,9 @@ std::string	Server::_printHelpInfo(int i)
 	std::string	helpInfo;
 
 	helpInfo.append(GREEN);
-	helpInfo.append("STEP 1: PASS (Optional)\n");
+	helpInfo.append("STEP 1: PASS\n");
 	helpInfo.append(RESET);
-	helpInfo.append("\tUse PASS command to set a password. e.g: PASS MyAwesomePassword123\n\n");
+	helpInfo.append("\tUse PASS command to set a password. e.g: PASS [Server Password]\n\n");
 	helpInfo.append(GREEN);
 	helpInfo.append("STEP 2: NICK\n");
 	helpInfo.append(RESET);
@@ -259,25 +259,3 @@ std::string	Server::_printHelpInfo(int i)
 	helpInfo.append("\tUse USER command to register your username and fullname.e.g: USER deez * * :Deez Nuts\n\n");
 	return (helpInfo);
 };
-
-
-std::string	Server::_printUserInfo(int i)
-{
-	std::string info;
-	info.append("NickName: " + this->_clients[i]->getNickName() + "\n");
-	info.append("UserName: " + this->_clients[i]->getUserName() + "\n");
-	info.append("FullName: " + this->_clients[i]->getFullName() + "\n");
-	info.append("Host: " + this->_clients[i]->getHost() + "\n");
-	info.append("ID: " + this->_clients[i]->getID() + "\n");
-	info.append("Operator: " + std::to_string(this->_clients[i]->getisOperator()) + "\n");
-	info.append("/************************ List All Your Channels *****************************/\n");
-	info.append(this->_clients[i]->JoinedChannels());
-	return (info);
-};
-
-
-
-// PASS 77
-// USER mbari * * :bari mehdi
-// NICK DarkSide
-

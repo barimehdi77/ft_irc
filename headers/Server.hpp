@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 20:36:03 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 13:09:42 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@
 #include <cstring>
 #include <algorithm>
 #include <utility>
+#include <fstream>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <poll.h>
+#include <time.h>
 
 class Request
 {
@@ -58,6 +60,7 @@ class Server
 		std::map<std::string, Channel *>	_allChannels;
 		std::vector<std::string>			_unavailableUserName;
 		std::vector<std::string>			_clientNicknames;
+		std::vector<std::ifstream>			_files;
 
 	private:
 		Server();
@@ -86,7 +89,7 @@ class Server
 		// std::string						_setUsername( std::string username, int i );
 		std::string						_parsing(std::string message, int i);
 		Request							_splitRequest(std::string req);
-		std::string						_printUserInfo(int i);
+		// std::string						_printUserInfo(int i);
 		std::string						_printHelpInfo(int i);
 		std::string						_printUserModes(std::string ret, int i);
 		std::vector<std::string>		_commaSeparator(std::string arg);
@@ -95,6 +98,7 @@ class Server
 		int								_partChannel( std::string ChannelName, int i, std::string message, int isPart );
 		std::string						_DeezNuts( Request request, int i );
 		std::string						_fileTransfer( Request request, int i );
+		std::string						_getFile( Request request, int i );
 		std::string						_getBotMessage();
 		std::string						_listAllChannels() const;
 		std::string						_channelInfo(std::string ChannelName, int i);
