@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:52:05 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:40:10 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 18:26:51 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	Server::_ClientRequest(int i)
 	if (nbytes <= 0)
 	{
 		if (nbytes == 0)
-			std::cout << "server: socket " << sender_fd << " hung up" << std::endl;
+			std::cout << "[" << currentDateTime() << "]: socket " << sender_fd << " hung up" << std::endl;
 		else
 			std::cout << "recv() error: " << strerror(errno) << std::endl;
 

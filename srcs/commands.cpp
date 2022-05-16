@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:48:45 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 18:07:59 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,6 @@ std::string	Server::_parsing(std::string message, int i)
 		return ("Invalid command\n");
 };
 
-// std::string	Server::_getFile( Request request, int i )
-// {
-// 	std::ofstream MyFile(request.args[1]);
-// 	std::map<std::string, std::ifstream>::iterator it = this->_files.find(request.args[0]);
-// 	std::string	line;
-
-// 	if (it->second && MyFile)
-// 	{
-// 		while (getline())
-// 		{
-
-// 		}
-// 	}
-
-// };
-
 std::string	Server::_notice(Request request, int i)
 {
 	if (!this->_clients[i]->getRegistered())
@@ -111,7 +95,11 @@ std::string	Server::_topic(Request request, int i)
 	{
 		std::pair<Client *, int> user = it->second->findUserRole(i);
 		if (user.second == 1)
+		{
 			it->second->setTopic(request.args[1]);
+			std::string reply = "TOPIC " + it->second->getName() + ":" + request.args[1] + "\n";
+			_sendToAllUsers(it->second, i, reply);
+		}
 		else if (user.second == -1  /* Not in channel */)
 			return (_printMessage("442", this->_clients[i]->getNickName(), request.args[0] + " :You're not on that channel"));
 		else

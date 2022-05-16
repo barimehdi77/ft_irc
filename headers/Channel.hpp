@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 20:38:22 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 18:22:46 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ class Channel
 {
 	private:
 		char							_prefix;
-		int								_creatorFd;
+		Client*							_creator;
 		int								_onlineUsers;
 		std::string						_name;
 		std::string						_key;

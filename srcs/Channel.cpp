@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 22:30:33 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:50:16 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 18:23:47 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Channel.hpp"
 
-Channel::Channel() : _prefix(), _creatorFd(), _onlineUsers(), _name(), _key(), _topic(), _members(), _operators(), _voice(), _banned() {};
+Channel::Channel() : _prefix(), _creator(), _onlineUsers(), _name(), _key(), _topic(), _members(), _operators(), _voice(), _banned() {};
 Channel::Channel( const Channel& x ) { *this = x; };
-Channel::Channel(std::string channelName, Client *Creator) : _prefix(), _creatorFd(Creator->getClientfd()), _onlineUsers(1), _name(channelName), _key(), _topic(), _members(), _operators(), _voice(), _banned()
+Channel::Channel(std::string channelName, Client *Creator) : _prefix(), _creator(Creator), _onlineUsers(1), _name(channelName), _key(), _topic(), _members(), _operators(), _voice(), _banned()
 {
 	this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
 };
-Channel::Channel(std::string channelName, std::string channelKey, Client *Creator) : _prefix(), _creatorFd(Creator->getClientfd()), _onlineUsers(1), _name(channelName), _key(channelKey), _topic(), _members(), _operators(), _voice(), _banned()
+Channel::Channel(std::string channelName, std::string channelKey, Client *Creator) : _prefix(), _creator(Creator), _onlineUsers(1), _name(channelName), _key(channelKey), _topic(), _members(), _operators(), _voice(), _banned()
 {
 	this->_operators.insert(std::pair<int, Client *>(Creator->getClientfd(), Creator));
 };
@@ -46,7 +46,7 @@ std::map<int, Client *>			const &Channel::getMembers()		const { return this->_me
 std::map<int, Client *>			const &Channel::getOperators()		const { return this->_operators; };
 std::map<int, Client *>			const &Channel::getVoice()			const { return this->_voice; };
 
-Client*		Channel::getCreator() const { return (this->_operators.at(this->_creatorFd)); };
+Client*		Channel::getCreator() const { return (this->_creator); };
 
 void	Channel::setPrefix(char prefix)			{ this->_prefix = prefix; };
 void	Channel::setOnlineUsers(int online)		{ this->_onlineUsers = online; };

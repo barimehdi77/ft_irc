@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 15:17:48 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:43:00 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 17:53:06 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ std::string fillIt(std::string str, size_t len)
 		str.append(".");
 	}
 	return (str);
-}
+};
 
 const std::string currentDateTime()
 {
@@ -34,4 +34,4 @@ const std::string currentDateTime()
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
 
     return buf;
-}
+};

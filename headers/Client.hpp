@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:47:33 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:52:52 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ struct Modes
 	bool	server;
 };
 
-std::string			fillIt(std::string str, int len);
+std::string fillIt(std::string str, size_t len);
 const std::string	currentDateTime();
 
 class Client
