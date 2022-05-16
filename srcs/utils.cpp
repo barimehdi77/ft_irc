@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 15:17:48 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:46:46 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:43:00 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Server.hpp"
 
-std::string fillIt(std::string str, int len)
+std::string fillIt(std::string str, size_t len)
 {
 	if (str.length() < len)
 		str.insert(str.end(), len - str.length(), ' ');

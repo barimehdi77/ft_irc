@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   DeezNuts.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:01:46 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:39:22 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:42:08 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ std::string	Server::_getBotMessage()
 
 std::string	Server::_DeezNuts( Request req, int i )
 {
-	Client *cl = this->_clients[i];
 	std::string Greeting(_getBotMessage());
 	if (req.args.size() == 0)
 	{

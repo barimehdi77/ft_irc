@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 17:21:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 14:59:37 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 17:43:37 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	Server::_createPrvChannel( std::string ChannelName, std::string ChannelKey, 
 std::vector<std::string> Server::_commaSeparator(std::string arg)
 {
 	std::vector<std::string> ret;
-	int pos = 0;
+	size_t pos = 0;
 	while ((pos = arg.find(",")) != std::string::npos)
 	{
 		ret.push_back(arg.substr(0, pos));
