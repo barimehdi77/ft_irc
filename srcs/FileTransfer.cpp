@@ -6,13 +6,13 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/14 11:37:57 by asfaihi           #+#    #+#             */
-/*   Updated: 2022/05/16 15:03:29 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 15:04:42 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/Server.hpp"
 
-std::string	Server::_fileTransfer(Request request, int i) {
+std::string	Server::_sendfile(Request request, int i) {
 	if (!this->_clients[i]->getRegistered())
 		return (_printMessage("451", this->_clients[i]->getNickName(), ":You have not registered"));
 	if (request.args.size() < 2)

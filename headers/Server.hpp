@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
+/*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 13:09:42 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 15:04:53 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ class Server
 		int								_createChannel( std::string channelName, int CreatorFd );
 		int								_partChannel( std::string ChannelName, int i, std::string message, int isPart );
 		std::string						_DeezNuts( Request request, int i );
-		std::string						_fileTransfer( Request request, int i );
+		std::string						_sendfile( Request request, int i );
 		std::string						_getFile( Request request, int i );
 		std::string						_getBotMessage();
 		std::string						_listAllChannels() const;

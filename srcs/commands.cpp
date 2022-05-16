@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 15:00:41 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 15:04:35 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ std::string	Server::_parsing(std::string message, int i)
 	else if (request.command == "QUIT")
 		return (_quit(request, i));
 	else if (request.command == "SENDFILE")
-		return (_fileTransfer(request, i));
+		return (_sendfile(request, i));
 	else if (request.command == "GETFILE")
 		return (_getFile(request, i));
 	else if (request.command == "DEEZNUTS")
