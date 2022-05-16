@@ -6,7 +6,7 @@
 /*   By: asfaihi <asfaihi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 16:45:08 by asfaihi          ###   ########.fr       */
+/*   Updated: 2022/05/16 12:12:51 by asfaihi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ Server::~Server() {}
 std::string	Server::_printMessage(std::string num, std::string nickname, std::string message)
 {
 	// std::string ret = num + " " + nickname + "\n\t" + message + "\n";
-	if (nickname == "")
+	if (nickname.empty())
 		nickname = "*";
 	return (":" + this->_name + " " + num + " " + nickname + " " + message + "\n");
 	// std::cout << num << " " << nickname << "\n\t" << message << std::endl;
