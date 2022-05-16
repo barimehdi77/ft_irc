@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:00:04 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:22:45 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:49:13 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			Server::_sendall(int destfd, std::string message)
 	int bytesleft = message.length();
 	int b;
 
-	while (total < message.length())
+	while (total < (int)message.length())
 	{
 		b = send(destfd, message.c_str() + total, bytesleft, 0);
 		if (b == -1) break;

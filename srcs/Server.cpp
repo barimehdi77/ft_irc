@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:38:37 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:48:03 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,6 @@ void	Server::_newClient(void)
 
 void Server::startServer(void)
 {
-	struct sockaddr_storage	remotaddr;
-	socklen_t				addrlen;
-	int newfd;
-	char buf[7777];
-
 	while (77)
 	{
 		int poll_count = poll(this->_pfds, this->_online_c, -1);

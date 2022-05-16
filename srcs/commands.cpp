@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:46:52 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:12:52 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:48:45 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ std::string	Server::_parsing(std::string message, int i)
 	else if (request.command == "NOTICE")
 		return (_notice(request, i));
 	else if (request.command == "HELP")
-		return (_printHelpInfo(i));
+		return (_printHelpInfo());
 	else if (request.command == "JOIN")
 		return (_joinChannel(request, i));
 	else if (request.command == "TOPIC")
@@ -255,7 +255,7 @@ std::string	Server::_quit(Request request, int i)
 	return ("QUIT");
 };
 
-std::string	Server::_printHelpInfo(int i)
+std::string	Server::_printHelpInfo()
 {
 	std::string	helpInfo;
 

@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:11:46 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:48:39 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ class Server
 		std::string						_parsing(std::string message, int i);
 		Request							_splitRequest(std::string req);
 		// std::string						_printUserInfo(int i);
-		std::string						_printHelpInfo(int i);
+		std::string						_printHelpInfo();
 		std::string						_printUserModes(std::string ret, int i);
 		std::vector<std::string>		_commaSeparator(std::string arg);
 		int								_createPrvChannel( std::string ChannelName, std::string ChannelKey, int	 CreatorFd );

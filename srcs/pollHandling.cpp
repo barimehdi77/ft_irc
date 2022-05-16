@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 23:54:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 12:23:11 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:47:19 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	Server::_addToPoll(int newfd)
 	}
 	this->_pfds[this->_online_c].fd = newfd;
 	this->_pfds[this->_online_c].events = POLLIN;
-	this->_clients.insert(std::pair<int, Client *>(newfd, new Client(newfd, this->_max_online_c)));
+	this->_clients.insert(std::pair<int, Client *>(newfd, new Client(newfd)));
 	this->_online_c++;
 };
 
