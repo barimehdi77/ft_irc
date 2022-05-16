@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:14:00 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:52:52 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 18:27:59 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ class Client
 {
 	private:
 		int									_clientfd;
-		// int									_pollNumber;
 		bool								_Auth;
 		bool								_Registered;
 		bool								_isOperator;

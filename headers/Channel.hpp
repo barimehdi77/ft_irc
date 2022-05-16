@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 00:10:55 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 18:22:46 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 18:27:55 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ class Channel
 		std::string						_key;
 		std::string						_topic;
 		std::map<int, Client *>			_members;
-		std::map<int, Client *>			_operators;			// The first operator is also the one who created the channel need to add "!" to his name
+		std::map<int, Client *>			_operators;
 		std::map<int, Client *>			_voice;
 		std::vector<std::string>		_banned;
 
