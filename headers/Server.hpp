@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:32:10 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:52:44 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 18:28:48 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ class Server
 		std::string							_password;
 		int									_socketfd;
 		std::map<int, Client *>				_clients;
-		struct pollfd						*_pfds;					// find a way to reallocate without using realloc() (realloc is allowed)
+		struct pollfd						*_pfds;
 		int									_online_c;
 		int									_max_online_c;
 		std::string							_prefix;
@@ -78,10 +78,8 @@ class Server
 		std::string						_kick(Request request, int i);
 		std::string						_sendMessage(std::string message, int i);
 		std::string						_printMessage(std::string num, std::string nickname, std::string message);
-		// std::string						_setUsername( std::string username, int i );
 		std::string						_parsing(std::string message, int i);
 		Request							_splitRequest(std::string req);
-		// std::string						_printUserInfo(int i);
 		std::string						_printHelpInfo();
 		std::string						_printUserModes(std::string ret, int i);
 		std::vector<std::string>		_commaSeparator(std::string arg);
@@ -96,7 +94,6 @@ class Server
 		std::string						_channelInfo(std::string ChannelName, int i);
 		std::string						_serverInfo() const;
 		std::string						_kickedFromChannel(std::string ChannelName, std::string message, std::vector<std::string> users, int i);
-		// int								_findFdByUserName(std::string UserName);
 		int								_findFdByNickName(std::string NickName);
 		std::string						_privmsg(Request request, int i);
 		std::string						_notice(Request request, int i);
@@ -105,11 +102,6 @@ class Server
 		std::string						_sendToAllUsers( Channel *channel, int senderFd, std::string message);
 		std::string						_getPassword() const;
 
-	// private:
-	// 	class ArgsError: public std::exception
-	// 	{
-	// 		virtual const char* what() const throw();
-	// 	};
 	public:
 		Server(std::string Name, int max_online, std::string Port, std::string Password);
 		Server(const Server & x);
