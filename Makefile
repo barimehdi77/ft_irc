@@ -6,7 +6,7 @@
 #    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/05/16 17:24:55 by mbari            ###   ########.fr        #
+#    Updated: 2022/05/16 17:36:19 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ OBJECTSDIR = objects
 HEADERS_FOLDER = headers
 
 # Name of variables
-FLAGS = #-Wall -Wextra -Werror
-CPP_STANDARD = #-std=c++98
+FLAGS = -Wall -Wextra -Werror
+CPP_STANDARD = -std=c++98
 RED = \033[1;31m
 GREEN = \033[1;32m
 YELLOW = \033[1;33m

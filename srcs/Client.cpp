@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/15 20:40:36 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/16 17:41:04 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../headers/Client.hpp"
 
 
-Client::Client(): _UserName(), _clientfd(0), _Registered(false), _Host("deez.nuts"), _NickName(), _FullName(), _Auth(false) , _ID(), _modes(), _joinedChannels() {};
+Client::Client(): _clientfd() {};
 Client::Client( int fd, int pollNumber ): _UserName(), _clientfd(fd), _pollNumber(pollNumber), _Registered(false), _Auth(false), _Host("deez.nuts"), _NickName(), _FullName(), _ID(), _modes(), _joinedChannels() {};
 Client::Client( const Client& x ): _Host(x._Host) { *this = x; };
 
