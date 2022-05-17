@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 23:36:07 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 17:48:03 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/17 16:55:18 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,25 @@ Server::Server(std::string Name, int max_online, std::string Port, std::string P
 	this->_online_c++;
 };
 
-Server::~Server() {}
+Server::~Server()
+{
+	if (this->_pfds)
+		delete [] this->_pfds;
+	std::map<int, Client *>::iterator it = this->_clients.begin();
+	while (it != this->_clients.end())
+	{
+		delete it->second;
+		it++;
+	}
+	this->_clients.clear();
+	std::map<std::string, Channel *>::iterator itC = this->_allChannels.begin();
+	while (itC != this->_allChannels.end())
+	{
+		delete itC->second;
+		itC++;
+	}
+	this->_allChannels.clear();
+}
 
 std::string	Server::_printMessage(std::string num, std::string nickname, std::string message)
 {
