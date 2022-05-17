@@ -66,6 +66,10 @@ Request	Server::_splitRequest(std::string req)
 		}
 		if (req[i] == ':')
 		{
+			if (req[i - 1] != ' ') {
+				request.invalidMessage = true;
+				return (request);
+			}
 			request.args.push_back(req.substr(i + 1, req.length() - i));
 			request.command = request.args[0];
 			request.args.erase(request.args.begin());
