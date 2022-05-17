@@ -6,12 +6,12 @@
 #    By: mbari <mbari@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 14:21:19 by asfaihi           #+#    #+#              #
-#    Updated: 2022/05/16 17:50:22 by mbari            ###   ########.fr        #
+#    Updated: 2022/05/17 15:22:28 by mbari            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Name of the final executable files
-NAME = ./ft_irc
+NAME = ./ircserv
 
 # Project's directories
 SRCS_FOLDER = srcs
