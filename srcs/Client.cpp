@@ -6,7 +6,7 @@
 /*   By: mbari <mbari@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 01:09:14 by mbari             #+#    #+#             */
-/*   Updated: 2022/05/16 18:29:31 by mbari            ###   ########.fr       */
+/*   Updated: 2022/05/18 16:17:47 by mbari            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ Client & Client::operator=( const Client& rhs )
 	this->_NickName = rhs._NickName;
 	this->_UserName = rhs._UserName;
 	this->_FullName = rhs._FullName;
+	this->_Auth = rhs._Auth;
 	this->_ID = rhs._ID;
 	this->_Auth = rhs._Auth;
 	this->_remotaddr = rhs._remotaddr;
