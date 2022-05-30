@@ -13,7 +13,7 @@ This project is about creating our own IRC server. We used an actual IRC client 
     -  All the messages sent from one client to a channel have to be forwarded to every other client that joined the channel.
     -  We must have operators and regular users.
     -  Then, we have to implement the commands that are specific to operators.
-## Bonus part
+## Bonus part 
 Here are the extra features we added to our IRC server so it looks even more like and actual IRC server:
   - Handle file transfer.
   - A meme bot named **DEEZNUTS**.
